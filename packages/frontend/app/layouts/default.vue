@@ -14,7 +14,7 @@ useHead({
   }
 })
 
-const title = '恩典教會'
+const title = '小羊天地'
 const description = '一個充滿愛與盼望的信仰社群，歡迎你回家。'
 
 useSeoMeta({
