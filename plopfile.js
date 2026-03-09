@@ -8,7 +8,7 @@ module.exports = function (plop) {
       {
         type: 'input',
         name: 'name',
-        message: 'Package name(命名規則: [廠商英文]-[專案名稱英文]):'
+        message: 'Package name(英文全小寫，無空格):'
       }
     ],
     actions: [
@@ -33,12 +33,6 @@ module.exports = function (plop) {
         path: 'packages/{{name}}/.gitignore',
         templateFile: 'plop-templates/package/.gitignore'
       },
-      // {
-      //   type: 'modify',
-      //   path: 'package.json',
-      //   pattern: /(\"scripts\": {[\s\S]*?)(})/,
-      //   template: '$1,\n    "dev:{{name}}": "pnpm run -C packages/{{name}} dev",\n    "build:{{name}}": "pnpm run -C packages/{{name}} build"\n  $2'
-      // },
       {
         type: 'add',
         path: 'docs/{{name}}.txt',
