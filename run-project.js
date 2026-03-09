@@ -7,7 +7,7 @@ const fs = require('fs')
 
 const projects = [
   { name: 'backend', commands: ['dev', 'build', 'prisma-generate'] },
-  { name: 'frontend', commands: ['dev', 'build'] }
+  { name: 'frontend', commands: ['dev', 'build', 'typecheck'] }
 ]
 
 const rl = readline.createInterface({
