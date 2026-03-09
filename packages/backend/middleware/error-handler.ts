@@ -11,6 +11,7 @@ export const errorHandlerMiddleware = (
   req: Request,
   res: Response
 ) => {
+  // eslint-disable-next-line no-console
   console.error(err)
 
   const customError = {
