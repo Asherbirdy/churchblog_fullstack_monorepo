@@ -5,6 +5,7 @@ import config from './config'
 // Routes
 import AuthRoutes from './routes/AuthRoutes'
 import UserRoutes from './routes/UserRoutes'
+import PageRoutes from './routes/PageRoutes'
 
 import cors from 'cors'
 import morgan from 'morgan'
@@ -50,6 +51,7 @@ class Server {
     // ** v1
     this.app.use('/api/v1/auth', AuthRoutes)
     this.app.use('/api/v1/user', UserRoutes)
+    this.app.use('/api/v1/page', PageRoutes)
   }
 
   handleErrorAndSafety () {

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { execSync } = require('child_process')
 const readline = require('readline')
@@ -5,8 +6,7 @@ const path = require('path')
 const fs = require('fs')
 
 const projects = [
-  { name: 'test3', commands: ['dev', 'build'] },
-  { name: 'backend', commands: ['dev', 'build'] },
+  { name: 'backend', commands: ['dev', 'build'] }
 ]
 
 const rl = readline.createInterface({

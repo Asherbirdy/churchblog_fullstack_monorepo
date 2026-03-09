@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A pnpm workspace monorepo for LINE OA (Official Account) Vue 3 apps and a backend Express API server.
+A pnpm workspace monorepo nodejs project
 
 ## Monorepo Structure
 
@@ -58,13 +58,15 @@ packages/backend/
 ├── controllers/
 │   ├── index.ts        # Re-exports all controller groups
 │   ├── Auth/           # AuthController (register, login, logout)
-│   └── User/           # UserController (showCurrentUser)
+│   ├── User/           # UserController (showCurrentUser)
+│   └── Page/           # PageController (create, getAll, getOne, update, delete)
 ├── routes/
 │   ├── AuthRoutes.ts   # /api/v1/auth
-│   └── UserRoutes.ts   # /api/v1/user
+│   ├── UserRoutes.ts   # /api/v1/user
+│   └── PageRoutes.ts   # /api/v1/page
 ├── middleware/          # authenticateUser, authorizePermission, errorHandler
 ├── utils/              # JWT helpers (createJWT, isTokenValid, attachCookieToResponse), createTokenUser
-├── enums/              # StatusCode, Role
+├── enums/              # StatusCode, Role, RecordStatus
 ├── errors/             # Custom error classes (BadRequest, NotFound, Unauthenticated)
 └── types/              # Req, Res, IUser, ApiTypes
 ```
@@ -80,6 +82,16 @@ export const AuthController = {
 }
 ```
 Routes reference methods as `AuthController.register`, etc.
+
+### Error Handling Convention
+Controllers use custom error classes from `errors/` instead of manual `res.status().json()`.
+Error messages must use **UPPER_SNAKE_CASE error codes**, not human-readable text:
+```typescript
+throw new UnauthenticatedError('AUTHENTICATION_INVALID')
+throw new NotFoundError('CANT_FIND_PAGE')
+throw new BadRequestError('INVALID_STATUS_VALUE')
+```
+Errors are caught by `express-async-errors` and handled by `errorHandlerMiddleware`.
 
 ### Environment Variables (backend)
 Uses `.env.dev` / `.env.prod` — requires: `PORT`, `ENVIRONMENT` (DEV/PROD), `DATABASE_URL`, `JWT_SECRET`

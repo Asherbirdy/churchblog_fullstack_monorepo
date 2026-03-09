@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { StatusCode } from '../../enums'
+import { StatusCode } from '@monorepo/libs'
 import prisma from '../../db'
 import { createTokenUser, attachCookieToResponse } from '../../utils'
 import bcrypt from 'bcryptjs'
