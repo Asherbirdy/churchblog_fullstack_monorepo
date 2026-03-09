@@ -1,5 +1,5 @@
 {
-  "name": "lineoa-monorepo",
+  "name": "blog-monorepo",
   "version": "1.0.0",
   "private": true,
   "engines": {
@@ -11,8 +11,7 @@
     "start": "node run-project.js",
     "clean": "rimraf packages/*/node_modules && rimraf packages/*/dist",
     "clean:all": "rimraf packages/*/node_modules && rimraf packages/*/dist && rimraf node_modules",
-    "dev:vite-demo": "pnpm run -C packages/vite-demo dev",
-    "build:vite-demo": "pnpm run -C packages/vite-demo build"
+    "dev:backend": "pnpm run -C packages/backend dev"
   },
   "dependencies": {
     "axios": "1.7.7",
