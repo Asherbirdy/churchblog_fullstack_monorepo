@@ -5,6 +5,7 @@ const fs = require('fs');
 
 const projects = [
   { name: 'test3', commands: ['dev', 'build'] },
+{ name: 'backend', commands: ['dev', 'build'] },
 ];
 
 const rl = readline.createInterface({
