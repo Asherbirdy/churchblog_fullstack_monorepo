@@ -4,7 +4,7 @@
   "private": true,
   "engines": {
     "pnpm": ">=9.7.1",
-    "node": ">=18.17.0"
+    "node": ">=22.14.0"
   },
   "scripts": {
     "new": "plop package",
