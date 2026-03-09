@@ -7,19 +7,25 @@ useHead({
   title: '登入 — 小羊天地'
 })
 
-const form = reactive({
-  email: '',
-  password: ''
+const state = ref({
+  data: {
+    form: {
+      email: '',
+      password: ''
+    }
+  },
+  feature: {
+    showPassword: false,
+    isLoading: false
+  }
 })
-const showPassword = ref(false)
-const isLoading = ref(false)
 
 const handleLogin = async () => {
-  isLoading.value = true
+  state.value.feature.isLoading = true
   try {
     // TODO: call login API
   } finally {
-    isLoading.value = false
+    state.value.feature.isLoading = false
   }
 }
 </script>
@@ -101,7 +107,7 @@ const handleLogin = async () => {
               電子信箱
             </label>
             <UInput
-              v-model="form.email"
+              v-model="state.data.form.email"
               type="email"
               placeholder="you@example.com"
               icon="i-lucide-mail"
@@ -125,8 +131,8 @@ const handleLogin = async () => {
               </NuxtLink>
             </div>
             <UInput
-              v-model="form.password"
-              :type="showPassword ? 'text' : 'password'"
+              v-model="state.data.form.password"
+              :type="state.feature.showPassword ? 'text' : 'password'"
               placeholder="請輸入密碼"
               icon="i-lucide-lock"
               size="lg"
@@ -135,9 +141,9 @@ const handleLogin = async () => {
             >
               <template #trailing>
                 <UIcon
-                  :name="showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                  :name="state.feature.showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
                   class="text-sand-400 cursor-pointer hover:text-sand-600 transition-colors"
-                  @click="showPassword = !showPassword"
+                  @click="state.feature.showPassword = !state.feature.showPassword"
                 />
               </template>
             </UInput>
@@ -149,7 +155,7 @@ const handleLogin = async () => {
             label="登入"
             size="lg"
             block
-            :loading="isLoading"
+            :loading="state.feature.isLoading"
             class="rounded-xl bg-sand-950 text-white hover:bg-sand-800 mt-2"
           />
         </form>

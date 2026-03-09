@@ -1,5 +1,12 @@
 <script setup lang="ts">
-const searchQuery = ref('')
+const state = ref({
+  data: {
+    searchQuery: '',
+    selectedSize: 1,
+    selectedTime: { date: 0, time: 1 }
+  },
+  feature: {}
+})
 
 const ministryCards = [
   {
@@ -44,8 +51,6 @@ const churchSizes = [
   { label: '中型聚會', desc: '30-80人' },
   { label: '大型聚會', desc: '80人以上' }
 ]
-const selectedSize = ref(1)
-
 const dates = [
   {
     date: '3月16日 (日)',
@@ -60,7 +65,6 @@ const dates = [
     times: ['09:30', '11:00', '14:30', '19:00']
   }
 ]
-const selectedTime = ref({ date: 0, time: 1 })
 </script>
 
 <template>
@@ -81,7 +85,7 @@ const selectedTime = ref({ date: 0, time: 1 })
         <!-- Search Bar -->
         <div class="flex items-center gap-3 mb-10 animate-fade-up stagger-1">
           <UInput
-            v-model="searchQuery"
+            v-model="state.data.searchQuery"
             placeholder="搜尋聚會、活動、事工..."
             icon="i-lucide-search"
             size="lg"
@@ -136,16 +140,16 @@ const selectedTime = ref({ date: 0, time: 1 })
               :key="size.label"
               :class="[
                 'flex-1 rounded-xl border-2 p-3 text-center transition-all duration-200',
-                selectedSize === index
+                state.data.selectedSize === index
                   ? 'border-sage-500 bg-sage-50'
                   : 'border-sand-200 hover:border-sand-300'
               ]"
-              @click="selectedSize = index"
+              @click="state.data.selectedSize = index"
             >
-              <p :class="['text-xs font-bold', selectedSize === index ? 'text-sage-700' : 'text-sand-600']">
+              <p :class="['text-xs font-bold', state.data.selectedSize === index ? 'text-sage-700' : 'text-sand-600']">
                 {{ size.label }}
               </p>
-              <p :class="['text-[11px] mt-0.5', selectedSize === index ? 'text-sage-500' : 'text-sand-400']">
+              <p :class="['text-[11px] mt-0.5', state.data.selectedSize === index ? 'text-sage-500' : 'text-sand-400']">
                 {{ size.desc }}
               </p>
             </button>
@@ -176,11 +180,11 @@ const selectedTime = ref({ date: 0, time: 1 })
                   :key="time"
                   :class="[
                     'px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200',
-                    selectedTime.date === dateIndex && selectedTime.time === timeIndex
+                    state.data.selectedTime.date === dateIndex && state.data.selectedTime.time === timeIndex
                       ? 'bg-sand-950 text-white border-sand-950'
                       : 'border-sand-200 text-sand-700 hover:border-sand-400'
                   ]"
-                  @click="selectedTime = { date: dateIndex, time: timeIndex }"
+                  @click="state.data.selectedTime = { date: dateIndex, time: timeIndex }"
                 >
                   {{ time }}
                 </button>
