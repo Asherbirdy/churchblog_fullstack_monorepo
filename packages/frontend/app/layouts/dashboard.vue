@@ -1,16 +1,20 @@
 <script setup lang="ts">
-const sidebarCollapsed = ref(false)
-const mobileOpen = ref(false)
+import { useMenuStore } from '@/stores'
 
-const menuItems = [
-  { label: '聊天機器人', icon: 'i-lucide-bot', to: '/admin/chatbot' },
-  { label: '一頁網站', icon: 'i-lucide-layout-template', to: '/admin/website' }
-]
+const state = ref({
+  feature: {
+    sidebarCollapsed: false,
+    mobileOpen: false
+  }
+})
+
+const menuStore = useMenuStore()
+const { menuItems } = storeToRefs(menuStore)
 
 const route = useRoute()
 
 watch(() => route.path, () => {
-  mobileOpen.value = false
+  state.value.feature.mobileOpen = false
 })
 </script>
 
@@ -19,9 +23,9 @@ watch(() => route.path, () => {
     <!-- Mobile Overlay -->
     <Transition name="fade">
       <div
-        v-if="mobileOpen"
+        v-if="state.feature.mobileOpen"
         class="fixed inset-0 bg-black/30 z-40 lg:hidden"
-        @click="mobileOpen = false"
+        @click="state.feature.mobileOpen = false"
       />
     </Transition>
 
@@ -30,8 +34,8 @@ watch(() => route.path, () => {
       :class="[
         'fixed top-0 left-0 h-screen bg-white border-r border-sand-200 flex flex-col z-50 transition-all duration-300',
         'max-lg:-translate-x-full max-lg:w-[240px]',
-        mobileOpen ? 'max-lg:translate-x-0' : '',
-        sidebarCollapsed ? 'lg:w-[68px]' : 'lg:w-[240px]'
+        state.feature.mobileOpen ? 'max-lg:translate-x-0' : '',
+        state.feature.sidebarCollapsed ? 'lg:w-[68px]' : 'lg:w-[240px]'
       ]"
     >
       <!-- Logo -->
@@ -43,7 +47,7 @@ watch(() => route.path, () => {
           />
         </div>
         <span
-          v-show="!sidebarCollapsed || mobileOpen"
+          v-show="!state.feature.sidebarCollapsed || state.feature.mobileOpen"
           class="font-display text-lg font-semibold text-sand-950 tracking-tight truncate"
         >
           小羊天地
@@ -71,7 +75,7 @@ watch(() => route.path, () => {
             ]"
           />
           <span
-            v-show="!sidebarCollapsed || mobileOpen"
+            v-show="!state.feature.sidebarCollapsed || state.feature.mobileOpen"
             class="text-sm font-medium truncate"
           >
             {{ item.label }}
@@ -83,14 +87,14 @@ watch(() => route.path, () => {
       <div class="hidden lg:block p-3 border-t border-sand-200">
         <button
           class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-sand-400 hover:bg-sand-100 hover:text-sand-600 transition-all duration-200"
-          @click="sidebarCollapsed = !sidebarCollapsed"
+          @click="state.feature.sidebarCollapsed = !state.feature.sidebarCollapsed"
         >
           <UIcon
-            :name="sidebarCollapsed ? 'i-lucide-chevrons-right' : 'i-lucide-chevrons-left'"
+            :name="state.feature.sidebarCollapsed ? 'i-lucide-chevrons-right' : 'i-lucide-chevrons-left'"
             class="text-lg"
           />
           <span
-            v-show="!sidebarCollapsed"
+            v-show="!state.feature.sidebarCollapsed"
             class="text-xs font-medium"
           >
             收合選單
@@ -103,7 +107,7 @@ watch(() => route.path, () => {
     <div
       :class="[
         'flex-1 flex flex-col transition-all duration-300',
-        sidebarCollapsed ? 'lg:ml-[68px]' : 'lg:ml-[240px]'
+        state.feature.sidebarCollapsed ? 'lg:ml-[68px]' : 'lg:ml-[240px]'
       ]"
     >
       <!-- Header -->
@@ -112,7 +116,7 @@ watch(() => route.path, () => {
           <!-- Mobile hamburger -->
           <button
             class="lg:hidden text-sand-500 hover:text-sand-800 transition-colors"
-            @click="mobileOpen = true"
+            @click="state.feature.mobileOpen = true"
           >
             <UIcon
               name="i-lucide-menu"

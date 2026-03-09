@@ -164,6 +164,12 @@ const state = ref({
 })
 ```
 
+### Store Convention
+- All Pinia stores live in `app/stores/` with a barrel export in `app/stores/index.ts`
+- Always import stores from the barrel: `import { useMenuStore } from '~/stores'`
+- NEVER import directly from individual store files (e.g. `~/stores/useMenuStore`)
+- Use `storeToRefs()` to destructure reactive state from stores
+
 ### Component Patterns
 - Use Nuxt UI components (`UButton`, `UInput`, `UIcon`, `UColorModeButton`)
 - Icons: Lucide icon set (`i-lucide-*`)
