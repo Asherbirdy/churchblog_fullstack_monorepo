@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "Bash(ls -d /Users/riversoft/Desktop/SP/church/monorepo/packages/*/)"
     ],
     "deny": [],
     "ask": []

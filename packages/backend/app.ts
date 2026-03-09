@@ -4,6 +4,7 @@ import config from './config'
 
 // Routes
 import AuthRoutes from './routes/AuthRoutes'
+import UserRoutes from './routes/UserRoutes'
 
 import cors from 'cors'
 import morgan from 'morgan'
@@ -48,6 +49,7 @@ class Server {
   routes () {
     // ** v1
     this.app.use('/api/v1/auth', AuthRoutes)
+    this.app.use('/api/v1/user', UserRoutes)
   }
 
   handleErrorAndSafety () {
