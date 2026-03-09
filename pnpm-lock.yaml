@@ -48,7 +48,7 @@ importers:
         specifier: 0.2.4
         version: 0.2.4(vue@3.4.0(typescript@5.3.3))
     devDependencies:
-      '@lineoa-monorepo/libs':
+      '@monorepo/libs':
         specifier: workspace:*
         version: link:packages/libs
       '@types/js-cookie':

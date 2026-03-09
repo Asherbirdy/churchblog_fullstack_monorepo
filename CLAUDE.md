@@ -170,7 +170,7 @@ Vite dev server 已配置 `/api` proxy：
 - 元件命名不強制多字（multi-word-component-names: off）
 - 允許 template 多個根元素
 
-## 共用程式庫 (@lineoa-monorepo/libs)
+## 共用程式庫 (@monorepo/libs)
 
 位於 `packages/libs/`，匯出：
 
@@ -181,7 +181,7 @@ Vite dev server 已配置 `/api` proxy：
 在專案中使用：
 
 ```typescript
-import { useLiff, setToken, Hello } from '@lineoa-monorepo/libs'
+import { useLiff, setToken, Hello } from '@monorepo/libs'
 ```
 
 ## Plop Templates
