@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    Layout: auth
+    Layout: dashboard
     <slot />
   </div>
 </template>
