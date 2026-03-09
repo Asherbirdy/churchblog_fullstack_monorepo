@@ -1,7 +1,0 @@
-專案：ShareToGo-Binding
-LineOA官方帳號名稱:ShareToGo
-LineOA測試帳號名稱:無
-正式網址:https://salespower.clicugo.com/C/sharetogo/
-測試網址:https://cdn.clicugo.com/shareToGoTest/#/
-專案簡介:
-分銷快手

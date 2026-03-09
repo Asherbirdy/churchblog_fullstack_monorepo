@@ -1,9 +1,17 @@
 {
-  "name": "{{name}}",
+  "name": "plop-templates-server",
   "version": "1.0.0",
+  "description": "簡單的 Node.js 靜態檔案伺服器",
+  "main": "server.js",
   "scripts": {
-    "dev": "vite --mode development",
-    "build": "vite build --mode production",
-    "type-check": "vue-tsc --noEmit"
-  }
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "server",
+    "static"
+  ],
+  "author": "",
+  "license": "MIT"
 }
