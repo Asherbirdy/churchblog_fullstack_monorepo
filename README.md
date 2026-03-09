@@ -1,1 +1,1 @@
-# churchblog_fullstack_monorepo
+npx prisma generate

@@ -1,0 +1,38 @@
+{
+  "name": "lineoa-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "pnpm": ">=9.7.1",
+    "node": ">=18.17.0"
+  },
+  "scripts": {
+    "new": "plop package",
+    "start": "node run-project.js",
+    "clean": "rimraf packages/*/node_modules && rimraf packages/*/dist",
+    "clean:all": "rimraf packages/*/node_modules && rimraf packages/*/dist && rimraf node_modules",
+    "dev:vite-demo": "pnpm run -C packages/vite-demo dev",
+    "build:vite-demo": "pnpm run -C packages/vite-demo build"
+  },
+  "dependencies": {
+    "axios": "1.7.7",
+    "js-cookie": "3.0.5",
+    "typescript": "5.3.3"
+  },
+  "devDependencies": {
+    "@monorepo/libs": "workspace:*",
+    "@types/js-cookie": "3.0.6",
+    "@types/node": "22.4.2",
+    "@typescript-eslint/eslint-plugin": "6.12.0",
+    "@typescript-eslint/parser": "6.12.0",
+    "@vue/eslint-config-typescript": "13.0.0",
+    "eslint": "8.57.0",
+    "eslint-plugin-vue": "9.28.0",
+    "plop": "3.1.2",
+    "rimraf": "6.0.1",
+    "vue-tsc": "1.8.27"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
