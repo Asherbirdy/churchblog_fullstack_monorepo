@@ -6,7 +6,8 @@ const path = require('path')
 const fs = require('fs')
 
 const projects = [
-  { name: 'backend', commands: ['dev', 'build'] }
+  { name: 'backend', commands: ['dev', 'build'] },
+  { name: 'frontend', commands: ['dev', 'build'] }
 ]
 
 const rl = readline.createInterface({

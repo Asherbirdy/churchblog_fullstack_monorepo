@@ -1,17 +1,27 @@
 {
-  "name": "plop-templates-server",
-  "version": "1.0.0",
-  "description": "簡單的 Node.js 靜態檔案伺服器",
-  "main": "server.js",
+  "name": "rrr",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck"
   },
-  "keywords": [
-    "nodejs",
-    "server",
-    "static"
-  ],
-  "author": "",
-  "license": "MIT"
+  "dependencies": {
+    "@iconify-json/lucide": "^1.2.95",
+    "@iconify-json/simple-icons": "^1.2.72",
+    "@nuxt/ui": "^4.5.1",
+    "nuxt": "^4.3.1",
+    "tailwindcss": "^4.2.1"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.15.2",
+    "eslint": "^10.0.2",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.2.5"
+  },
+  "packageManager": "pnpm@10.30.3"
 }
