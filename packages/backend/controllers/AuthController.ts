@@ -68,7 +68,7 @@ export const AuthController = {
     }
 
     refreshToken = crypto.randomBytes(40).toString('hex')
-    const userAgent = req.headers['user-agent'] || ''
+    const userAgent = req.headers[ 'user-agent' ] || ''
     const ip = req.ip || ''
 
     await prisma.token.create({
