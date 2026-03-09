@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const sidebarCollapsed = ref(false)
+const mobileOpen = ref(false)
 
 const menuItems = [
   { label: '聊天機器人', icon: 'i-lucide-bot', to: '/admin/chatbot' },
@@ -7,15 +8,30 @@ const menuItems = [
 ]
 
 const route = useRoute()
+
+watch(() => route.path, () => {
+  mobileOpen.value = false
+})
 </script>
 
 <template>
   <div class="min-h-screen flex bg-sand-50">
+    <!-- Mobile Overlay -->
+    <Transition name="fade">
+      <div
+        v-if="mobileOpen"
+        class="fixed inset-0 bg-black/30 z-40 lg:hidden"
+        @click="mobileOpen = false"
+      />
+    </Transition>
+
     <!-- Sidebar -->
     <aside
       :class="[
-        'fixed top-0 left-0 h-screen bg-white border-r border-sand-200 flex flex-col z-40 transition-all duration-300',
-        sidebarCollapsed ? 'w-[68px]' : 'w-[240px]'
+        'fixed top-0 left-0 h-screen bg-white border-r border-sand-200 flex flex-col z-50 transition-all duration-300',
+        'max-lg:-translate-x-full max-lg:w-[240px]',
+        mobileOpen ? 'max-lg:translate-x-0' : '',
+        sidebarCollapsed ? 'lg:w-[68px]' : 'lg:w-[240px]'
       ]"
     >
       <!-- Logo -->
@@ -27,7 +43,7 @@ const route = useRoute()
           />
         </div>
         <span
-          v-show="!sidebarCollapsed"
+          v-show="!sidebarCollapsed || mobileOpen"
           class="font-display text-lg font-semibold text-sand-950 tracking-tight truncate"
         >
           小羊天地
@@ -55,7 +71,7 @@ const route = useRoute()
             ]"
           />
           <span
-            v-show="!sidebarCollapsed"
+            v-show="!sidebarCollapsed || mobileOpen"
             class="text-sm font-medium truncate"
           >
             {{ item.label }}
@@ -63,8 +79,8 @@ const route = useRoute()
         </NuxtLink>
       </nav>
 
-      <!-- Collapse Toggle -->
-      <div class="p-3 border-t border-sand-200">
+      <!-- Collapse Toggle (desktop only) -->
+      <div class="hidden lg:block p-3 border-t border-sand-200">
         <button
           class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-sand-400 hover:bg-sand-100 hover:text-sand-600 transition-all duration-200"
           @click="sidebarCollapsed = !sidebarCollapsed"
@@ -87,12 +103,22 @@ const route = useRoute()
     <div
       :class="[
         'flex-1 flex flex-col transition-all duration-300',
-        sidebarCollapsed ? 'ml-[68px]' : 'ml-[240px]'
+        sidebarCollapsed ? 'lg:ml-[68px]' : 'lg:ml-[240px]'
       ]"
     >
       <!-- Header -->
       <header class="sticky top-0 z-30 h-16 bg-sand-50/80 backdrop-blur-xl border-b border-sand-200 flex items-center justify-between px-6">
         <div class="flex items-center gap-3">
+          <!-- Mobile hamburger -->
+          <button
+            class="lg:hidden text-sand-500 hover:text-sand-800 transition-colors"
+            @click="mobileOpen = true"
+          >
+            <UIcon
+              name="i-lucide-menu"
+              class="text-xl"
+            />
+          </button>
           <h1 class="text-lg font-semibold text-sand-950">
             {{ menuItems.find((item) => route.path.startsWith(item.to))?.label || '控制台' }}
           </h1>
@@ -121,3 +147,15 @@ const route = useRoute()
     </div>
   </div>
 </template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

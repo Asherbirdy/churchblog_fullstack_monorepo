@@ -155,6 +155,15 @@ packages/[project-name]/src/
 - Cards use `bg-white` with `border border-sand-200` and `shadow-sm`
 - Animations: `animate-fade-up` with `stagger-1` ~ `stagger-6` delay classes
 
+### Vue Page State Convention
+Every `.vue` page file must define a `state` ref with two keys:
+```typescript
+const state = ref({
+  data: {},    // view data (API responses, card content, display values)
+  feature: {}  // feature flags (modal open/close, loading states, toggles)
+})
+```
+
 ### Component Patterns
 - Use Nuxt UI components (`UButton`, `UInput`, `UIcon`, `UColorModeButton`)
 - Icons: Lucide icon set (`i-lucide-*`)
