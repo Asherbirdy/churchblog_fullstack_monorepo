@@ -1,17 +1,15 @@
 import { Response } from 'express'
 import { StatusCode, RecordStatus } from '../../enums'
-import { UnauthenticatedError, NotFoundError, BadRequestError } from '../../errors'
+import { NotFoundError, BadRequestError } from '../../errors'
 import prisma from '../../db'
 import { Req } from '../../types'
 
 export const UpdatePageController = async (req: Req, res: Response) => {
-  if (!req.user) throw new UnauthenticatedError('AUTHENTICATION_INVALID')
-
   const { id } = req.params
   const { contentHtml, status, isEdit } = req.body
 
   const page = await prisma.page.findFirst({
-    where: { id, createdById: req.user.userId },
+    where: { id },
   })
 
   if (!page) throw new NotFoundError('CANT_FIND_PAGE')
@@ -21,6 +19,8 @@ export const UpdatePageController = async (req: Req, res: Response) => {
   }
 
   const data: any = {}
+  
+  // 更改什麼 body 就填寫什麼
   if (contentHtml !== undefined) data.contentHtml = contentHtml
   if (status !== undefined) data.status = status
   if (isEdit !== undefined) {
