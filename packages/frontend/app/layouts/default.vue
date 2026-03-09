@@ -64,10 +64,6 @@ const navLinks = [
 
         <!-- CTA -->
         <div class="flex items-center gap-3">
-          <UColorModeButton
-            color="neutral"
-            variant="ghost"
-          />
           <UButton
             label="線上奉獻"
             color="neutral"
