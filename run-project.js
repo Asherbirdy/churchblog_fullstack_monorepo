@@ -4,9 +4,7 @@ const path = require('path');
 const fs = require('fs');
 
 const projects = [
-  { name: 'vite-demo', commands: ['dev', 'build'] },
-  { name: 'Takeda-Register', commands: ['dev','build:production:uat'] },
-{ name: 'test3', commands: ['dev', 'build'] },
+  { name: 'test3', commands: ['dev', 'build'] },
 ];
 
 const rl = readline.createInterface({
