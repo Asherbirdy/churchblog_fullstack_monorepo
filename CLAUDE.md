@@ -84,11 +84,12 @@ export const AuthController = {
 Routes reference methods as `AuthController.register`, etc.
 
 ### Error Handling Convention
-Controllers use custom error classes from `errors/` instead of manual `res.status().json()`:
+Controllers use custom error classes from `errors/` instead of manual `res.status().json()`.
+Error messages must use **UPPER_SNAKE_CASE error codes**, not human-readable text:
 ```typescript
-throw new UnauthenticatedError('Authentication Invalid')
-throw new NotFoundError('找不到此頁面')
-throw new BadRequestError('無效的狀態值')
+throw new UnauthenticatedError('AUTHENTICATION_INVALID')
+throw new NotFoundError('CANT_FIND_PAGE')
+throw new BadRequestError('INVALID_STATUS_VALUE')
 ```
 Errors are caught by `express-async-errors` and handled by `errorHandlerMiddleware`.
 

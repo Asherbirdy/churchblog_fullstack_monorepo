@@ -5,7 +5,7 @@ import prisma from '../../db'
 import { Req } from '../../types'
 
 export const CreatePageController = async (req: Req, res: Response) => {
-  if (!req.user) throw new UnauthenticatedError('Authentication Invalid')
+  if (!req.user) throw new UnauthenticatedError('AUTHENTICATION_INVALID')
 
   const { contentHtml } = req.body
 

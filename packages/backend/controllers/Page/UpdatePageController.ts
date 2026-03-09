@@ -5,7 +5,7 @@ import prisma from '../../db'
 import { Req } from '../../types'
 
 export const UpdatePageController = async (req: Req, res: Response) => {
-  if (!req.user) throw new UnauthenticatedError('Authentication Invalid')
+  if (!req.user) throw new UnauthenticatedError('AUTHENTICATION_INVALID')
 
   const { id } = req.params
   const { contentHtml, status, isEdit } = req.body
@@ -14,10 +14,10 @@ export const UpdatePageController = async (req: Req, res: Response) => {
     where: { id, createdById: req.user.userId },
   })
 
-  if (!page) throw new NotFoundError('找不到此頁面')
+  if (!page) throw new NotFoundError('CANT_FIND_PAGE')
 
   if (status && !Object.values(RecordStatus).includes(status)) {
-    throw new BadRequestError('無效的狀態值')
+    throw new BadRequestError('INVALID_STATUS_VALUE')
   }
 
   const data: any = {}

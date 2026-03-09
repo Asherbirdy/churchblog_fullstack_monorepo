@@ -5,7 +5,7 @@ import prisma from '../../db'
 import { Req } from '../../types'
 
 export const DeletePageController = async (req: Req, res: Response) => {
-  if (!req.user) throw new UnauthenticatedError('Authentication Invalid')
+  if (!req.user) throw new UnauthenticatedError('AUTHENTICATION_INVALID')
 
   const { id } = req.params
 
@@ -13,7 +13,7 @@ export const DeletePageController = async (req: Req, res: Response) => {
     where: { id, createdById: req.user.userId },
   })
 
-  if (!page) throw new NotFoundError('找不到此頁面')
+  if (!page) throw new NotFoundError('CANT_FIND_PAGE')
 
   await prisma.page.delete({ where: { id } })
 
