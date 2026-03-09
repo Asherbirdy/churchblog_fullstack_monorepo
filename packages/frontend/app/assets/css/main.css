@@ -2,7 +2,8 @@
 @import "@nuxt/ui";
 
 @theme static {
-  --font-sans: 'Public Sans', sans-serif;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-display: 'Playfair Display', serif;
 
   --color-green-50: #EFFDF5;
   --color-green-100: #D9FBE8;
@@ -15,4 +16,81 @@
   --color-green-800: #016538;
   --color-green-900: #0A5331;
   --color-green-950: #052E16;
+
+  --color-sand-50: #faf8f5;
+  --color-sand-100: #f3efe8;
+  --color-sand-200: #e8e0d4;
+  --color-sand-300: #d4c8b5;
+  --color-sand-400: #bfab92;
+  --color-sand-500: #a8916f;
+  --color-sand-600: #937c5a;
+  --color-sand-700: #7a664a;
+  --color-sand-800: #655440;
+  --color-sand-900: #544638;
+  --color-sand-950: #2d241c;
+
+  --color-warm-50: #fef7ee;
+  --color-warm-100: #fdedd8;
+  --color-warm-200: #f9d6af;
+  --color-warm-300: #f5b97d;
+  --color-warm-400: #ef9248;
+  --color-warm-500: #eb7623;
+  --color-warm-600: #dc5d19;
+  --color-warm-700: #b64617;
+  --color-warm-800: #91381a;
+  --color-warm-900: #753018;
+  --color-warm-950: #3f160a;
+
+  --color-sage-50: #f4f7f4;
+  --color-sage-100: #e4ebe3;
+  --color-sage-200: #c9d7c8;
+  --color-sage-300: #a2b9a0;
+  --color-sage-400: #769573;
+  --color-sage-500: #567853;
+  --color-sage-600: #425f40;
+  --color-sage-700: #364c34;
+  --color-sage-800: #2d3e2c;
+  --color-sage-900: #263425;
+  --color-sage-950: #121c12;
 }
+
+@layer base {
+  body {
+    background-color: var(--color-sand-50);
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out both;
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+.stagger-6 { animation-delay: 0.6s; }
