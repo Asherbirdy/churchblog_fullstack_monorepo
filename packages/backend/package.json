@@ -9,7 +9,7 @@
     "copy-package": "copyfiles package.json pnpm-lock.yaml dist",
     "build": "tsc && npm run copy-package",
     "start": "node dist/app.js",
-    "prisma": "prisma generate"
+    "prisma-generate": "prisma generate"
   },
   "keywords": [],
   "author": "",
