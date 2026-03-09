@@ -1,5 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+/* eslint-disable @typescript-eslint/no-var-requires */
+const fs = require('fs')
+const path = require('path')
 
 module.exports = function (plop) {
   plop.setGenerator('package', {
@@ -40,13 +41,13 @@ module.exports = function (plop) {
       },
       // 新增：更新 run-project.js
       function (data) {
-        const runProjectPath = path.join(process.cwd(), 'run-project.js');
-        let content = fs.readFileSync(runProjectPath, 'utf8');
-        const newProject = `{ name: '${data.name}', commands: ['dev', 'build'] },\n];`;
-        content = content.replace(/];/, newProject);
-        fs.writeFileSync(runProjectPath, content);
-        return 'Updated run-project.js';
+        const runProjectPath = path.join(process.cwd(), 'run-project.js')
+        let content = fs.readFileSync(runProjectPath, 'utf8')
+        const newProject = `{ name: '${ data.name }', commands: ['dev', 'build'] },\n];`
+        content = content.replace(/];/, newProject)
+        fs.writeFileSync(runProjectPath, content)
+        return 'Updated run-project.js'
       }
     ]
-  });
-};
+  })
+}
