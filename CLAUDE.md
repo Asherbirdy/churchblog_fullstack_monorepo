@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A pnpm workspace monorepo nodejs project
+A pnpm workspace monorepo nodejs project  
 
 ## Monorepo Structure
 
