@@ -1,0 +1,192 @@
+[
+  {
+    "specialty": "Hematologic-Oncology",
+    "specialtyChineseName": "血液腫瘤科",
+    "code": "HEMO"
+  },
+  {
+    "specialty": "Cardiovascular Medicine",
+    "specialtyChineseName": "心臟內科",
+    "code": "CARM"
+  },
+  {
+    "specialty": "Rheumatology",
+    "specialtyChineseName": "風濕過敏免疫科",
+    "code": "RHEU"
+  },
+  {
+    "specialty": "Laboratory Medicine",
+    "specialtyChineseName": "檢驗科",
+    "code": "LABM"
+  },
+  {
+    "specialty": "Pediatric Endocrinology",
+    "specialtyChineseName": "小兒內分泌科",
+    "code": "PEDE"
+  },
+  {
+    "specialty": "Pediatric Genetics",
+    "specialtyChineseName": "小兒遺傳科",
+    "code": "PEDG"
+  },
+  {
+    "specialty": "Pediatric",
+    "specialtyChineseName": "小兒科",
+    "code": "PEDI"
+  },
+  {
+    "specialty": "Pediatric Rheumatology",
+    "specialtyChineseName": "小兒風濕過敏免疫科",
+    "code": "PEDR"
+  },
+  {
+    "specialty": "Pediatric Hematologic",
+    "specialtyChineseName": "小兒血液科",
+    "code": "PEDH"
+  },
+  {
+    "specialty": "Hematology medicine",
+    "specialtyChineseName": "血液科",
+    "code": "HEMM"
+  },
+  {
+    "specialty": "Chest Medicine",
+    "specialtyChineseName": "胸腔內科",
+    "code": "CHEM"
+  },
+  {
+    "specialty": "Urology",
+    "specialtyChineseName": "泌尿科",
+    "code": "UROL"
+  },
+  {
+    "specialty": "Medical Oncology",
+    "specialtyChineseName": "腫瘤內科",
+    "code": "MEDO"
+  },
+  {
+    "specialty": "Obstetrics and Gynecology",
+    "specialtyChineseName": "婦產科",
+    "code": "OBGYN"
+  },
+  {
+    "specialty": "Gastroenterology and Hepatology",
+    "specialtyChineseName": "肝膽腸胃科",
+    "code": "GASH"
+  },
+  {
+    "specialty": "Colorectal Surgery",
+    "specialtyChineseName": "大腸直腸外科",
+    "code": "COLS"
+  },
+  {
+    "specialty": "Neurology",
+    "specialtyChineseName": "神經內科",
+    "code": "NEUR"
+  },
+  {
+    "specialty": "Nephrology",
+    "specialtyChineseName": "腎臟內科",
+    "code": "NEPH"
+  },
+  {
+    "specialty": "Pathology",
+    "specialtyChineseName": "病理科",
+    "code": "PATH"
+  },
+  {
+    "specialty": "Dermatology",
+    "specialtyChineseName": "皮膚科",
+    "code": "DERM"
+  },
+  {
+    "specialty": "Chest Surgery",
+    "specialtyChineseName": "胸腔外科",
+    "code": "CHES"
+  },
+  {
+    "specialty": "General Surgery",
+    "specialtyChineseName": "一般外科",
+    "code": "GENS"
+  },
+  {
+    "specialty": "Radiation Oncology",
+    "specialtyChineseName": "放射腫瘤科",
+    "code": "RADO"
+  },
+  {
+    "specialty": "Breast Surgery",
+    "specialtyChineseName": "乳房外科",
+    "code": "BRES"
+  },
+  {
+    "specialty": "General Medicine",
+    "specialtyChineseName": "一般內科",
+    "code": "GENM"
+  },
+  {
+    "specialty": "Family Medicine",
+    "specialtyChineseName": "家醫科",
+    "code": "FAMM"
+  },
+  {
+    "specialty": "Infectious Diseases",
+    "specialtyChineseName": "感染內科",
+    "code": "INFD"
+  },
+  {
+    "specialty": "Pharmacy ",
+    "specialtyChineseName": "藥劑科",
+    "code": "PHAR"
+  },
+  {
+    "specialty": "Pediatric Hematologic-Oncology",
+    "specialtyChineseName": "小兒血液腫瘤科",
+    "code": "PEDHO"
+  },
+  {
+    "specialty": "Pediatric Cardiovascular Medicine",
+    "specialtyChineseName": "小兒心臟內科",
+    "code": "PEDCM"
+  },
+  {
+    "specialty": "Medical Imaging",
+    "specialtyChineseName": "影像醫學科",
+    "code": "MEDI"
+  },
+  {
+    "specialty": "Endocrinology & Metabolism",
+    "specialtyChineseName": "內分泌暨新陳代謝科",
+    "code": "ENDM"
+  },
+  {
+    "specialty": "Pediatric Endocrinology & Genetics",
+    "specialtyChineseName": "小兒遺傳暨內分泌科",
+    "code": "PEDEG"
+  },
+  {
+    "specialty": "Pediatric Medical Oncology",
+    "specialtyChineseName": "小兒腫瘤內科",
+    "code": "PEDMO"
+  },
+  {
+    "specialty": "Pediatric Gastroenterology and Hepatology",
+    "specialtyChineseName": "小兒肝膽腸胃科",
+    "code": "PEDGH"
+  },
+  {
+    "specialty": "Pediatric Neurology",
+    "specialtyChineseName": "小兒神經科",
+    "code": "PEDN"
+  },
+  {
+    "specialty": "Pediatric Infectious Diseases",
+    "specialtyChineseName": "小兒感染科",
+    "code": "PEDID"
+  },
+  {
+    "specialty": "Emergency",
+    "specialtyChineseName": "急診",
+    "code": "EMER"
+  }
+]

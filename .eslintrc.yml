@@ -1,0 +1,102 @@
+env:
+  browser: true
+  es6: true
+
+extends:
+  - plugin:vue/recommended
+  - plugin:vue/vue3-recommended
+  - '@vue/eslint-config-typescript'
+
+parserOptions:
+  ecmaVersion: 2020
+  sourceType: 'module'
+  parser: '@typescript-eslint/parser'
+
+plugins:
+  - vue
+  - '@typescript-eslint'
+
+rules:
+  # 
+  #   VUE
+  # 
+  vue/html-indent:
+    - 'error'
+    - 2
+    - attribute: 1
+      baseIndent: 1
+      closeBracket: 0
+      alignAttributesVertically: true
+
+  vue/mustache-interpolation-spacing: 
+    - 'error'
+    - 'always'
+
+  vue/no-multiple-template-root: 'off'
+
+  vue/singleline-html-element-content-newline:
+    - 'error'
+    - ignoreWhenNoAttributes: true
+      ignoreWhenEmpty: true
+      ignores: ['pre', 'textarea']
+
+  vue/max-attributes-per-line:
+    - 'error'
+    - singleline: 1
+      multiline: 1
+
+  vue/first-attribute-linebreak:
+    - 'error'
+    - singleline: 'ignore'
+      multiline: 'below'
+
+  vue/no-v-html: 'error'
+  
+  vue/attributes-order:
+    - 'error'
+    - order:
+        - DEFINITION
+        - LIST_RENDERING
+        - CONDITIONALS
+        - RENDER_MODIFIERS
+        - GLOBAL
+        - UNIQUE
+        - TWO_WAY_BINDING
+        - OTHER_DIRECTIVES
+        - OTHER_ATTR
+        - EVENTS
+        - CONTENT
+
+  vue/no-multi-spaces:
+    - 'error'
+    - ignoreProperties: false
+
+  vue/no-spaces-around-equal-signs-in-attribute: ['error']
+
+  vue/this-in-template: 'error'
+
+  vue/no-reserved-component-names: 'error'
+
+  vue/multi-word-component-names: 'off'
+
+  vue/html-closing-bracket-newline:
+    - 'error'
+    - singleline: 'never'
+      multiline: 'always'
+      selfClosingTag:
+        singleline: 'never'
+        multiline: 'always'
+        
+  vue/block-order:
+    - 'error'
+    - order:
+        - 
+          - 'script'
+        - 'template'
+
+
+  vue/no-v-model-argument: 'off'
+
+  # 
+  #   TYPESCRIPT
+  # 
