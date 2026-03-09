@@ -1,8 +1,9 @@
 import { Response } from 'express'
-import { StatusCode, RecordStatus } from '../../enums'
+import { StatusCode, RecordStatus } from '@monorepo/libs'
 import { NotFoundError, BadRequestError } from '../../errors'
 import prisma from '../../db'
 import { Req } from '../../types'
+import type { IPageUpdate } from '@monorepo/libs'
 
 export const UpdatePageController = async (req: Req, res: Response) => {
   const { id } = req.params
@@ -18,7 +19,7 @@ export const UpdatePageController = async (req: Req, res: Response) => {
     throw new BadRequestError('INVALID_STATUS_VALUE')
   }
 
-  const data: any = {}
+  const data: IPageUpdate = {}
   
   // 更改什麼 body 就填寫什麼
   if (contentHtml !== undefined) data.contentHtml = contentHtml

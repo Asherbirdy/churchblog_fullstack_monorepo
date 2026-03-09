@@ -1,4 +1,4 @@
-import { StatusCode } from '../../enums'
+import { StatusCode } from '@monorepo/libs'
 import prisma from '../../db'
 import { Req } from '../../types'
 import { Response } from 'express'

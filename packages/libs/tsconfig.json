@@ -14,8 +14,7 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "allowJs": true,
-    "types": ["vite/client"]
+    "allowJs": true
   },
   "include": [
     "**/*.ts",

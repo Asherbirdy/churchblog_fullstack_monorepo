@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { StatusCode } from '../../enums'
+import { StatusCode } from '@monorepo/libs'
 import { UnauthenticatedError } from '../../errors'
 import prisma from '../../db'
 import { Req } from '../../types'

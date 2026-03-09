@@ -1,4 +1,4 @@
-import { StatusCode } from '../enums'
+import { StatusCode } from '@monorepo/libs'
 
 export class CustomAPIError extends Error {
   statusCode: StatusCode

@@ -1,9 +1,8 @@
 import { isTokenValid, attachCookieToResponse } from '../utils'
-import { StatusCode } from '../enums'
+import { StatusCode, Role } from '@monorepo/libs'
 import prisma from '../db'
 import { Request, Response, NextFunction } from 'express'
 import { Req } from '../types'
-import { Role } from '../enums'
 
 interface UserPayload {
   user: {
