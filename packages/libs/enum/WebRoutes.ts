@@ -7,4 +7,5 @@ export enum WebRoutes {
 export enum WebAuthRoutes {
   ADMIN_CHATBOT = '/admin/chatbot',
   ADMIN_WEBSITE = '/admin/website',
+  ADMIN_INDEX = '/admin',
 }
