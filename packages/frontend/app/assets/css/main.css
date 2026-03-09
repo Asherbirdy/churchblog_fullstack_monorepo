@@ -56,7 +56,7 @@
 
 @layer base {
   body {
-    background-color: var(--color-sand-50);
+    @apply bg-sand-50;
   }
 }
 

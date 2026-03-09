@@ -129,6 +129,37 @@ packages/[project-name]/src/
 - `VITE_BASE` (base path), `VITE_API` (API proxy target)
 - Dev server proxies `/api/*` to `VITE_API` target
 
+## Frontend Design Style (packages/frontend)
+
+### Brand
+- Project name: **小羊天地**
+- Tone: Warm, welcoming, church/ministry themed
+
+### Color Palette (defined in `main.css` via `@theme static`)
+- **Sand** (primary neutral): `sand-50` ~ `sand-950` — warm beige/brown tones for backgrounds, text, borders
+- **Sage** (accent green): `sage-50` ~ `sage-950` — muted earthy green for CTAs, active states, ministry highlights
+- **Warm** (accent orange): `warm-50` ~ `warm-950` — warm orange for secondary accents, highlights
+- Base background: `bg-sand-50`
+- Primary text: `text-sand-950`
+- Primary button/CTA: `bg-sage-600`
+- **IMPORTANT**: Always use Tailwind utility classes directly (e.g. `bg-sand-50`, `text-sage-600`, `border-warm-200`). NEVER use `[var(--color-...)]` syntax — the `@theme static` block registers these as native Tailwind colors.
+
+### Typography
+- **Display font**: `Playfair Display` (serif) — headings, brand name. Use via `font-display` class
+- **Body font**: `DM Sans` (sans-serif) — body text, UI elements
+- Fonts loaded from Google Fonts in `default.vue` layout
+
+### Layout Conventions
+- Max width container: `max-w-7xl mx-auto px-6`
+- Border radius: `rounded-2xl` for cards, `rounded-xl` for buttons/inputs, `rounded-full` for pill buttons
+- Cards use `bg-white` with `border border-sand-200` and `shadow-sm`
+- Animations: `animate-fade-up` with `stagger-1` ~ `stagger-6` delay classes
+
+### Component Patterns
+- Use Nuxt UI components (`UButton`, `UInput`, `UIcon`, `UColorModeButton`)
+- Icons: Lucide icon set (`i-lucide-*`)
+- Buttons: `bg-sand-950` for neutral, `bg-sage-600` for primary action
+
 ## ESLint Style Rules
 
 Key formatting rules enforced by ESLint:

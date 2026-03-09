@@ -32,22 +32,22 @@ const navLinks = [
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col bg-[var(--color-sand-50)]">
+  <div class="min-h-screen flex flex-col bg-sand-50">
     <!-- Header -->
-    <header class="sticky top-0 z-50 bg-[var(--color-sand-50)]/80 backdrop-blur-xl border-b border-[var(--color-sand-200)]">
+    <header class="sticky top-0 z-50 bg-sand-50/80 backdrop-blur-xl border-b border-sand-200">
       <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <!-- Logo -->
         <NuxtLink
           to="/"
           class="flex items-center gap-2.5 group"
         >
-          <div class="w-8 h-8 bg-[var(--color-sand-950)] rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
+          <div class="w-8 h-8 bg-sand-950 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform">
             <UIcon
               name="i-lucide-church"
               class="text-white text-lg"
             />
           </div>
-          <span class="font-display text-xl font-semibold text-[var(--color-sand-950)] tracking-tight">恩典教會</span>
+          <span class="font-display text-xl font-semibold text-sand-950 tracking-tight">小羊天地</span>
         </NuxtLink>
 
         <!-- Nav -->
@@ -56,7 +56,7 @@ const navLinks = [
             v-for="link in navLinks"
             :key="link.to"
             :to="link.to"
-            class="text-sm font-medium text-[var(--color-sand-600)] hover:text-[var(--color-sand-950)] transition-colors"
+            class="text-sm font-medium text-sand-600 hover:text-sand-950 transition-colors"
           >
             {{ link.label }}
           </NuxtLink>
@@ -71,7 +71,7 @@ const navLinks = [
           <UButton
             label="線上奉獻"
             color="neutral"
-            class="rounded-full bg-[var(--color-sand-950)] text-white hover:bg-[var(--color-sand-800)] px-5"
+            class="rounded-full bg-sand-950 text-white hover:bg-sand-800 px-5"
           />
         </div>
       </div>
@@ -83,18 +83,18 @@ const navLinks = [
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-[var(--color-sand-200)] bg-[var(--color-sand-50)]">
+    <footer class="border-t border-sand-200 bg-sand-50">
       <div class="max-w-7xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div class="flex items-center gap-6 text-sm text-[var(--color-sand-500)]">
+        <div class="flex items-center gap-6 text-sm text-sand-500">
           <span>Facebook</span>
-          <span class="text-[var(--color-sand-300)]">|</span>
+          <span class="text-sand-300">|</span>
           <span>Instagram</span>
-          <span class="text-[var(--color-sand-300)]">|</span>
+          <span class="text-sand-300">|</span>
           <span>YouTube</span>
         </div>
 
-        <p class="text-sm text-[var(--color-sand-400)]">
-          &copy; {{ new Date().getFullYear() }} 恩典教會 Grace Church
+        <p class="text-sm text-sand-400">
+          &copy; {{ new Date().getFullYear() }} 小羊天地
         </p>
       </div>
     </footer>

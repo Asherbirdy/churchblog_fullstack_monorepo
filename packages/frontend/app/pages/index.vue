@@ -5,36 +5,36 @@ const ministryCards = [
   {
     title: '主日崇拜',
     icon: 'i-lucide-heart',
-    color: 'bg-[var(--color-sage-100)]',
-    textColor: 'text-[var(--color-sage-800)]',
+    color: 'bg-sage-100',
+    textColor: 'text-sage-800',
     size: 'normal'
   },
   {
     title: '小組團契',
     icon: 'i-lucide-users',
-    color: 'bg-[var(--color-warm-100)]',
-    textColor: 'text-[var(--color-warm-800)]',
+    color: 'bg-warm-100',
+    textColor: 'text-warm-800',
     size: 'normal'
   },
   {
     title: '兒童主日學 & 青少年事工',
     icon: 'i-lucide-sparkles',
-    color: 'bg-[var(--color-sand-950)]',
+    color: 'bg-sand-950',
     textColor: 'text-white',
     size: 'wide'
   },
   {
     title: '敬拜團',
     icon: 'i-lucide-music',
-    color: 'bg-[var(--color-sand-200)]',
-    textColor: 'text-[var(--color-sand-800)]',
+    color: 'bg-sand-200',
+    textColor: 'text-sand-800',
     size: 'normal'
   },
   {
     title: '關懷探訪',
     icon: 'i-lucide-hand-heart',
-    color: 'bg-[var(--color-sage-200)]',
-    textColor: 'text-[var(--color-sage-900)]',
+    color: 'bg-sage-200',
+    textColor: 'text-sage-900',
     size: 'normal'
   }
 ]
@@ -70,10 +70,10 @@ const selectedTime = ref({ date: 0, time: 1 })
       <div class="flex-1 min-w-0">
         <!-- Hero Text -->
         <div class="mb-8 animate-fade-up">
-          <p class="text-sm font-medium text-[var(--color-warm-600)] tracking-wide uppercase mb-3">
-            歡迎來到恩典教會
+          <p class="text-sm font-medium text-warm-600 tracking-wide uppercase mb-3">
+            歡迎來到小羊天地
           </p>
-          <h1 class="font-display text-4xl md:text-5xl font-bold text-[var(--color-sand-950)] leading-tight">
+          <h1 class="font-display text-4xl md:text-5xl font-bold text-sand-950 leading-tight">
             在這裡找到你的<br>屬靈的家
           </h1>
         </div>
@@ -86,12 +86,12 @@ const selectedTime = ref({ date: 0, time: 1 })
             icon="i-lucide-search"
             size="lg"
             class="flex-1"
-            :ui="{ base: 'rounded-xl bg-white border-[var(--color-sand-200)]' }"
+            :ui="{ base: 'rounded-xl bg-white border-sand-200' }"
           />
           <UButton
             label="搜尋"
             size="lg"
-            class="rounded-xl bg-[var(--color-sand-950)] text-white hover:bg-[var(--color-sand-800)] px-6 shrink-0"
+            class="rounded-xl bg-sand-950 text-white hover:bg-sand-800 px-6 shrink-0"
           />
         </div>
 
@@ -120,12 +120,12 @@ const selectedTime = ref({ date: 0, time: 1 })
 
       <!-- Right Column - Event Registration Sidebar -->
       <div class="w-full lg:w-[380px] shrink-0 animate-fade-up stagger-3">
-        <div class="bg-white rounded-3xl border border-[var(--color-sand-200)] p-6 shadow-sm">
+        <div class="bg-white rounded-3xl border border-sand-200 p-6 shadow-sm">
           <!-- Title -->
-          <h2 class="font-display text-2xl font-bold text-[var(--color-sand-950)] mb-1">
+          <h2 class="font-display text-2xl font-bold text-sand-950 mb-1">
             預約聚會體驗
           </h2>
-          <p class="text-sm text-[var(--color-sand-500)] mb-6">
+          <p class="text-sm text-sand-500 mb-6">
             選擇適合你的聚會
           </p>
 
@@ -137,15 +137,15 @@ const selectedTime = ref({ date: 0, time: 1 })
               :class="[
                 'flex-1 rounded-xl border-2 p-3 text-center transition-all duration-200',
                 selectedSize === index
-                  ? 'border-[var(--color-sage-500)] bg-[var(--color-sage-50)]'
-                  : 'border-[var(--color-sand-200)] hover:border-[var(--color-sand-300)]'
+                  ? 'border-sage-500 bg-sage-50'
+                  : 'border-sand-200 hover:border-sand-300'
               ]"
               @click="selectedSize = index"
             >
-              <p :class="['text-xs font-bold', selectedSize === index ? 'text-[var(--color-sage-700)]' : 'text-[var(--color-sand-600)]']">
+              <p :class="['text-xs font-bold', selectedSize === index ? 'text-sage-700' : 'text-sand-600']">
                 {{ size.label }}
               </p>
-              <p :class="['text-[11px] mt-0.5', selectedSize === index ? 'text-[var(--color-sage-500)]' : 'text-[var(--color-sand-400)]']">
+              <p :class="['text-[11px] mt-0.5', selectedSize === index ? 'text-sage-500' : 'text-sand-400']">
                 {{ size.desc }}
               </p>
             </button>
@@ -153,12 +153,12 @@ const selectedTime = ref({ date: 0, time: 1 })
 
           <!-- Date / Time Selection -->
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-sm font-semibold text-[var(--color-sand-950)]">
+            <h3 class="text-sm font-semibold text-sand-950">
               選擇日期 / 時間
             </h3>
             <UIcon
               name="i-lucide-calendar"
-              class="text-[var(--color-sand-400)]"
+              class="text-sand-400"
             />
           </div>
 
@@ -167,7 +167,7 @@ const selectedTime = ref({ date: 0, time: 1 })
               v-for="(dateGroup, dateIndex) in dates"
               :key="dateGroup.date"
             >
-              <p class="text-xs font-medium text-[var(--color-sand-500)] mb-2">
+              <p class="text-xs font-medium text-sand-500 mb-2">
                 {{ dateGroup.date }}
               </p>
               <div class="flex flex-wrap gap-2">
@@ -177,8 +177,8 @@ const selectedTime = ref({ date: 0, time: 1 })
                   :class="[
                     'px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200',
                     selectedTime.date === dateIndex && selectedTime.time === timeIndex
-                      ? 'bg-[var(--color-sand-950)] text-white border-[var(--color-sand-950)]'
-                      : 'border-[var(--color-sand-200)] text-[var(--color-sand-700)] hover:border-[var(--color-sand-400)]'
+                      ? 'bg-sand-950 text-white border-sand-950'
+                      : 'border-sand-200 text-sand-700 hover:border-sand-400'
                   ]"
                   @click="selectedTime = { date: dateIndex, time: timeIndex }"
                 >
@@ -189,14 +189,14 @@ const selectedTime = ref({ date: 0, time: 1 })
           </div>
 
           <!-- Book Button -->
-          <div class="flex items-center justify-between pt-4 border-t border-[var(--color-sand-100)]">
-            <p class="text-xs text-[var(--color-sand-400)]">
+          <div class="flex items-center justify-between pt-4 border-t border-sand-100">
+            <p class="text-xs text-sand-400">
               也可用日曆預約
             </p>
             <UButton
               label="立即預約"
               size="lg"
-              class="rounded-xl bg-[var(--color-sage-600)] text-white hover:bg-[var(--color-sage-700)] px-8"
+              class="rounded-xl bg-sage-600 text-white hover:bg-sage-700 px-8"
             />
           </div>
         </div>
