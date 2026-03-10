@@ -29,7 +29,7 @@ class Server {
   middlewares () {
     this.app.use(cors())
     this.app.use(express.json())
-    this.app.use(cookieParser(config.jwt_secret))
+    this.app.use(cookieParser(process.env.JWT_SECRET))
     this.app.use(express.static('public'))
 
     if (config.environment === 'DEV') {
