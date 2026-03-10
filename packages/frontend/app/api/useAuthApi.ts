@@ -11,7 +11,11 @@ export const useAuthApi = {
   login: async (body: { email: string, password: string }) => {
     return await useRequestApi(PublicRequestUrl.AuthLogin, {
       method: 'POST',
-      body
+      body,
+      server: false,
+      lazy: true,
+      immediate: false,
+      watch: false
     })
   },
   logout: async () => {

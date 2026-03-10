@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { WebAuthRoutes } from '~/enum'
+import { useAuthApi } from '~/api'
+
 definePageMeta({
   layout: false
 })
@@ -15,18 +18,21 @@ const state = ref({
     }
   },
   feature: {
-    showPassword: false,
-    isLoading: false
+    showPassword: false
   }
 })
 
+const {
+  data: _LoginResponse,
+  execute: LoginRequest,
+  error: LoginError,
+  status: LoginStatus
+} = await useAuthApi.login(state.value.data.form)
+
 const handleLogin = async () => {
-  state.value.feature.isLoading = true
-  try {
-    // TODO: call login API
-  } finally {
-    state.value.feature.isLoading = false
-  }
+  await LoginRequest()
+  if (LoginError.value) return
+  navigateTo(WebAuthRoutes.ADMIN_INDEX)
 }
 </script>
 
@@ -155,7 +161,7 @@ const handleLogin = async () => {
             label="登入"
             size="lg"
             block
-            :loading="state.feature.isLoading"
+            :loading="LoginStatus === 'pending'"
             class="rounded-xl bg-sand-950 text-white hover:bg-sand-800 mt-2"
           />
         </form>
