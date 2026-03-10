@@ -10,14 +10,14 @@ const state = ref({
   }
 })
 
-const editForm = reactive({
+const editForm = ref({
   name: '',
   email: ''
 })
 
 const startEditing = () => {
-  editForm.name = userInfo.value.name
-  editForm.email = userInfo.value.email
+  editForm.value.name = userInfo.value.name
+  editForm.value.email = userInfo.value.email
   state.value.feature.isEditing = true
 }
 

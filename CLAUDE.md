@@ -178,6 +178,9 @@ const state = ref({
 })
 ```
 
+### Reactivity Convention
+- Always use `ref()` for all reactive variables — **never use `reactive()`**
+
 ### Store Convention
 - All Pinia stores live in `app/stores/` with a barrel export in `app/stores/index.ts`
 - Always import stores from the barrel: `import { useMenuStore } from '~/stores'`
