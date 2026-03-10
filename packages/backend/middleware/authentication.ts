@@ -1,5 +1,5 @@
 import { isTokenValid, attachCookieToResponse } from '../utils'
-import { StatusCode, Role } from '@monorepo/libs'
+import { StatusCode, Role } from '../enum'
 import prisma from '../db'
 import { Request, Response, NextFunction } from 'express'
 import { Req } from '../types'

@@ -1,9 +1,9 @@
 import { Response } from 'express'
-import { StatusCode, RecordStatus } from '@monorepo/libs'
+import { StatusCode, RecordStatus } from '../../enum'
 import { NotFoundError, BadRequestError } from '../../errors'
 import prisma from '../../db'
 import { Req } from '../../types'
-import type { IPageUpdate } from '@monorepo/libs'
+import type { IPageUpdate } from '../../type'
 
 export const UpdatePageController = async (req: Req, res: Response) => {
   const { id } = req.params

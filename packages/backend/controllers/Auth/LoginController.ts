@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { StatusCode } from '@monorepo/libs'
+import { StatusCode } from '../../enum'
 import prisma from '../../db'
 import { createTokenUser, attachCookieToResponse } from '../../utils'
 import crypto from 'crypto'

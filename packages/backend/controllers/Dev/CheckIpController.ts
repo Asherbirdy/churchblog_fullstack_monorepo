@@ -1,4 +1,4 @@
-import { StatusCode } from '@monorepo/libs'
+import { StatusCode } from '../../enum'
 import { Request, Response } from 'express'
 
 export const CheckIpController = async (req: Request, res: Response) => {
