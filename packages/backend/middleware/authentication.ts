@@ -41,7 +41,10 @@ export const authenticateUser = async (req: CustomRequest, res: Response, next: 
     })
 
     if (!existingToken) {
-      res.status(StatusCode.UNAUTHORIZED).json({ msg: 'Authentication Invalid' })
+      res.status(StatusCode.UNAUTHORIZED).json({ 
+        errCode: 'AUTHENTICATION_INVALID',
+        msg: 'Authentication Invalid(如果是postman 要記得在header 加上Authorization: Bearer <token>)' 
+      })
       return
     }
 
@@ -53,7 +56,10 @@ export const authenticateUser = async (req: CustomRequest, res: Response, next: 
     req.user = payload.user
     return next()
   } catch (error) {
-    res.status(StatusCode.UNAUTHORIZED).json({ msg: 'Authentication Invalid' })
+    res.status(StatusCode.UNAUTHORIZED).json({ 
+      errCode: 'AUTHENTICATION_INVALID',
+      msg: 'Authentication Invalid(如果是postman 要記得在header 加上Authorization: Bearer <token>)' 
+    })
     return
   }
 }
@@ -61,7 +67,10 @@ export const authenticateUser = async (req: CustomRequest, res: Response, next: 
 export const authorizePermission = (... roles: Role[]) => {
   return (req: Req, res: Response, next: NextFunction) => {
     if (!req.user || !roles.includes(req.user.role as Role)) {
-      res.status(StatusCode.UNAUTHORIZED).json({ msg: 'Authentication Invalid' })
+      res.status(StatusCode.UNAUTHORIZED).json({ 
+        errCode: 'AUTHENTICATION_INVALID',
+        msg: 'Authentication Invalid(如果是postman 要記得在header 加上Authorization: Bearer <token>)' 
+      })
       return
     }
     next()
