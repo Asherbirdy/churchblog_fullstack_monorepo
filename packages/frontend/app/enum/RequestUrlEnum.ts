@@ -7,6 +7,7 @@ export enum PublicRequestUrl {
 export enum UserRequestUrl {
   AuthLogout = '/auth/logout',
   AuthRefreshToken = '/auth/refreshToken',
+  AuthCheckValidToken = '/auth/checkValidToken',
   UserShowMe = '/user/showMe',
   Page = '/page'
 }

@@ -125,7 +125,7 @@ const handleLogin = async () => {
           @submit.prevent="handleLogin"
         >
           <!-- Email -->
-          <div class="space-y-1.5">
+          <div class="flex flex-col space-y-1.5">
             <label class="text-sm font-medium text-sand-700">
               電子信箱
             </label>
@@ -141,7 +141,7 @@ const handleLogin = async () => {
           </div>
 
           <!-- Password -->
-          <div class="space-y-1.5">
+          <div class="flex flex-col space-y-1.5">
             <div class="flex items-center justify-between">
               <label class="text-sm font-medium text-sand-700">
                 密碼

@@ -39,5 +39,10 @@ export const useAuthApi = {
     return await useRequestApi(UserRequestUrl.AuthRefreshToken, {
       method: 'POST'
     })
+  },
+  checkValidToken: async () => {
+    return await useRequestApi(UserRequestUrl.AuthCheckValidToken, {
+      method: 'GET'
+    })
   }
 }
