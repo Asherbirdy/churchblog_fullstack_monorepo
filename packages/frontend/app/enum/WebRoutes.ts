@@ -7,5 +7,5 @@ export enum PublicRoutes {
 export enum PrivateRoutes {
   ADMIN_CHATBOT = '/admin/chatbot',
   ADMIN_WEBSITE = '/admin/website',
-  ADMIN_INDEX = '/admin'
+  ADMIN_HOME = '/admin/home'
 }

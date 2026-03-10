@@ -49,7 +49,7 @@ const handleLogin = async () => {
   accessToken.value = LoginResponse.value?.token.accessTokenJWT || ''
   refreshToken.value = LoginResponse.value?.token.refreshTokenJWT || ''
 
-  navigateTo(PrivateRoutes.ADMIN_INDEX)
+  navigateTo(PrivateRoutes.ADMIN_HOME)
 }
 </script>
 

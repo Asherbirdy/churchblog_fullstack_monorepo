@@ -11,7 +11,7 @@ export default defineNuxtRouteMiddleware(async () => {
   if (error.value) {
     clearNuxtData() // 清掉 cache
     clearNuxtState()
-    return navigateTo(PrivateRoutes.ADMIN_INDEX)
+    return navigateTo(PrivateRoutes.ADMIN_HOME)
   }
 
   if (data.value && !error.value) {
