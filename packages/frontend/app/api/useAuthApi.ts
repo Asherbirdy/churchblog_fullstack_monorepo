@@ -5,23 +5,23 @@ export const useAuthApi = {
   register: async (body: { name: string, email: string, password: string }) => {
     return await useRequestApi(PublicRequestUrl.AuthRegister, {
       method: 'POST',
-      body,
+      body
     })
   },
   login: async (body: { email: string, password: string }) => {
     return await useRequestApi(PublicRequestUrl.AuthLogin, {
       method: 'POST',
-      body,
+      body
     })
   },
   logout: async () => {
     return await useRequestApi(UserRequestUrl.AuthLogout, {
-      method: 'DELETE',
+      method: 'DELETE'
     })
   },
   refreshToken: async () => {
     return await useRequestApi(UserRequestUrl.AuthRefreshToken, {
-      method: 'POST',
+      method: 'POST'
     })
-  },
+  }
 }
