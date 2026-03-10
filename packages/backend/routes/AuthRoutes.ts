@@ -6,6 +6,6 @@ const router = Router()
 router.post('/userRegister', AuthController.register)
 router.post('/login', AuthController.login)
 router.delete('/logout', authenticateUser, AuthController.logout)
-router.post('/refreshToken', AuthController.refreshToken)
+router.post('/refreshToken', authenticateUser, AuthController.refreshToken)
 
 export default router
