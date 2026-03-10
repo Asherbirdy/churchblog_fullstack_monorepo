@@ -1,6 +1,18 @@
 import { useRequestApi } from '~/composables'
 import { PublicRequestUrl, UserRequestUrl } from '~/enum'
 
+interface LoginResponse {
+  user: {
+    id: string
+    name: string
+    email: string
+  }
+  token: {
+    accessTokenJWT: string
+    refreshTokenJWT: string
+  }
+}
+
 export const useAuthApi = {
   register: async (body: { name: string, email: string, password: string }) => {
     return await useRequestApi(PublicRequestUrl.AuthRegister, {
@@ -9,7 +21,7 @@ export const useAuthApi = {
     })
   },
   login: async (body: { email: string, password: string }) => {
-    return await useRequestApi(PublicRequestUrl.AuthLogin, {
+    return await useRequestApi<LoginResponse, null>(PublicRequestUrl.AuthLogin, {
       method: 'POST',
       body,
       server: false,

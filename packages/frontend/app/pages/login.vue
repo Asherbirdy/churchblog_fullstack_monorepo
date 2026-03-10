@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WebAuthRoutes } from '~/enum'
+import { WebAuthRoutes, CookieEnums } from '~/enum'
 import { useAuthApi } from '~/api'
 
 definePageMeta({
@@ -9,6 +9,8 @@ definePageMeta({
 useHead({
   title: '登入 — 小羊天地'
 })
+
+const toast = useToast()
 
 const state = ref({
   data: {
@@ -23,7 +25,7 @@ const state = ref({
 })
 
 const {
-  data: _LoginResponse,
+  data: LoginResponse,
   execute: LoginRequest,
   error: LoginError,
   status: LoginStatus
@@ -31,7 +33,22 @@ const {
 
 const handleLogin = async () => {
   await LoginRequest()
-  if (LoginError.value) return
+
+  if (LoginError.value) {
+    toast.add({
+      title: '錯誤帳號或密碼',
+      color: 'error'
+    })
+    console.error(LoginError.value)
+    state.value.data.form.password = ''
+    return
+  }
+
+  const accessToken = useCookie(CookieEnums.AccessToken)
+  const refreshToken = useCookie(CookieEnums.RefreshToken)
+  accessToken.value = LoginResponse.value?.token.accessTokenJWT || ''
+  refreshToken.value = LoginResponse.value?.token.refreshTokenJWT || ''
+
   navigateTo(WebAuthRoutes.ADMIN_INDEX)
 }
 </script>
