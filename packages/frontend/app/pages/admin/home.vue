@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useUserStore } from '~/stores'
 
-const { userInfo } = storeToRefs(useUserStore())
+const { userInfo, isLoading } = storeToRefs(useUserStore())
 
 const state = ref({
   data: {},
@@ -49,12 +49,24 @@ const handleCancel = () => {
           />
         </div>
         <div>
-          <p class="text-lg font-semibold text-sand-950">
-            {{ userInfo.name || '—' }}
-          </p>
-          <p class="text-sm text-sand-400 font-mono">
-            {{ userInfo.id }}
-          </p>
+          <ClientOnly>
+            <template v-if="isLoading">
+              <div class="h-6 w-24 bg-sand-200 rounded animate-pulse mb-1" />
+              <div class="h-4 w-48 bg-sand-100 rounded animate-pulse" />
+            </template>
+            <template v-else>
+              <p class="text-lg font-semibold text-sand-950">
+                {{ userInfo.name || '—' }}
+              </p>
+              <p class="text-sm text-sand-400 font-mono">
+                {{ userInfo.id }}
+              </p>
+            </template>
+            <template #fallback>
+              <div class="h-6 w-24 bg-sand-200 rounded animate-pulse mb-1" />
+              <div class="h-4 w-48 bg-sand-100 rounded animate-pulse" />
+            </template>
+          </ClientOnly>
         </div>
       </div>
 
@@ -73,7 +85,18 @@ const handleCancel = () => {
               name="i-lucide-user"
               class="text-sand-400 shrink-0"
             />
-            <span class="text-sm">{{ userInfo.name || '—' }}</span>
+            <ClientOnly>
+              <template v-if="isLoading">
+                <div class="h-4 w-20 bg-sand-200 rounded animate-pulse" />
+              </template>
+              <span
+                v-else
+                class="text-sm"
+              >{{ userInfo.name || '—' }}</span>
+              <template #fallback>
+                <div class="h-4 w-20 bg-sand-200 rounded animate-pulse" />
+              </template>
+            </ClientOnly>
           </div>
           <UInput
             v-else
@@ -97,7 +120,18 @@ const handleCancel = () => {
               name="i-lucide-mail"
               class="text-sand-400 shrink-0"
             />
-            <span class="text-sm">{{ userInfo.email || '—' }}</span>
+            <ClientOnly>
+              <template v-if="isLoading">
+                <div class="h-4 w-36 bg-sand-200 rounded animate-pulse" />
+              </template>
+              <span
+                v-else
+                class="text-sm"
+              >{{ userInfo.email || '—' }}</span>
+              <template #fallback>
+                <div class="h-4 w-36 bg-sand-200 rounded animate-pulse" />
+              </template>
+            </ClientOnly>
           </div>
           <UInput
             v-else

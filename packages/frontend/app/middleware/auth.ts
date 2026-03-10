@@ -3,13 +3,14 @@ import { PrivateRoutes } from '~/enum'
 import { useUserStore } from '~/stores'
 
 export default defineNuxtRouteMiddleware(async () => {
-  console.log('middleware')
+  const { setUserInfo, setLoading } = useUserStore()
 
-  const { setUserInfo } = useUserStore()
+  setLoading(true)
   const { data, error } = await useUserApi.showMe()
+  setLoading(false)
 
   if (error.value) {
-    clearNuxtData() // 清掉 cache
+    clearNuxtData()
     clearNuxtState()
     return navigateTo(PrivateRoutes.ADMIN_HOME)
   }

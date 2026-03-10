@@ -1,18 +1,27 @@
 import type { ShowMeResponse } from '~/type'
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref<ShowMeResponse['user']>({
-    id: '',
-    name: '',
-    email: ''
+  const state = ref({
+    data: {
+      id: '',
+      name: '',
+      email: ''
+    },
+    feature: {
+      loading: false
+    }
   })
 
-  const userInfo = computed(() => user.value)
+  const userInfo = computed(() => state.value.data)
+  const isLoading = computed(() => state.value.feature.loading)
 
-  const setUserInfo = (data: ShowMeResponse['user']) => user.value = data
+  const setLoading = (value: boolean) => state.value.feature.loading = value
+  const setUserInfo = (data: ShowMeResponse['user']) => state.value.data = data
 
   return {
+    isLoading,
     userInfo,
+    setLoading,
     setUserInfo
   }
 })
