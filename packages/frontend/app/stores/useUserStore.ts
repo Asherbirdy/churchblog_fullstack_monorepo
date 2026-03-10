@@ -1,11 +1,11 @@
 import type { ShowMeResponse } from '~/type'
 
-export function useUserStore() {
-  const user = useState<ShowMeResponse['user']>('user', () => ({
+export const useUserStore = defineStore('user', () => {
+  const user = ref<ShowMeResponse['user']>({
     id: '',
     name: '',
     email: ''
-  }))
+  })
 
   const userInfo = computed(() => user.value)
 
@@ -15,4 +15,4 @@ export function useUserStore() {
     userInfo,
     setUserInfo
   }
-}
+})
