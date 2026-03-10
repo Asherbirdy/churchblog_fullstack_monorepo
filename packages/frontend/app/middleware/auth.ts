@@ -1,5 +1,5 @@
 import { useUserApi } from '~/api'
-import { PrivateRoutes } from '~/enum'
+import { PublicRoutes } from '~/enum'
 import { useUserStore } from '~/stores'
 
 export default defineNuxtRouteMiddleware(async () => {
@@ -12,7 +12,7 @@ export default defineNuxtRouteMiddleware(async () => {
   if (error.value) {
     clearNuxtData()
     clearNuxtState()
-    return navigateTo(PrivateRoutes.ADMIN_HOME)
+    return navigateTo(PublicRoutes.LOGIN)
   }
 
   if (data.value && !error.value) {

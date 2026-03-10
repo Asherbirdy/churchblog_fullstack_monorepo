@@ -116,9 +116,9 @@ const formatDate = (dateStr: string) => {
             <!-- Status Badge -->
             <span
               class="text-xs px-2.5 py-1 rounded-full border font-medium"
-              :class="getStatus(page.status).color"
+              :class="getStatus(page.status)?.color"
             >
-              {{ getStatus(page.status).label }}
+              {{ getStatus(page.status)?.label }}
             </span>
 
             <!-- Edit Indicator -->
