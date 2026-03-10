@@ -1,8 +1,8 @@
 <script setup lang="ts">
-const state = ref({
-  data: {},
-  feature: {}
-})
+// const state = ref({
+//   data: {},
+//   feature: {}
+// })
 </script>
 
 <template>

@@ -147,7 +147,6 @@ const handleLogin = async () => {
                 密碼
               </label>
               <NuxtLink
-                to="/forgot-password"
                 class="text-xs text-sage-600 hover:text-sage-700 transition-colors"
               >
                 忘記密碼？
@@ -194,7 +193,6 @@ const handleLogin = async () => {
         <p class="text-center text-sm text-sand-500">
           還沒有帳號？
           <NuxtLink
-            to="/register"
             class="text-sage-600 font-medium hover:text-sage-700 transition-colors"
           >
             立即註冊
