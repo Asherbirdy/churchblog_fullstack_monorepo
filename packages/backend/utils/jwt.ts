@@ -23,7 +23,8 @@ export const createJWT = ({ payload }: { payload: jwtPayload }) => {
 }
 
 // 認證 JWT
-export const isTokenValid = (token: string) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const isTokenValid = (token: any) => {
   if (!process.env.JWT_SECRET) {
     throw new Error('JWT secret is not defined in the config')
   }
