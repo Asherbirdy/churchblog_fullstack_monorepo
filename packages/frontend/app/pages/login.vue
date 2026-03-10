@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { WebAuthRoutes, CookieEnums } from '~/enum'
+import { PrivateRoutes, CookieEnums } from '~/enum'
 import { useAuthApi } from '~/api'
 
 definePageMeta({
@@ -49,7 +49,7 @@ const handleLogin = async () => {
   accessToken.value = LoginResponse.value?.token.accessTokenJWT || ''
   refreshToken.value = LoginResponse.value?.token.refreshTokenJWT || ''
 
-  navigateTo(WebAuthRoutes.ADMIN_INDEX)
+  navigateTo(PrivateRoutes.ADMIN_INDEX)
 }
 </script>
 

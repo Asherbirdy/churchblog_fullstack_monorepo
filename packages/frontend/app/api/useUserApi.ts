@@ -1,10 +1,11 @@
 import { useRequestApi } from '~/composables'
 import { UserRequestUrl } from '~/enum'
+import type { ShowMeResponse } from '~/type'
 
 export const useUserApi = {
   showMe: async () => {
     const nuxtApp = useNuxtApp()
-    return await useRequestApi(UserRequestUrl.UserShowMe, {
+    return await useRequestApi<ShowMeResponse, unknown>(UserRequestUrl.UserShowMe, {
       method: 'GET',
       server: false,
       lazy: true,

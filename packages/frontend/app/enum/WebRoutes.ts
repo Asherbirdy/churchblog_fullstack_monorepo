@@ -1,9 +1,10 @@
-export enum WebRoutes {
+export enum PublicRoutes {
+  HOME = '/',
   LOGIN = '/login',
   REGISTER = '/register'
 }
 
-export enum WebAuthRoutes {
+export enum PrivateRoutes {
   ADMIN_CHATBOT = '/admin/chatbot',
   ADMIN_WEBSITE = '/admin/website',
   ADMIN_INDEX = '/admin'
