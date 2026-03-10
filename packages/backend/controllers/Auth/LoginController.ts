@@ -11,6 +11,7 @@ export const LoginController = async (req: Request, res: Response) => {
   if (!email || !password) {
     throw new BadRequestError('MISSING_EMAIL_OR_PASSWORD')
   }
+
   const user = await prisma.user.findUnique({ where: { email } })
 
   if (!user) {
@@ -31,8 +32,8 @@ export const LoginController = async (req: Request, res: Response) => {
 
   if (existingToken) {
     refreshToken = existingToken.refreshToken
-    attachCookieToResponse({ res, user: tokenUser, refreshToken })
-    res.status(StatusCode.OK).json({ user: tokenUser })
+    const token = attachCookieToResponse({ res, user: tokenUser, refreshToken })
+    res.status(StatusCode.OK).json({ user: tokenUser, token })
     return
   }
 
@@ -43,7 +44,8 @@ export const LoginController = async (req: Request, res: Response) => {
   await prisma.token.create({
     data: { refreshToken, ip, userAgent, userId: user.id },
   })
-  attachCookieToResponse({ res, user: tokenUser, refreshToken })
-
-  res.status(StatusCode.OK).json({ user: tokenUser })
+  const token = attachCookieToResponse({ res, user: tokenUser, refreshToken })
+  
+  res.status(StatusCode.OK).json({ user: tokenUser, token })
 }
+

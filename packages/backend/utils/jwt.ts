@@ -51,4 +51,5 @@ export const attachCookieToResponse = ({ res, user, refreshToken }: any) => {
     signed: true,
     expires: new Date(Date.now() + oneDay),
   })
+  return { accessTokenJWT, refreshTokenJWT }
 }
