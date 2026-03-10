@@ -59,11 +59,13 @@ packages/backend/
 │   ├── index.ts        # Re-exports all controller groups
 │   ├── Auth/           # AuthController (register, login, logout)
 │   ├── User/           # UserController (showCurrentUser)
-│   └── Page/           # PageController (create, getAll, getOne, update, delete)
+│   ├── Page/           # PageController (create, getAll, getOne, update, delete)
+│   └── Dev/            # DevController (checkIp) — dev/debugging utilities only
 ├── routes/
 │   ├── AuthRoutes.ts   # /api/v1/auth
 │   ├── UserRoutes.ts   # /api/v1/user
-│   └── PageRoutes.ts   # /api/v1/page
+│   ├── PageRoutes.ts   # /api/v1/page
+│   └── DevRoutes.ts    # /api/v1/dev
 ├── middleware/          # authenticateUser, authorizePermission, errorHandler
 ├── utils/              # JWT helpers (createJWT, isTokenValid, attachCookieToResponse), createTokenUser
 ├── enums/              # StatusCode, Role, RecordStatus
