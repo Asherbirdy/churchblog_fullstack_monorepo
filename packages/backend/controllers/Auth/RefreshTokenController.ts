@@ -1,13 +1,28 @@
 import { Request, Response } from 'express'
 import { StatusCode } from '../../enum'
 import prisma from '../../db'
+import config from '../../config'
 import { attachCookieToResponse, isTokenValid } from '../../utils'
 import { UnauthenticatedError } from '../../errors'
 
 export const RefreshTokenController = async (req: Request, res: Response) => {
-  const { refreshToken: refreshTokenJWT } = req.signedCookies
+  let jwtRefreshToken = null
 
-  if (!refreshTokenJWT) {
+  if (config.auth_token === 'HEADER') {
+    const authHeader = req.headers[ 'authorization' ]
+    if (authHeader) {
+      jwtRefreshToken = authHeader.split(' ')[ 1 ]
+    }
+  }
+
+  if (config.auth_token === 'COOKIES') {
+    const { refreshToken } = req.signedCookies
+    if (refreshToken) {
+      jwtRefreshToken = refreshToken
+    }
+  }
+
+  if (!jwtRefreshToken) {
     throw new UnauthenticatedError('AUTHENTICATION_INVALID')
   }
 
@@ -20,7 +35,7 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
     refreshToken?: string
   }
 
-  const payload = isTokenValid(refreshTokenJWT) as RefreshTokenPayload
+  const payload = isTokenValid(jwtRefreshToken) as RefreshTokenPayload
 
   const existingToken = await prisma.token.findFirst({
     where: {
@@ -34,11 +49,14 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
     throw new UnauthenticatedError('AUTHENTICATION_INVALID')
   }
 
-  attachCookieToResponse({
+  const token = attachCookieToResponse({
     res,
     user: payload.user,
     refreshToken: existingToken.refreshToken,
   })
 
-  res.status(StatusCode.OK).json({ msg: 'TOKEN_REFRESHED' })
+  res.status(StatusCode.OK).json({
+    msg: 'TOKEN_REFRESHED',
+    jwtAccessToken: token,
+  })
 }
