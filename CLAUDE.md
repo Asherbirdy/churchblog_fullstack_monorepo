@@ -85,6 +85,8 @@ export const AuthController = {
 ```
 Routes reference methods as `AuthController.register`, etc.
 
+**IMPORTANT**: When adding a new controller, always also add the corresponding route in the matching routes file (e.g. `AuthRoutes.ts` for Auth controllers).
+
 ### Error Handling Convention
 Controllers use custom error classes from `errors/` instead of manual `res.status().json()`.
 Error messages must use **UPPER_SNAKE_CASE error codes**, not human-readable text:
