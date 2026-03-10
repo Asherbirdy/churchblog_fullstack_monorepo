@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { PrivateRoutes, CookieEnums } from '~/enum'
+import { useAuthApi } from '~/api'
+
 definePageMeta({
   layout: false
 })
@@ -6,6 +9,8 @@ definePageMeta({
 useHead({
   title: '登入 — 小羊天地'
 })
+
+const toast = useToast()
 
 const state = ref({
   data: {
@@ -15,18 +20,36 @@ const state = ref({
     }
   },
   feature: {
-    showPassword: false,
-    isLoading: false
+    showPassword: false
   }
 })
 
+const {
+  data: LoginResponse,
+  execute: LoginRequest,
+  error: LoginError,
+  status: LoginStatus
+} = await useAuthApi.login(state.value.data.form)
+
 const handleLogin = async () => {
-  state.value.feature.isLoading = true
-  try {
-    // TODO: call login API
-  } finally {
-    state.value.feature.isLoading = false
+  await LoginRequest()
+
+  if (LoginError.value) {
+    toast.add({
+      title: '錯誤帳號或密碼',
+      color: 'error'
+    })
+    console.error(LoginError.value)
+    state.value.data.form.password = ''
+    return
   }
+
+  const accessToken = useCookie(CookieEnums.AccessToken)
+  const refreshToken = useCookie(CookieEnums.RefreshToken)
+  accessToken.value = LoginResponse.value?.token.accessTokenJWT || ''
+  refreshToken.value = LoginResponse.value?.token.refreshTokenJWT || ''
+
+  navigateTo(PrivateRoutes.ADMIN_HOME)
 }
 </script>
 
@@ -102,7 +125,7 @@ const handleLogin = async () => {
           @submit.prevent="handleLogin"
         >
           <!-- Email -->
-          <div class="space-y-1.5">
+          <div class="flex flex-col space-y-1.5">
             <label class="text-sm font-medium text-sand-700">
               電子信箱
             </label>
@@ -118,13 +141,12 @@ const handleLogin = async () => {
           </div>
 
           <!-- Password -->
-          <div class="space-y-1.5">
+          <div class="flex flex-col space-y-1.5">
             <div class="flex items-center justify-between">
               <label class="text-sm font-medium text-sand-700">
                 密碼
               </label>
               <NuxtLink
-                to="/forgot-password"
                 class="text-xs text-sage-600 hover:text-sage-700 transition-colors"
               >
                 忘記密碼？
@@ -155,7 +177,7 @@ const handleLogin = async () => {
             label="登入"
             size="lg"
             block
-            :loading="state.feature.isLoading"
+            :loading="LoginStatus === 'pending'"
             class="rounded-xl bg-sand-950 text-white hover:bg-sand-800 mt-2"
           />
         </form>
@@ -171,7 +193,6 @@ const handleLogin = async () => {
         <p class="text-center text-sm text-sand-500">
           還沒有帳號？
           <NuxtLink
-            to="/register"
             class="text-sage-600 font-medium hover:text-sage-700 transition-colors"
           >
             立即註冊

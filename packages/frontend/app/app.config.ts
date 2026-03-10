@@ -7,7 +7,7 @@ export default defineAppConfig({
     input: {
       variants: {
         variant: {
-          outline: 'bg-white'
+          outline: 'bg-white text-sand-950'
         }
       }
     }
