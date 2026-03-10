@@ -1,3 +1,3 @@
 export enum PublicRequestUrl {
-  Dev = '/dev'
+  Dev = '/dev/check-ip'
 }
