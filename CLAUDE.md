@@ -129,6 +129,52 @@ packages/[project-name]/src/
 - `VITE_BASE` (base path), `VITE_API` (API proxy target)
 - Dev server proxies `/api/*` to `VITE_API` target
 
+## Frontend Design Style (packages/frontend)
+
+### Brand
+- Project name: **小羊天地**
+- Tone: Warm, welcoming, church/ministry themed
+
+### Color Palette (defined in `main.css` via `@theme static`)
+- **Sand** (primary neutral): `sand-50` ~ `sand-950` — warm beige/brown tones for backgrounds, text, borders
+- **Sage** (accent green): `sage-50` ~ `sage-950` — muted earthy green for CTAs, active states, ministry highlights
+- **Warm** (accent orange): `warm-50` ~ `warm-950` — warm orange for secondary accents, highlights
+- Base background: `bg-sand-50`
+- Primary text: `text-sand-950`
+- Primary button/CTA: `bg-sage-600`
+- **IMPORTANT**: Always use Tailwind utility classes directly (e.g. `bg-sand-50`, `text-sage-600`, `border-warm-200`). NEVER use `[var(--color-...)]` syntax — the `@theme static` block registers these as native Tailwind colors.
+
+### Typography
+- **Display font**: `Playfair Display` (serif) — headings, brand name. Use via `font-display` class
+- **Body font**: `DM Sans` (sans-serif) — body text, UI elements
+- Fonts loaded from Google Fonts in `default.vue` layout
+
+### Layout Conventions
+- Max width container: `max-w-7xl mx-auto px-6`
+- Border radius: `rounded-2xl` for cards, `rounded-xl` for buttons/inputs, `rounded-full` for pill buttons
+- Cards use `bg-white` with `border border-sand-200` and `shadow-sm`
+- Animations: `animate-fade-up` with `stagger-1` ~ `stagger-6` delay classes
+
+### Vue Page State Convention
+Every `.vue` page file must define a `state` ref with two keys:
+```typescript
+const state = ref({
+  data: {},    // view data (API responses, card content, display values)
+  feature: {}  // feature flags (modal open/close, loading states, toggles)
+})
+```
+
+### Store Convention
+- All Pinia stores live in `app/stores/` with a barrel export in `app/stores/index.ts`
+- Always import stores from the barrel: `import { useMenuStore } from '~/stores'`
+- NEVER import directly from individual store files (e.g. `~/stores/useMenuStore`)
+- Use `storeToRefs()` to destructure reactive state from stores
+
+### Component Patterns
+- Use Nuxt UI components (`UButton`, `UInput`, `UIcon`, `UColorModeButton`)
+- Icons: Lucide icon set (`i-lucide-*`)
+- Buttons: `bg-sand-950` for neutral, `bg-sage-600` for primary action
+
 ## ESLint Style Rules
 
 Key formatting rules enforced by ESLint:
