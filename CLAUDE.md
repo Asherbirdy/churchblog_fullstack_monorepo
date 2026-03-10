@@ -85,7 +85,7 @@ export const AuthController = {
 ```
 Routes reference methods as `AuthController.register`, etc.
 
-**IMPORTANT**: When adding a new controller, always also add the corresponding route in the matching routes file (e.g. `AuthRoutes.ts` for Auth controllers).
+**IMPORTANT**: When adding a new controller, always also add the corresponding route in the matching routes file (e.g. `AuthRoutes.ts` for Auth controllers), and add the corresponding frontend API definition in `packages/frontend/app/api/` with its enum in `RequestUrlEnum.ts`.
 
 ### Error Handling Convention
 Controllers use custom error classes from `errors/` instead of manual `res.status().json()`.
@@ -126,6 +126,16 @@ packages/[project-name]/src/
 ├── theme.ts
 └── main.ts
 ```
+
+### Frontend API Convention
+- API functions live in `app/api/` with a barrel export in `app/api/index.ts`
+- Each API group is a `use[Group]Api` object (e.g. `useAuthApi`, `usePageApi`)
+- API URL paths are defined in `app/enum/RequestUrlEnum.ts` using two enums:
+  - `PublicRequestUrl` — endpoints that don't require authentication
+  - `UserRequestUrl` — endpoints that require authentication
+- Enum key naming: `[RouteGroup][Action]` in PascalCase (e.g. `AuthLogin`, `AuthLogout`, `AuthRefreshToken`, `DevCheckIp`, `UserShowMe`, `Page`)
+- All API functions use `useRequestApi` composable from `~/composables`
+- Always import API from the barrel: `import { useAuthApi } from '~/api'`
 
 ### Frontend Environment Variables
 - `.env.development` / `.env.production`
