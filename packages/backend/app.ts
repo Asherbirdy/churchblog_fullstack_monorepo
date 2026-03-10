@@ -6,6 +6,7 @@ import config from './config'
 import AuthRoutes from './routes/AuthRoutes'
 import UserRoutes from './routes/UserRoutes'
 import PageRoutes from './routes/PageRoutes'
+import DevRoutes from './routes/DevRoutes'
 
 import cors from 'cors'
 import morgan from 'morgan'
@@ -28,7 +29,7 @@ class Server {
   middlewares () {
     this.app.use(cors())
     this.app.use(express.json())
-    this.app.use(cookieParser(config.jwt_secret))
+    this.app.use(cookieParser(process.env.JWT_SECRET))
     this.app.use(express.static('public'))
 
     if (config.environment === 'DEV') {
@@ -52,6 +53,7 @@ class Server {
     this.app.use('/api/v1/auth', AuthRoutes)
     this.app.use('/api/v1/user', UserRoutes)
     this.app.use('/api/v1/page', PageRoutes)
+    this.app.use('/api/v1/dev', DevRoutes)
   }
 
   handleErrorAndSafety () {

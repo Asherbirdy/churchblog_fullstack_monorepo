@@ -12,6 +12,13 @@ export default defineNuxtConfig({
     preference: 'light'
   },
 
+  runtimeConfig: {
+    public: {
+      ENVIRONMENT: process.env.NUXT_PUBLIC_ENVIRONMENT,
+      API_URL: process.env.NUXT_PUBLIC_API_URL
+    }
+  },
+
   routeRules: {
     '/': { prerender: true }
   },

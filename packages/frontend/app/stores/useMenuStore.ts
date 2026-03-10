@@ -1,4 +1,4 @@
-import { WebAuthRoutes } from '@monorepo/libs/enum'
+import { WebAuthRoutes } from '~/enum'
 
 export const useMenuStore = defineStore('menu', () => {
   const menuItems = ref([
