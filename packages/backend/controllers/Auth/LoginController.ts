@@ -2,27 +2,25 @@ import { Request, Response } from 'express'
 import { StatusCode } from '../../enum'
 import prisma from '../../db'
 import { createTokenUser, attachCookieToResponse } from '../../utils'
+import { BadRequestError, UnauthenticatedError } from '../../errors'
 import crypto from 'crypto'
 import bcrypt from 'bcryptjs'
 
 export const LoginController = async (req: Request, res: Response) => {
   const { email, password } = req.body
   if (!email || !password) {
-    res.status(StatusCode.BAD_REQUEST).json({ msg: '請提供帳號和密碼！' })
-    return
+    throw new BadRequestError('MISSING_EMAIL_OR_PASSWORD')
   }
   const user = await prisma.user.findUnique({ where: { email } })
 
   if (!user) {
-    res.status(StatusCode.BAD_REQUEST).json({ msg: '錯誤帳號密碼' })
-    return
+    throw new UnauthenticatedError('INVALID_CREDENTIALS')
   }
 
   const isPasswordCorrect = await bcrypt.compare(password, user.password)
 
   if (!isPasswordCorrect) {
-    res.status(StatusCode.BAD_REQUEST).json({ msg: '錯誤帳號密碼' })
-    return
+    throw new UnauthenticatedError('INVALID_CREDENTIALS')
   }
 
   const tokenUser = createTokenUser(user)
