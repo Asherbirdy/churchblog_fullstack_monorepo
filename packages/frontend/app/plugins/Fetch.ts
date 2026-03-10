@@ -1,4 +1,4 @@
-import { CookieEnums } from '@monorepo/libs'
+import { CookieEnums } from '~/enum'
 
 export default defineNuxtPlugin(() => {
   const $Fetch = $fetch.create({

@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
 export enum WebRoutes {
   LOGIN = '/login',
-  REGISTER = '/register',
+  REGISTER = '/register'
 }
 
 export enum WebAuthRoutes {
   ADMIN_CHATBOT = '/admin/chatbot',
   ADMIN_WEBSITE = '/admin/website',
-  ADMIN_INDEX = '/admin',
+  ADMIN_INDEX = '/admin'
 }
