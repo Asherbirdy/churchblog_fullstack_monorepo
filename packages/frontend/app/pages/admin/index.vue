@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useCounterStore } from '~/stores'
-import { useUserApi } from '~/api'
+import { useCounterStore, useUserStore } from '~/stores'
 
 const counter = useCounterStore()
+const { userInfo } = useUserStore()
 
 const state = ref({
   data: {
@@ -44,13 +44,11 @@ const handleCancel = () => {
   editForm.phone = state.value.data.user.phone
   state.value.feature.isEditing = false
 }
-
-const { data: userData } = await useUserApi.showMe()
 </script>
 
 <template>
   <div class="max-w-2xl animate-fade-up">
-    <pre>USERDATA:{{ userData }}</pre>
+    <pre>USERDATA:{{ userInfo }}</pre>
     <!-- Page Title -->
     <div class="mb-8">
       <h2 class="font-display text-2xl font-bold text-sand-950 mb-1">
