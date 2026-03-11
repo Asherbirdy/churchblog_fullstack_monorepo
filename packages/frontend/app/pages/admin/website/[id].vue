@@ -1,19 +1,24 @@
 <script setup lang="ts">
+import { usePageApi } from '~/api'
+
 definePageMeta({
   layout: 'editor'
 })
 
 const route = useRoute()
+const id = route.params.id as string
+
+const { data } = await usePageApi.getOne(id)
 
 const state = ref({
   data: {
     page: {
-      id: route.params.id as string,
-      name: '復活節活動報名',
-      routeName: 'easter-signup',
-      contentHtml: '<h1>歡迎參加復活節活動</h1><p>活動時間：2026/04/05</p>',
-      status: 'offline',
-      isEdit: false
+      id,
+      name: data.value?.page.name ?? '',
+      routeName: data.value?.page.routeName ?? '',
+      contentHtml: data.value?.page.contentHtml ?? '',
+      status: data.value?.page.status ?? 'offline',
+      isEdit: data.value?.page.isEdit ?? false
     }
   },
   feature: {}

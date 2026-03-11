@@ -26,7 +26,19 @@ export interface CreatePageError {
   }
 }
 
+export interface GetPageInfoResponse {
+  page: Page
+}
+
 export const usePageApi = {
+  getOne: async (id: string) => {
+    return await useRequestApi<GetPageInfoResponse, never>(
+      `${UserRequestUrl.Page}/${id}`, {
+        method: 'GET',
+        server: false,
+        lazy: false
+      })
+  },
   create: async (body: { name: string, routeName: string }) => {
     return await useRequestApi<UserRequestUrl.Page, CreatePageError>(
       UserRequestUrl.Page, {
