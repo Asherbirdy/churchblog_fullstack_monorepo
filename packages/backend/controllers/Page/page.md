@@ -13,7 +13,7 @@
 
 3. 文章安排下線
 	- 使用者把文章安排下線（status: "offline" / isEdit: false / isScheduled:true）=>
-	- 安排排程 （status: "offline" / isEdit: false / isScheduled:true)
+	- 安排排程 （status: "offline" / isEdit: false / isScheduled:true
 	- 上線 (status: "offline" / isEdit: false / isScheduled: false)
 
 	
