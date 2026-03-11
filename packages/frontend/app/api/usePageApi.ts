@@ -87,5 +87,13 @@ export const usePageApi = {
         watch: false,
         lazy: true
       })
+  },
+  getOnline: async () => {
+    return await useRequestApi(
+      `${UserRequestUrl.PageOnline}`, {
+        method: 'GET',
+        server: false,
+        lazy: false
+      })
   }
 }

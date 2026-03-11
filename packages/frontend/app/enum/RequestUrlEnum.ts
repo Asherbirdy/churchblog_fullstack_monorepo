@@ -11,5 +11,6 @@ export enum UserRequestUrl {
   UserShowMe = '/user/showMe',
   Page = '/page',
   PageInfo = '/page/info',
-  PageUpdate = '/page/update'
+  PageUpdate = '/page/update',
+  PageOnline = '/page/online'
 }
