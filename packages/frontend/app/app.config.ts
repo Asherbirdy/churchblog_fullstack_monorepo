@@ -1,8 +1,8 @@
 export default defineAppConfig({
   ui: {
     colors: {
-      primary: 'green',
-      neutral: 'stone'
+      primary: 'teal',
+      neutral: 'sand'
     },
     input: {
       variants: {
