@@ -7,9 +7,10 @@ import type { IPageUpdate } from '../../type'
 
 export const UpdatePageController = async (req: Req, res: Response) => {
   const { id } = req.params
-  const { name, status, isScheduled } = req.body
-  
-  if (name === undefined || status === undefined || isScheduled === undefined) {
+  if (!id) throw new BadRequestError('PAGE_ID_REQUIRED')
+
+  const { name, status, contentHtml, isEdit } = req.body
+  if (name === undefined || status === undefined || contentHtml === undefined || isEdit === undefined) {
     throw new BadRequestError('INPUT_REQUIRED')
   }
 
@@ -26,8 +27,8 @@ export const UpdatePageController = async (req: Req, res: Response) => {
   const data: IPageUpdate = {
     name,
     status,
-    isScheduled,
-    isEdit: true,
+    contentHtml,
+    isEdit,
     lastEditedAt: new Date(),
   }
 
