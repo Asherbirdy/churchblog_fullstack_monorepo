@@ -1,15 +1,19 @@
 import { StatusCode } from '../enum'
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { Prisma } from '@prisma/client'
 
 interface CustomError extends Error {
   statusCode?: number
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const errorHandlerMiddleware = (
   err: CustomError,
   req: Request,
-  res: Response
+  res: Response,
+  // 即使沒有使用，也必須包含 next，才能正確回傳 JSON 檔案。
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+  next: NextFunction
 ) => {
   // eslint-disable-next-line no-console
   console.error(err)
