@@ -1,4 +1,5 @@
 import { useRequestApi } from '~/composables'
+import type { RecordStatus } from '~/enum'
 import { UserRequestUrl } from '~/enum'
 
 export interface GetAllPagesResponse {
@@ -10,7 +11,7 @@ export interface Page {
   name: string
   routeName: string
   contentHtml: string
-  status: string
+  status: RecordStatus
   isEdit: boolean
   isScheduled: boolean
   lastEditedAt: string
@@ -30,20 +31,35 @@ export interface GetPageInfoResponse {
   page: Page
 }
 
+export interface UpdatePagePayload {
+  id: string
+  body: {
+    name: string
+    status: RecordStatus
+    contentHtml: string
+    isEdit: boolean
+  }
+}
+
+export interface CreatePagePayload {
+  name: string
+  routeName: string
+}
+
 export const usePageApi = {
   getOne: async (id: string) => {
     return await useRequestApi<GetPageInfoResponse, never>(
-      `${UserRequestUrl.Page}/${id}`, {
+      `${UserRequestUrl.PageInfo}/${id}`, {
         method: 'GET',
         server: false,
         lazy: false
       })
   },
-  create: async (body: { name: string, routeName: string }) => {
+  create: async (payload: CreatePagePayload) => {
     return await useRequestApi<UserRequestUrl.Page, CreatePageError>(
       UserRequestUrl.Page, {
         method: 'POST',
-        body,
+        body: payload,
         immediate: false,
         server: false,
         watch: false,
@@ -61,11 +77,15 @@ export const usePageApi = {
         getCachedData: key => nuxtApp.payload.data[key] || nuxtApp.static.data[key]
       })
   },
-  update: async (id: string, body: Record<string, unknown>) => {
+  update: async (payload: UpdatePagePayload) => {
     return await useRequestApi(
-      `${UserRequestUrl.Page}/${id}`, {
+      `${UserRequestUrl.Page}/${payload.id}`, {
         method: 'PATCH',
-        body
+        body: payload.body,
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
       })
   }
 }
