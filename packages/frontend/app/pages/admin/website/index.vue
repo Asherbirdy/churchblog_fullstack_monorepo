@@ -16,12 +16,12 @@ const createForm = ref({
 })
 
 const { data } = await usePageApi.getAll()
-const { execute: executeCreate } = await usePageApi.create(createForm.value)
+const { execute } = await usePageApi.create(createForm.value)
 const pages = computed(() => data.value?.pages ?? [])
 
 const handleCreate = async () => {
   if (!createForm.value.name || !createForm.value.routeName) return
-  await executeCreate()
+  await execute()
   createForm.value.name = ''
   createForm.value.routeName = ''
   state.value.feature.showCreateModal = false
