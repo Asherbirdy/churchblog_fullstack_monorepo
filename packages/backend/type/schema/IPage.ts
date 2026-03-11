@@ -5,10 +5,11 @@ export interface IPage {
   contentHtml: string
   status: string
   isEdit: boolean
+  isScheduled: boolean
   lastEditedAt: Date
   createdById: string
   createdAt: Date
   updatedAt: Date
 }
 
-export type IPageUpdate = Partial<Pick<IPage, 'contentHtml' | 'status' | 'isEdit' | 'lastEditedAt'>>
+export type IPageUpdate = Partial<Pick<IPage, 'name' | 'contentHtml' | 'status' | 'isEdit' | 'isScheduled' | 'lastEditedAt'>>

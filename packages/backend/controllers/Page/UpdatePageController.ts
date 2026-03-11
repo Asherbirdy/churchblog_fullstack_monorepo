@@ -7,7 +7,12 @@ import type { IPageUpdate } from '../../type'
 
 export const UpdatePageController = async (req: Req, res: Response) => {
   const { id } = req.params
-  const { contentHtml, status, isEdit } = req.body
+  if (!id) throw new BadRequestError('PAGE_ID_REQUIRED')
+
+  const { name, status, contentHtml, isEdit } = req.body
+  if (name === undefined || status === undefined || contentHtml === undefined || isEdit === undefined) {
+    throw new BadRequestError('INPUT_REQUIRED')
+  }
 
   const page = await prisma.page.findFirst({
     where: { id },
@@ -19,14 +24,12 @@ export const UpdatePageController = async (req: Req, res: Response) => {
     throw new BadRequestError('INVALID_STATUS_VALUE')
   }
 
-  const data: IPageUpdate = {}
-  
-  // 更改什麼 body 就填寫什麼
-  if (contentHtml !== undefined) data.contentHtml = contentHtml
-  if (status !== undefined) data.status = status
-  if (isEdit !== undefined) {
-    data.isEdit = isEdit
-    if (isEdit) data.lastEditedAt = new Date()
+  const data: IPageUpdate = {
+    name,
+    status,
+    contentHtml,
+    isEdit,
+    lastEditedAt: new Date(),
   }
 
   const updatedPage = await prisma.page.update({

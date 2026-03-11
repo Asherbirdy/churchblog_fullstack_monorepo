@@ -1,3 +1,3 @@
 cd packages 
- cd backend
+cd backend
 npx prisma generate

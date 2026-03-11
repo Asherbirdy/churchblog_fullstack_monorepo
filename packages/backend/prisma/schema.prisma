@@ -26,6 +26,7 @@ model Page {
   contentHtml  String   @default("")
   status       String   @default("offline")
   isEdit       Boolean  @default(false)
+  isScheduled  Boolean  @default(false)
   lastEditedAt DateTime @default(now())
   createdBy    User     @relation(fields: [createdById], references: [id])
   createdById  String
