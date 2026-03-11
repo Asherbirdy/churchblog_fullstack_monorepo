@@ -16,4 +16,5 @@
 	- 安排排程 （status: "offline" / isEdit: false / isScheduled:true
 	- 上線 (status: "offline" / isEdit: false / isScheduled: false)
 
-	
+4. 前端打包後
+	- 把所有 page (isEdit: false / isScheduled:false)
