@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { usePageApi } from '~/api'
+import { UserRequestUrl } from '~/enum'
 
 const state = ref({
   data: {},
@@ -9,13 +10,24 @@ const state = ref({
   }
 })
 
-const { data } = await usePageApi.getAll()
-const pages = computed(() => data.value?.pages ?? [])
-
 const createForm = ref({
   name: '',
   routeName: ''
 })
+
+const { data } = await usePageApi.getAll()
+const { execute: executeCreate } = await usePageApi.create(createForm.value)
+const pages = computed(() => data.value?.pages ?? [])
+
+const handleCreate = async () => {
+  if (!createForm.value.name || !createForm.value.routeName) return
+  await executeCreate()
+  createForm.value.name = ''
+  createForm.value.routeName = ''
+  state.value.feature.showCreateModal = false
+  clearNuxtData(UserRequestUrl.Page)
+  await refreshNuxtData([UserRequestUrl.Page])
+}
 
 const tabs = [
   { key: 'all', label: '全部' },
@@ -159,6 +171,7 @@ const filteredPages = computed(() => {
             <UButton
               label="建立"
               class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
+              @click="handleCreate"
             />
           </div>
         </div>

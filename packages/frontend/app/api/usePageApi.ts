@@ -23,13 +23,21 @@ export const usePageApi = {
   create: async (body: { name: string, routeName: string }) => {
     return await useRequestApi(UserRequestUrl.Page, {
       method: 'POST',
-      body
+      body,
+      immediate: false,
+      server: false,
+      watch: false,
+      lazy: true
     })
   },
   getAll: async () => {
+    const nuxtApp = useNuxtApp()
     return await useRequestApi<GetAllPagesResponse, never>(UserRequestUrl.Page, {
       method: 'GET',
-      server: true
+      server: false,
+      lazy: false,
+      key: UserRequestUrl.Page,
+      getCachedData: key => nuxtApp.payload.data[key] || nuxtApp.static.data[key]
     })
   },
   update: async (id: string, body: Record<string, unknown>) => {
