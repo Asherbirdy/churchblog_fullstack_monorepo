@@ -1,23 +1,49 @@
 <script setup lang="ts">
+import { usePageApi } from '~/api'
+import { UserRequestUrl, type RecordStatus } from '~/enum'
+
 definePageMeta({
   layout: 'editor'
 })
 
 const route = useRoute()
+const toast = useToast()
+const id = route.params.id as string
+
+const { data } = await usePageApi.getOne(id)
 
 const state = ref({
   data: {
     page: {
-      id: route.params.id as string,
-      name: '復活節活動報名',
-      routeName: 'easter-signup',
-      contentHtml: '<h1>歡迎參加復活節活動</h1><p>活動時間：2026/04/05</p>',
-      status: 'offline',
-      isEdit: false
+      id,
+      name: data.value?.page.name ?? '',
+      routeName: data.value?.page.routeName ?? '',
+      contentHtml: data.value?.page.contentHtml ?? '',
+      status: data.value?.page.status ?? 'offline' as RecordStatus,
+      isEdit: data.value?.page.isEdit ?? false
     }
   },
-  feature: {}
+  feature: {
+    saving: false
+  }
 })
+
+const { execute: executeUpdate } = await usePageApi.update({
+  id,
+  body: state.value.data.page
+})
+
+const handleSave = async () => {
+  state.value.feature.saving = true
+  await executeUpdate()
+  state.value.feature.saving = false
+  clearNuxtData(UserRequestUrl.Page)
+  await refreshNuxtData([UserRequestUrl.Page])
+  toast.add({
+    title: '儲存成功',
+    color: 'success'
+  })
+}
 
 const statusOptions = [
   { label: '上線中', value: 'online' },
@@ -104,6 +130,8 @@ const statusDot = computed(() =>
           label="儲存"
           class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
           icon="i-lucide-save"
+          :loading="state.feature.saving"
+          @click="handleSave"
         />
       </div>
     </div>

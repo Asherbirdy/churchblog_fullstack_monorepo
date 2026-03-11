@@ -1,23 +1,16 @@
 <script setup lang="ts">
+import { usePageApi } from '~/api'
+import { AddWebsiteButton } from '~/components'
+
 const state = ref({
-  data: {
-    pages: [
-      { id: '1', name: '復活節活動報名', status: 'online' },
-      { id: '2', name: '主日學介紹', status: 'offline' },
-      { id: '3', name: '小組聚會時間表', status: 'online' },
-      { id: '4', name: '聖誕節特別聚會', status: 'offline' }
-    ]
-  },
+  data: {},
   feature: {
-    activeTab: 'all',
-    showCreateModal: false
+    activeTab: 'all'
   }
 })
 
-const createForm = ref({
-  name: '',
-  routeName: ''
-})
+const { data, status } = await usePageApi.getAll()
+const pages = computed(() => data.value?.pages ?? [])
 
 const tabs = [
   { key: 'all', label: '全部' },
@@ -33,8 +26,8 @@ const statusMap: Record<string, { label: string, dotClass: string }> = {
 const getStatus = (status: string) => statusMap[status] || statusMap.offline
 
 const filteredPages = computed(() => {
-  if (state.value.feature.activeTab === 'all') return state.value.data.pages
-  return state.value.data.pages.filter(p => p.status === state.value.feature.activeTab)
+  if (state.value.feature.activeTab === 'all') return pages.value
+  return pages.value.filter((p: { status: string }) => p.status === state.value.feature.activeTab)
 })
 </script>
 
@@ -50,12 +43,7 @@ const filteredPages = computed(() => {
           管理你的一頁網站
         </p>
       </div>
-      <UButton
-        label="新增網站"
-        icon="i-lucide-plus"
-        class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
-        @click="state.feature.showCreateModal = true"
-      />
+      <AddWebsiteButton :disabled="status === 'pending'" />
     </div>
 
     <!-- Tabs -->
@@ -105,66 +93,21 @@ const filteredPages = computed(() => {
           />
         </div>
       </div>
-    </div>
 
-    <!-- Empty filtered -->
-    <div
-      v-if="filteredPages.length === 0"
-      class="bg-white rounded-2xl border border-sand-200 shadow-sm p-12 text-center"
-    >
-      <p class="text-sm text-sand-400">
-        沒有符合的網站
-      </p>
-    </div>
-
-    <!-- Create Modal -->
-    <UModal v-model:open="state.feature.showCreateModal">
-      <template #content>
-        <div class="p-6">
-          <h3 class="font-display text-lg font-bold text-sand-950 mb-6">
-            新增一頁網站
-          </h3>
-          <div class="space-y-4">
-            <div>
-              <label class="text-xs font-medium text-sand-400 uppercase tracking-wide mb-1.5 block">
-                網站名稱
-              </label>
-              <UInput
-                v-model="createForm.name"
-                placeholder="例：活動報名頁"
-                icon="i-lucide-type"
-                size="lg"
-                :ui="{ base: 'rounded-xl' }"
-              />
-            </div>
-            <div>
-              <label class="text-xs font-medium text-sand-400 uppercase tracking-wide mb-1.5 block">
-                路由名稱
-              </label>
-              <UInput
-                v-model="createForm.routeName"
-                placeholder="例：event-signup"
-                icon="i-lucide-link"
-                size="lg"
-                :ui="{ base: 'rounded-xl' }"
-              />
-            </div>
-          </div>
-          <div class="flex justify-end gap-3 mt-6">
-            <UButton
-              label="取消"
-              color="neutral"
-              variant="outline"
-              class="rounded-xl"
-              @click="state.feature.showCreateModal = false"
-            />
-            <UButton
-              label="建立"
-              class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
-            />
+      <!-- Empty filtered -->
+      <template v-if="filteredPages.length === 0">
+        <div
+          v-for="i in 3"
+          :key="i"
+          class="bg-white rounded-2xl border border-sand-200 shadow-sm px-5 py-4 flex items-center justify-between animate-pulse"
+        >
+          <div class="h-5 w-32 rounded bg-sand-200" />
+          <div class="flex items-center gap-3">
+            <div class="h-4 w-16 rounded bg-sand-200" />
+            <div class="h-8 w-8 rounded-xl bg-sand-200" />
           </div>
         </div>
       </template>
-    </UModal>
+    </div>
   </div>
 </template>

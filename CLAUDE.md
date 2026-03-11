@@ -187,6 +187,17 @@ const state = ref({
 - NEVER import directly from individual store files (e.g. `~/stores/useMenuStore`)
 - Use `storeToRefs()` to destructure reactive state from stores
 
+### Component Import Convention
+- **NEVER** use auto-imported component names (e.g. `<WebsiteAddWebsiteButton />`). Always use explicit `import` from the barrel `~/components` and use the imported name directly.
+```vue
+<script setup lang="ts">
+import { AddWebsiteButton } from '~/components'
+</script>
+<template>
+  <AddWebsiteButton />
+</template>
+```
+
 ### Component Patterns
 - Use Nuxt UI components (`UButton`, `UInput`, `UIcon`, `UColorModeButton`)
 - Icons: Lucide icon set (`i-lucide-*`)

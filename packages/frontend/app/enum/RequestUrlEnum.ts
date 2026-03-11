@@ -9,5 +9,7 @@ export enum UserRequestUrl {
   AuthRefreshToken = '/auth/refreshToken',
   AuthCheckValidToken = '/auth/checkValidToken',
   UserShowMe = '/user/showMe',
-  Page = '/page'
+  Page = '/page',
+  PageInfo = '/page/info',
+  PageUpdate = '/page/update'
 }
