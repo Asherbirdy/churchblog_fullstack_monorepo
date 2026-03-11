@@ -86,16 +86,15 @@ const statusDot = computed(() =>
 
         <!-- Content -->
         <div>
-          <label class="text-xs font-medium text-sand-500 mb-1.5 block">
-            內容 (HTML)
+          <label class="text-xs font-medium text-sand-500 mb-1.5 block w-full">
+            內容
           </label>
-          <UTextarea
-            v-model="state.data.page.contentHtml"
-            :rows="12"
-            size="lg"
-            class="w-full"
-            :ui="{ base: 'rounded-xl font-mono text-sm leading-relaxed' }"
-          />
+          <ClientOnly>
+            <TiptapEditor v-model="state.data.page.contentHtml" />
+            <template #fallback>
+              <div class="w-full rounded-xl border border-sand-200 bg-white min-h-[290px] animate-pulse" />
+            </template>
+          </ClientOnly>
         </div>
       </div>
 
