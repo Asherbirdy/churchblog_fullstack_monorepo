@@ -2,21 +2,36 @@
 import { usePageApi } from '~/api'
 import { UserRequestUrl } from '~/enum'
 
-const showCreateModal = ref(false)
-
-const createForm = ref({
-  name: '',
-  routeName: ''
+const toast = useToast()
+const state = ref({
+  data: {
+    name: '',
+    routeName: ''
+  },
+  feature: {
+    modal: false
+  }
 })
 
-const { execute } = await usePageApi.create(createForm.value)
+const { execute, error } = await usePageApi.create(state.value.data)
 
 const handleCreate = async () => {
-  if (!createForm.value.name || !createForm.value.routeName) return
+  if (!state.value.data.name || !state.value.data.routeName) return
   await execute()
-  createForm.value.name = ''
-  createForm.value.routeName = ''
-  showCreateModal.value = false
+
+  if (error.value?.data?.error === 'ROUTE_NAME_ALREADY_EXISTS') {
+    console.log('error.value', error.value)
+    toast.add({
+      title: '路由名稱已存在',
+      description: '請使用其他路由名稱',
+      color: 'error'
+    })
+    return
+  }
+
+  state.value.data.name = ''
+  state.value.data.routeName = ''
+  state.value.feature.modal = false
   clearNuxtData(UserRequestUrl.Page)
   await refreshNuxtData([UserRequestUrl.Page])
 }
@@ -27,11 +42,11 @@ const handleCreate = async () => {
     label="新增網站"
     icon="i-lucide-plus"
     class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
-    @click="showCreateModal = true"
+    @click="state.feature.modal = true"
   />
 
   <!-- Create Modal -->
-  <UModal v-model:open="showCreateModal">
+  <UModal v-model:open="state.feature.modal">
     <template #content>
       <div class="p-6">
         <h3 class="font-display text-lg font-bold text-sand-950 mb-6">
@@ -43,7 +58,7 @@ const handleCreate = async () => {
               網站名稱
             </label>
             <UInput
-              v-model="createForm.name"
+              v-model="state.data.name"
               placeholder="例：活動報名頁"
               icon="i-lucide-type"
               size="lg"
@@ -55,7 +70,7 @@ const handleCreate = async () => {
               路由名稱
             </label>
             <UInput
-              v-model="createForm.routeName"
+              v-model="state.data.routeName"
               placeholder="例：event-signup"
               icon="i-lucide-link"
               size="lg"
@@ -69,7 +84,7 @@ const handleCreate = async () => {
             color="neutral"
             variant="outline"
             class="rounded-xl"
-            @click="showCreateModal = false"
+            @click="state.feature.modal = false"
           />
           <UButton
             label="建立"

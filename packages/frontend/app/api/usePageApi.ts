@@ -19,31 +19,41 @@ export interface Page {
   updatedAt: string
 }
 
+export interface CreatePageError {
+  data: {
+    success: boolean
+    error: 'ROUTE_NAME_ALREADY_EXISTS'
+  }
+}
+
 export const usePageApi = {
   create: async (body: { name: string, routeName: string }) => {
-    return await useRequestApi(UserRequestUrl.Page, {
-      method: 'POST',
-      body,
-      immediate: false,
-      server: false,
-      watch: false,
-      lazy: true
-    })
+    return await useRequestApi<UserRequestUrl.Page, CreatePageError>(
+      UserRequestUrl.Page, {
+        method: 'POST',
+        body,
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
   },
   getAll: async () => {
     const nuxtApp = useNuxtApp()
-    return await useRequestApi<GetAllPagesResponse, never>(UserRequestUrl.Page, {
-      method: 'GET',
-      server: false,
-      lazy: false,
-      key: UserRequestUrl.Page,
-      getCachedData: key => nuxtApp.payload.data[key] || nuxtApp.static.data[key]
-    })
+    return await useRequestApi<GetAllPagesResponse, never>(
+      UserRequestUrl.Page, {
+        method: 'GET',
+        server: false,
+        lazy: false,
+        key: UserRequestUrl.Page,
+        getCachedData: key => nuxtApp.payload.data[key] || nuxtApp.static.data[key]
+      })
   },
   update: async (id: string, body: Record<string, unknown>) => {
-    return await useRequestApi(`${UserRequestUrl.Page}/${id}`, {
-      method: 'PATCH',
-      body
-    })
+    return await useRequestApi(
+      `${UserRequestUrl.Page}/${id}`, {
+        method: 'PATCH',
+        body
+      })
   }
 }

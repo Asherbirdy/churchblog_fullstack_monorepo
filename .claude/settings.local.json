@@ -7,7 +7,8 @@
       "Bash(npx prisma migrate reset)",
       "Bash(npx prisma migrate reset --force)",
       "Bash(PRISMA_USER_CONSENT_FOR_DANGEROUS_AI_ACTION=\"認 reset\" npx prisma migrate reset --force)",
-      "Bash(npx prisma migrate dev --name init)"
+      "Bash(npx prisma migrate dev --name init)",
+      "Bash(find /Users/riversoft/Desktop/SP/church/monorepo/packages/frontend -name app.vue -o -name main.ts -o -name *.vue -path */layouts/*)"
     ],
     "deny": [],
     "ask": []
