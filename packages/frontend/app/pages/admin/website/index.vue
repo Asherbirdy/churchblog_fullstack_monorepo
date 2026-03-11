@@ -1,33 +1,16 @@
 <script setup lang="ts">
 import { usePageApi } from '~/api'
-import { UserRequestUrl } from '~/enum'
+import { AddWebsiteButton } from '~/components'
 
 const state = ref({
   data: {},
   feature: {
-    activeTab: 'all',
-    showCreateModal: false
+    activeTab: 'all'
   }
 })
 
-const createForm = ref({
-  name: '',
-  routeName: ''
-})
-
 const { data } = await usePageApi.getAll()
-const { execute } = await usePageApi.create(createForm.value)
 const pages = computed(() => data.value?.pages ?? [])
-
-const handleCreate = async () => {
-  if (!createForm.value.name || !createForm.value.routeName) return
-  await execute()
-  createForm.value.name = ''
-  createForm.value.routeName = ''
-  state.value.feature.showCreateModal = false
-  clearNuxtData(UserRequestUrl.Page)
-  await refreshNuxtData([UserRequestUrl.Page])
-}
 
 const tabs = [
   { key: 'all', label: '全部' },
@@ -60,12 +43,7 @@ const filteredPages = computed(() => {
           管理你的一頁網站
         </p>
       </div>
-      <UButton
-        label="新增網站"
-        icon="i-lucide-plus"
-        class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
-        @click="state.feature.showCreateModal = true"
-      />
+      <AddWebsiteButton />
     </div>
 
     <!-- Tabs -->
@@ -131,56 +109,5 @@ const filteredPages = computed(() => {
         </div>
       </template>
     </div>
-
-    <!-- Create Modal -->
-    <UModal v-model:open="state.feature.showCreateModal">
-      <template #content>
-        <div class="p-6">
-          <h3 class="font-display text-lg font-bold text-sand-950 mb-6">
-            新增一頁網站
-          </h3>
-          <div class="space-y-4">
-            <div>
-              <label class="text-xs font-medium text-sand-400 uppercase tracking-wide mb-1.5 block">
-                網站名稱
-              </label>
-              <UInput
-                v-model="createForm.name"
-                placeholder="例：活動報名頁"
-                icon="i-lucide-type"
-                size="lg"
-                :ui="{ base: 'rounded-xl' }"
-              />
-            </div>
-            <div>
-              <label class="text-xs font-medium text-sand-400 uppercase tracking-wide mb-1.5 block">
-                路由名稱
-              </label>
-              <UInput
-                v-model="createForm.routeName"
-                placeholder="例：event-signup"
-                icon="i-lucide-link"
-                size="lg"
-                :ui="{ base: 'rounded-xl' }"
-              />
-            </div>
-          </div>
-          <div class="flex justify-end gap-3 mt-6">
-            <UButton
-              label="取消"
-              color="neutral"
-              variant="outline"
-              class="rounded-xl"
-              @click="state.feature.showCreateModal = false"
-            />
-            <UButton
-              label="建立"
-              class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
-              @click="handleCreate"
-            />
-          </div>
-        </div>
-      </template>
-    </UModal>
   </div>
 </template>
