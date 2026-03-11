@@ -10,5 +10,6 @@ export enum UserRequestUrl {
   AuthCheckValidToken = '/auth/checkValidToken',
   UserShowMe = '/user/showMe',
   Page = '/page',
-  PageInfo = '/page/info'
+  PageInfo = '/page/info',
+  PageUpdate = '/page/update'
 }

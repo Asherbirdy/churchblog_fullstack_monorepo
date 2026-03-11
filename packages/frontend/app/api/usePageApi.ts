@@ -79,7 +79,7 @@ export const usePageApi = {
   },
   update: async (payload: UpdatePagePayload) => {
     return await useRequestApi(
-      `${UserRequestUrl.Page}/${payload.id}`, {
+      `${UserRequestUrl.PageUpdate}/${payload.id}`, {
         method: 'PATCH',
         body: payload.body,
         immediate: false,
