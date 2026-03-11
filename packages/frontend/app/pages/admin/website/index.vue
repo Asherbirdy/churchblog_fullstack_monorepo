@@ -101,6 +101,7 @@ const filteredPages = computed(() => {
             variant="ghost"
             color="neutral"
             class="rounded-xl"
+            @click="navigateTo(`/admin/website/${page.id}`)"
           />
         </div>
       </div>
