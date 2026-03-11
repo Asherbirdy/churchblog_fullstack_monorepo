@@ -6,7 +6,7 @@ const router = Router()
 
 router.post('/', authenticateUser, PageController.create)
 router.get('/', authenticateUser, PageController.getAll)
-router.patch('/:id', authenticateUser, PageController.update)
+router.patch('/update/:id', authenticateUser, PageController.update)
 router.patch('/reset', authenticateUser, authorizePermission(Role.admin), PageController.reset)
 
 export default router
