@@ -9,7 +9,7 @@ const state = ref({
   }
 })
 
-const { data } = await usePageApi.getAll()
+const { data, status } = await usePageApi.getAll()
 const pages = computed(() => data.value?.pages ?? [])
 
 const tabs = [
@@ -43,7 +43,7 @@ const filteredPages = computed(() => {
           管理你的一頁網站
         </p>
       </div>
-      <AddWebsiteButton />
+      <AddWebsiteButton :disabled="status === 'pending'" />
     </div>
 
     <!-- Tabs -->

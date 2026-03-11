@@ -2,6 +2,15 @@
 import { usePageApi } from '~/api'
 import { UserRequestUrl } from '~/enum'
 
+const props = defineProps({
+  disabled: {
+    type: Boolean,
+    default: false
+  }
+})
+
+const { disabled } = toRefs(props)
+
 const toast = useToast()
 const state = ref({
   data: {
@@ -39,6 +48,7 @@ const handleCreate = async () => {
 
 <template>
   <UButton
+    :disabled="disabled"
     label="新增網站"
     icon="i-lucide-plus"
     class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
@@ -87,6 +97,7 @@ const handleCreate = async () => {
             @click="state.feature.modal = false"
           />
           <UButton
+            :disabled="!state.data.name || !state.data.routeName"
             label="建立"
             class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
             @click="handleCreate"
