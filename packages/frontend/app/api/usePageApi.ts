@@ -46,6 +46,14 @@ export interface CreatePagePayload {
   routeName: string
 }
 
+export interface GetOnlinePagesResponse {
+  onlinePages: {
+    id: string
+    name: string
+    status: RecordStatus
+  }[]
+}
+
 export const usePageApi = {
   getOne: async (id: string) => {
     return await useRequestApi<GetPageInfoResponse, never>(
