@@ -115,16 +115,21 @@ const filteredPages = computed(() => {
           />
         </div>
       </div>
-    </div>
 
-    <!-- Empty filtered -->
-    <div
-      v-if="filteredPages.length === 0"
-      class="bg-white rounded-2xl border border-sand-200 shadow-sm p-12 text-center"
-    >
-      <p class="text-sm text-sand-400">
-        沒有符合的網站
-      </p>
+      <!-- Empty filtered -->
+      <template v-if="filteredPages.length === 0">
+        <div
+          v-for="i in 3"
+          :key="i"
+          class="bg-white rounded-2xl border border-sand-200 shadow-sm px-5 py-4 flex items-center justify-between animate-pulse"
+        >
+          <div class="h-5 w-32 rounded bg-sand-200" />
+          <div class="flex items-center gap-3">
+            <div class="h-4 w-16 rounded bg-sand-200" />
+            <div class="h-8 w-8 rounded-xl bg-sand-200" />
+          </div>
+        </div>
+      </template>
     </div>
 
     <!-- Create Modal -->
