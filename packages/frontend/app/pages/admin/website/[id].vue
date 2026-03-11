@@ -20,8 +20,7 @@ const state = ref({
       status: data.value?.page.status ?? 'offline',
       isEdit: data.value?.page.isEdit ?? false
     }
-  },
-  feature: {}
+  }
 })
 
 const statusOptions = [
