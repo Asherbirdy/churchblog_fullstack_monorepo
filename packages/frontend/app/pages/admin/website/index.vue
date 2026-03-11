@@ -1,18 +1,16 @@
 <script setup lang="ts">
+import { usePageApi } from '~/api'
+
 const state = ref({
-  data: {
-    pages: [
-      { id: '1', name: '復活節活動報名', status: 'online' },
-      { id: '2', name: '主日學介紹', status: 'offline' },
-      { id: '3', name: '小組聚會時間表', status: 'online' },
-      { id: '4', name: '聖誕節特別聚會', status: 'offline' }
-    ]
-  },
+  data: {},
   feature: {
     activeTab: 'all',
     showCreateModal: false
   }
 })
+
+const { data } = await usePageApi.getAll()
+const pages = computed(() => data.value?.pages ?? [])
 
 const createForm = ref({
   name: '',
@@ -33,8 +31,8 @@ const statusMap: Record<string, { label: string, dotClass: string }> = {
 const getStatus = (status: string) => statusMap[status] || statusMap.offline
 
 const filteredPages = computed(() => {
-  if (state.value.feature.activeTab === 'all') return state.value.data.pages
-  return state.value.data.pages.filter(p => p.status === state.value.feature.activeTab)
+  if (state.value.feature.activeTab === 'all') return pages.value
+  return pages.value.filter((p: { status: string }) => p.status === state.value.feature.activeTab)
 })
 </script>
 
