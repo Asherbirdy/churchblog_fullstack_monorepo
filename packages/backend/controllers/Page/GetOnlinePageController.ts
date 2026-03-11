@@ -4,9 +4,10 @@ import prisma from '../../db'
 import { Req } from '../../types'
 
 export const GetOnlinePageController = async (req: Req, res: Response) => {
-  const onlinePage = await prisma.page.findFirst({
+  const onlinePages = await prisma.page.findMany({
     where: { status: RecordStatus.online },
+    select: { id: true, name: true ,status: true},
   })
 
-  res.status(StatusCode.OK).json({ onlinePage })
+  res.status(StatusCode.OK).json({ onlinePages })
 }
