@@ -5,6 +5,16 @@ const props = defineProps<{
   editor: Editor
 }>()
 
+const imageUrl = ref('')
+const showImageInput = ref(false)
+
+const insertImage = () => {
+  if (!imageUrl.value) return
+  props.editor.chain().focus().setImage({ src: imageUrl.value }).run()
+  imageUrl.value = ''
+  showImageInput.value = false
+}
+
 const toolbarItems = [
   { action: 'toggleBold', icon: 'i-lucide-bold', name: 'bold' },
   { action: 'toggleItalic', icon: 'i-lucide-italic', name: 'italic' },
@@ -62,5 +72,45 @@ const isActive = (item: typeof toolbarItems[number]) => {
         />
       </button>
     </template>
+
+    <div class="w-px h-5 bg-sand-200 mx-1" />
+
+    <!-- Image Button -->
+    <button
+      class="p-1.5 rounded-lg transition-colors"
+      :class="showImageInput
+        ? 'bg-sage-100 text-sage-700'
+        : 'text-sand-500 hover:bg-sand-100 hover:text-sand-700'"
+      @click="showImageInput = !showImageInput"
+    >
+      <UIcon
+        name="i-lucide-image"
+        class="text-base"
+      />
+    </button>
+
+    <!-- Image URL Input -->
+    <div
+      v-if="showImageInput"
+      class="flex items-center gap-1.5 ml-1"
+    >
+      <UInput
+        v-model="imageUrl"
+        placeholder="輸入圖片網址"
+        size="sm"
+        class="w-48"
+        :ui="{ base: 'rounded-lg' }"
+        @keydown.enter="insertImage"
+      />
+      <button
+        class="p-1.5 rounded-lg text-sage-600 hover:bg-sage-100 transition-colors"
+        @click="insertImage"
+      >
+        <UIcon
+          name="i-lucide-check"
+          class="text-base"
+        />
+      </button>
+    </div>
   </div>
 </template>

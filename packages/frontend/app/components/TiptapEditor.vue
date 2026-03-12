@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
+import Image from '@tiptap/extension-image'
 import { EditorMenubar } from '~/components'
 
 const model = defineModel<string>({ default: '' })
 
 const editor = useEditor({
   content: model.value,
-  extensions: [StarterKit],
+  extensions: [
+    StarterKit,
+    Image.configure({
+      HTMLAttributes: {
+        class: 'w-full rounded-lg'
+      }
+    })
+  ],
   // immediatelyRender: false,
   editorProps: {
     attributes: {
