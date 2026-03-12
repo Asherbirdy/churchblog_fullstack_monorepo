@@ -10,7 +10,8 @@ const showImageInput = ref(false)
 
 const insertImage = () => {
   if (!imageUrl.value) return
-  props.editor.chain().focus().setImage({ src: imageUrl.value }).run()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ;(props.editor.chain().focus() as any).setImage({ src: imageUrl.value }).run()
   imageUrl.value = ''
   showImageInput.value = false
 }
@@ -33,18 +34,19 @@ const toolbarItems = [
 
 const runAction = (item: typeof toolbarItems[number]) => {
   if (!props.editor || item.divider) return
-  const chain = props.editor.chain().focus()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const chain: any = props.editor.chain().focus()
   if (item.attrs) {
-    ;(chain as any)[item.action](item.attrs).run()
+    chain[item.action as string](item.attrs).run()
   } else {
-    ;(chain as any)[item.action]().run()
+    chain[item.action as string]().run()
   }
 }
 
 const isActive = (item: typeof toolbarItems[number]) => {
   if (!props.editor || item.divider) return false
-  if (item.attrs) return props.editor.isActive(item.name, item.attrs)
-  return props.editor.isActive(item.name)
+  if (item.attrs) return props.editor.isActive(item.name as string, item.attrs)
+  return props.editor.isActive(item.name as string)
 }
 </script>
 
