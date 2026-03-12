@@ -13,8 +13,10 @@ model User {
   email     String   @unique
   password  String
   role      String   @default("user")
-  tokens    Token[]
-  pages     Page[]
+  tokens       Token[]
+  pages        Page[]
+  images       Image[]        @relation("UserImages")
+  imageFolders ImageFolder[]  @relation("UserImageFolders")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -32,6 +34,30 @@ model Page {
   createdById  String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model ImageFolder {
+  id        String   @id @default(uuid())
+  name      String
+  images    Image[]
+  createdBy User     @relation("UserImageFolders", fields: [createdById], references: [id])
+  createdById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Image {
+  id        String        @id @default(uuid())
+  name      String
+  url       String
+  size      Int
+  mimeType  String
+  folder    ImageFolder?  @relation(fields: [folderId], references: [id])
+  folderId  String?
+  createdBy User          @relation("UserImages", fields: [createdById], references: [id])
+  createdById String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 }
 
 model Token {
