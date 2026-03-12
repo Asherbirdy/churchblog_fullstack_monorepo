@@ -51,7 +51,7 @@ watch(data, (val) => {
     state.value.data.page.status = val.page.status as RecordStatus
     state.value.data.page.isEdit = val.page.isEdit
   }
-})
+}, { immediate: true })
 
 const statusOptions = [
   { label: '上線中', value: 'online' },
