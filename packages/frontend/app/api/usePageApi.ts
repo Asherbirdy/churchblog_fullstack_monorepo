@@ -1,6 +1,6 @@
 import { useRequestApi } from '~/composables'
 import type { RecordStatus } from '~/enum'
-import { UserRequestUrl } from '~/enum'
+import { PublicRequestUrl, UserRequestUrl } from '~/enum'
 
 export interface GetAllPagesResponse {
   pages: Page[]
@@ -54,6 +54,10 @@ export interface GetOnlinePagesResponse {
   }[]
 }
 
+export interface GetPageByRouteNameResponse {
+  page: Page
+}
+
 export const usePageApi = {
   getOne: async (id: string) => {
     return await useRequestApi<GetPageInfoResponse, never>(
@@ -102,6 +106,13 @@ export const usePageApi = {
         method: 'GET',
         server: false,
         lazy: false
+      })
+  },
+  getByRouteName: async (routeName: string) => {
+    return await useRequestApi<GetPageByRouteNameResponse, never>(
+      `${PublicRequestUrl.PageRoute}/${routeName}`, {
+        method: 'GET',
+        lazy: true
       })
   }
 }

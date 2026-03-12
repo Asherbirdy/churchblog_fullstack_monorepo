@@ -1,3 +1,5 @@
 <template>
-  <div><slot /></div>
+  <div>
+    <NuxtPage />
+  </div>
 </template>

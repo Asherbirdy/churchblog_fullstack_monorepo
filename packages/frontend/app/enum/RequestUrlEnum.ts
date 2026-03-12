@@ -1,7 +1,8 @@
 export enum PublicRequestUrl {
   DevCheckIp = '/dev/check-ip',
   AuthRegister = '/auth/userRegister',
-  AuthLogin = '/auth/login'
+  AuthLogin = '/auth/login',
+  PageRoute = '/page/route'
 }
 
 export enum UserRequestUrl {
