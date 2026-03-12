@@ -10,33 +10,31 @@ const route = useRoute()
 const toast = useToast()
 const id = route.params.id as string
 
-const { data } = await usePageApi.getOne(id)
-
 const state = ref({
   data: {
     page: {
       id,
-      name: data.value?.page.name ?? '',
-      routeName: data.value?.page.routeName ?? '',
-      contentHtml: data.value?.page.contentHtml ?? '',
-      status: data.value?.page.status ?? 'offline' as RecordStatus,
-      isEdit: data.value?.page.isEdit ?? false
+      name: '',
+      routeName: '',
+      contentHtml: '',
+      status: 'offline' as RecordStatus,
+      isEdit: false
     }
-  },
-  feature: {
-    saving: false
   }
 })
 
-const { execute: executeUpdate } = await usePageApi.update({
+const { data } = await usePageApi.getOne(id)
+
+const {
+  execute: executeUpdate,
+  status: updateStatus
+} = await usePageApi.update({
   id,
   body: state.value.data.page
 })
 
 const handleSave = async () => {
-  state.value.feature.saving = true
   await executeUpdate()
-  state.value.feature.saving = false
   clearNuxtData(UserRequestUrl.Page)
   await refreshNuxtData([UserRequestUrl.Page])
   toast.add({
@@ -44,6 +42,16 @@ const handleSave = async () => {
     color: 'success'
   })
 }
+
+watch(data, (val) => {
+  if (val?.page) {
+    state.value.data.page.name = val.page.name
+    state.value.data.page.routeName = val.page.routeName
+    state.value.data.page.contentHtml = val.page.contentHtml || ''
+    state.value.data.page.status = val.page.status as RecordStatus
+    state.value.data.page.isEdit = val.page.isEdit
+  }
+})
 
 const statusOptions = [
   { label: '上線中', value: 'online' },
@@ -130,7 +138,8 @@ const statusDot = computed(() =>
           label="儲存"
           class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
           icon="i-lucide-save"
-          :loading="state.feature.saving"
+          :loading="updateStatus === 'pending'"
+          :disabled="!data"
           @click="handleSave"
         />
       </div>
