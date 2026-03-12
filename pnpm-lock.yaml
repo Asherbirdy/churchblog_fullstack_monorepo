@@ -139,6 +139,9 @@ importers:
       '@pinia/nuxt':
         specifier: 0.11.3
         version: 0.11.3(magicast@0.5.2)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.29(typescript@5.9.3)))
+      '@tiptap/extension-image':
+        specifier: ^3.20.1
+        version: 3.20.1(@tiptap/core@3.20.1(@tiptap/pm@3.20.1))
       '@tiptap/pm':
         specifier: ^3.20.1
         version: 3.20.1
