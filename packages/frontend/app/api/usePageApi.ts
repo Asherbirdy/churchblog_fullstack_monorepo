@@ -58,6 +58,17 @@ export interface GetPageByRouteNameResponse {
   page: Page
 }
 
+export interface GetOnlinePagesResponses {
+  onlinePages: OnlinePage[]
+}
+
+export interface OnlinePage {
+  id: string
+  name: string
+  status: string
+  routeName: string
+}
+
 export const usePageApi = {
   getOne: async (id: string) => {
     return await useRequestApi<GetPageInfoResponse, never>(
@@ -101,7 +112,7 @@ export const usePageApi = {
       })
   },
   getOnline: async () => {
-    return await useRequestApi(
+    return await useRequestApi<GetOnlinePagesResponses, never>(
       `${UserRequestUrl.PageOnline}`, {
         method: 'GET',
         server: false,

@@ -6,7 +6,7 @@ import { Req } from '../../types'
 export const GetOnlinePageController = async (req: Req, res: Response) => {
   const onlinePages = await prisma.page.findMany({
     where: { status: RecordStatus.online },
-    select: { id: true, name: true ,status: true},
+    select: { id: true, name: true ,status: true ,routeName: true},
   })
 
   res.status(StatusCode.OK).json({ onlinePages })
