@@ -7,6 +7,7 @@ import AuthRoutes from './routes/AuthRoutes'
 import UserRoutes from './routes/UserRoutes'
 import PageRoutes from './routes/PageRoutes'
 import DevRoutes from './routes/DevRoutes'
+import ImageFolderRoutes from './routes/ImageFolderRoutes'
 
 import cors from 'cors'
 import morgan from 'morgan'
@@ -54,6 +55,7 @@ class Server {
     this.app.use('/api/v1/user', UserRoutes)
     this.app.use('/api/v1/page', PageRoutes)
     this.app.use('/api/v1/dev', DevRoutes)
+    this.app.use('/api/v1/image-folder', ImageFolderRoutes)
   }
 
   handleErrorAndSafety () {
