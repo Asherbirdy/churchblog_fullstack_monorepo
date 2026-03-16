@@ -25,7 +25,7 @@ model Page {
   routeName    String   @default("")
   contentHtml  String   @default("")
   status       String   @default("offline")
-  setStatus String   @default("offline") // offline, online
+  setStatus String   @default("none") // offline, scheduledOnline, scheduledOffline, none
   editedHtml   String   @default("") // 編輯中的內容
   onlineHtml   String   @default("") // 上線的內容
   previousHtml String   @default("") // 上次上線的內容

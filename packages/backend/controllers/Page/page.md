@@ -32,18 +32,33 @@
 		- previousHtml: ""
 	步驟四: 前端打包上線
 		- status: "online"
+		- setStatus: "none"
+		- isEdit: false
+    - editedHtml: "<div>第一次發文</div>"
+		- onlineHtml: "<div>第一次發文</div>"
+		- previousHtml: ""
+二． 文章已上線
+	步驟一: 使用者編輯文章
+		- status: "online"
 		- setStatus: "online"
 		- isEdit: false
     - editedHtml: "<div>第一次發文</div>"
 		- onlineHtml: "<div>第一次發文</div>"
 		- previousHtml: ""
-2. 文章已上線
-	- 使用者編輯文章（status: "online" / isEdit:true / isScheduled:false） => 
-		- Page 更改資料 OnlinePage 不動
-	- 安排排程 （status: "online" / isEdit:true / isScheduled: true）
-		- OnlinePage 的htmlContent 改成新的 舊的備份到 previousHtmlContent，Page 改 isScheduled: true 並且無法更改文章
-	- 取消排程 （status: "online" / isEdit:true / isScheduled: false）
-		- OnlinePage 的htmlContent 改成 previousHtmlContent，Page 改 isScheduled: false
+	步驟二: 安排排程
+		- status: "online"
+		- setStatus: "scheduledOnline"
+		- isEdit: true
+    - editedHtml: "<div>第一次發文</div>"
+		- onlineHtml: "<div>第一次發文</div>"
+		- previousHtml: ""
+	步驟三: 取消排程
+		- status: "online"
+		- setStatus: "online"
+		- isEdit: false
+    - editedHtml: "<div>第一次發文</div>"
+		- onlineHtml: "<div>第一次發文</div>"
+		- previousHtml: ""
 	- 上線 (status:"online" / isEdit: false / isScheduled: false) 
 		- OnlinePage 的htmlContent 改成新的 previousHtmlContent 也改成新的，Page 改 isScheduled: false
 
