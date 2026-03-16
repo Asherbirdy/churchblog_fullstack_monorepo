@@ -1,22 +1,42 @@
 使用情境：
 編輯：
-1. 文章新創(未上上線過)
-   使用者新增文章
+ㄧ．新增文章(未上線過)
+   步驟一: 使用者新增文章
 	  - status: "offline"
-		- isEdit: false
-		- isScheduled: false
-    - editedHtml:
-		- onlineHtml: 
-		- previousHtml:
+		- setStatus: "offline"
+		- isEdit: true
+    - editedHtml: "<div>第一次發文</div>"
+		- onlineHtml: ""
+		- previousHtml: ""
 		備註: 
-  - 編輯儲存 => 
-    - Page 更改資料
-  - 安排排程 => 
-    - Page 資料放一個一模一樣的到 OnlinePage
-  - 排程上線  文章就無法編輯，並顯示排程中...=>
-  - 取消排程 把 OnlinePage status 改offline
-  - 繼續排上線 OnlinePage 改online 更新html
-
+   步驟二: 安排排程
+		- status: "offline"
+		- setStatus: "scheduledOnline"
+		- isEdit: true
+    - editedHtml: "<div>第一次發文</div>"
+		- onlineHtml: "<div>第一次發文</div>"
+		- previousHtml: ""
+	步驟三:	取消排程
+		- status: "offline"
+		- setStatus: "offline"
+		- isEdit: true
+    - editedHtml: "<div>第一次發文</div>"
+		- onlineHtml: ""
+		- previousHtml: ""
+  步驟四: 再安排上線
+		- status: "offline"
+		- setStatus: "scheduledOnline"
+		- isEdit: true
+    - editedHtml: "<div>第一次發文</div>"
+		- onlineHtml: "<div>第一次發文</div>"
+		- previousHtml: ""
+	步驟四: 前端打包上線
+		- status: "online"
+		- setStatus: "online"
+		- isEdit: false
+    - editedHtml: "<div>第一次發文</div>"
+		- onlineHtml: "<div>第一次發文</div>"
+		- previousHtml: ""
 2. 文章已上線
 	- 使用者編輯文章（status: "online" / isEdit:true / isScheduled:false） => 
 		- Page 更改資料 OnlinePage 不動
