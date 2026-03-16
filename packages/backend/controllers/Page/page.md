@@ -7,7 +7,7 @@
 		- onlineHtml: ""
 		- previousHtml: ""
 
-	步驟一之二: 寫文章內容
+	步驟二: 寫文章內容
 	  - status: "offline"
 		- setStatus: "offline"
 		- isEdit: true
@@ -15,35 +15,35 @@
 		- onlineHtml: ""
 		- previousHtml: ""
 
-   步驟二: 安排排程
+   步驟三: 安排排程
 		- status: "offline"
 		- setStatus: "scheduledOnline"
 		- isEdit: true
     - editedHtml: "<div>第一次發文</div>"
 		- onlineHtml: "<div>第一次發文</div>"
 		- previousHtml: ""
-	步驟三:	取消排程
+	步驟四:	取消排程
 		- status: "offline"
 		- setStatus: "offline"
 		- isEdit: true
     - editedHtml: "<div>第一次發文</div>"
 		- onlineHtml: ""
 		- previousHtml: ""
-  步驟四: 再安排上線
+  步驟五: 再安排上線
 		- status: "offline"
 		- setStatus: "scheduledOnline"
 		- isEdit: true
     - editedHtml: "<div>第一次發文</div>"
 		- onlineHtml: "<div>第一次發文</div>"
 		- previousHtml: ""
-	步驟四: 前端打包上線
+	步驟六: 前端打包上線
 		- status: "online"
 		- setStatus: "none"
 		- isEdit: false
     - editedHtml: "<div>第一次發文</div>"
 		- onlineHtml: "<div>第一次發文</div>"
 		- previousHtml: ""
-----------------------------------------------------------------------
+------------------------------------------
 
 ### 文章更改並上線
 	步驟一: 使用者編輯文章並按下儲存
@@ -95,7 +95,7 @@
     - editedHtml: "<div>更改文章 第二次</div>"
 		- onlineHtml: "<div>更改文章 第二次</div>"
 		- previousHtml: ""
-----------------------------------------------------------------------
+--------------------------------------------
 
 ### 文章安排下線
 	步驟一: 安排下線
