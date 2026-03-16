@@ -79,7 +79,7 @@ watch(data, (val) => {
 </script>
 
 <template>
-  <div class="max-w-4xl mx-auto animate-fade-up">
+  <div class="max-w-6xl mx-auto animate-fade-up">
     <!-- Header -->
     <div class="mb-8">
       <div class="flex items-center gap-3 mb-1">
@@ -108,16 +108,16 @@ watch(data, (val) => {
           <h3 class="text-lg font-semibold text-sand-950">
             {{ state.data.page.name }}
           </h3>
-          <span
-            class="ml-auto flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full"
-            :class="state.data.page.status === 'online' ? 'bg-emerald-50 text-emerald-600' : 'bg-sand-100 text-sand-400'"
-          >
-            <span
-              class="w-1.5 h-1.5 rounded-full"
-              :class="state.data.page.status === 'online' ? 'bg-emerald-500' : 'bg-sand-300'"
-            />
-            {{ state.data.page.status === 'online' ? '上線中' : '未上線' }}
-          </span>
+          <UBadge
+            :color="state.data.page.status === 'online' ? 'success' : 'neutral'"
+            variant="subtle"
+            :label="state.data.page.status === 'online' ? '上線中' : '未上線'"
+          />
+          <UBadge
+            :color="state.data.page.isEdit ? 'warning' : 'neutral'"
+            variant="subtle"
+            :label="state.data.page.isEdit ? '已編輯，請安排上線' : '未編輯'"
+          />
         </div>
 
         <!-- Content -->
@@ -146,7 +146,7 @@ watch(data, (val) => {
           @click="handleScheduled"
         />
         <UButton
-          v-if="state.data.page.setStatus === 'scheduledOffline'"
+          v-if="state.data.page.isEdit"
           label="安排上線"
           class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
           icon="i-lucide-calendar-check"
