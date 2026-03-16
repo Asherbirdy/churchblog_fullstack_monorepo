@@ -17,24 +17,9 @@ export const ScheduledPageToOfflineController = async (req: Req, res: Response) 
 
   if (!page) throw new NotFoundError('CANT_FIND_PAGE')
 
-  const data: Record<string, unknown> = { setStatus }
-
-  if (setStatus === 'scheduledOffline') {
-    // 安排下線：只改 setStatus，其餘不動
-    if (page.status !== 'online') {
-      throw new BadRequestError('PAGE_NOT_ONLINE')
-    }
-  } else {
-    // 取消排程
-    if (page.setStatus !== 'scheduledOffline') {
-      throw new BadRequestError('PAGE_NOT_SCHEDULED_OFFLINE')
-    }
-    data.setStatus = 'none'
-  }
-
   const updatedPage = await prisma.page.update({
     where: { id },
-    data,
+    data: { setStatus: 'none' },
   })
 
   res.status(StatusCode.OK).json({ page: updatedPage })
