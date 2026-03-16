@@ -11,8 +11,8 @@ router.get('/online', PageController.getOnline)
 router.get('/route/:routeName', PageController.getByRouteName)
 router.patch('/update/:id', authenticateUser, PageController.update)
 router.patch('/edited-html/:id', authenticateUser, PageController.editedHtml)
-router.patch('/scheduled-online/:id', authenticateUser, PageController.scheduledToOnline)
-router.patch('/scheduled-offline/:id', authenticateUser, PageController.scheduledToOffline)
+router.patch('/scheduled/:id', authenticateUser, PageController.scheduled)
+router.patch('/cancel-scheduled/:id', authenticateUser, PageController.cancelScheduled)
 router.patch('/reset', authenticateUser, authorizePermission(Role.admin), PageController.reset)
 
 export default router
