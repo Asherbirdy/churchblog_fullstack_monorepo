@@ -8,7 +8,7 @@
     "dev": "tsc-watch --onsuccess \"node -r dotenv/config dist/app.js dotenv_config_path=.env.dev\"",
     "copy-package": "copyfiles package.json pnpm-lock.yaml dist",
     "build": "npm run prisma-generate && tsc && npm run copy-package",
-    "start": "node dist/app.js",
+    "preview": "node dist/app.js",
     "prisma-generate": "prisma generate"
   },
   "keywords": [],
