@@ -52,19 +52,10 @@ watch(data, (val) => {
     state.value.data.page.isEdit = val.page.isEdit
   }
 }, { immediate: true })
-
-const statusOptions = [
-  { label: '上線中', value: 'online' },
-  { label: '未上線', value: 'offline' }
-]
-
-const statusDot = computed(() =>
-  state.value.data.page.status === 'online' ? 'bg-emerald-500' : 'bg-sand-300'
-)
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto animate-fade-up">
+  <div class="max-w-4xl mx-auto animate-fade-up">
     <!-- Header -->
     <div class="mb-8">
       <div class="flex items-center gap-3 mb-1">
@@ -85,37 +76,24 @@ const statusDot = computed(() =>
     <div class="bg-white rounded-2xl border border-sand-200 shadow-sm">
       <div class="p-6 space-y-6">
         <!-- Name -->
-        <div>
-          <label class="text-xs font-medium text-sand-500 mb-1.5 block">
-            網站名稱
-          </label>
-          <UInput
-            v-model="state.data.page.name"
-            icon="i-lucide-type"
-            size="lg"
-            class="w-full"
-            :ui="{ base: 'rounded-xl' }"
+        <div class="flex items-center gap-3">
+          <UIcon
+            name="i-lucide-file-text"
+            class="text-sage-600 text-lg"
           />
-        </div>
-
-        <!-- Status -->
-        <div>
-          <label class="text-xs font-medium text-sand-500 mb-1.5 block">
-            狀態
-          </label>
-          <div class="flex items-center gap-3 w-full">
-            <USelect
-              v-model="state.data.page.status"
-              :items="statusOptions"
-              size="lg"
-              class="w-full"
-              :ui="{ base: 'rounded-xl' }"
-            />
+          <h3 class="text-lg font-semibold text-sand-950">
+            {{ state.data.page.name }}
+          </h3>
+          <span
+            class="ml-auto flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full"
+            :class="state.data.page.status === 'online' ? 'bg-emerald-50 text-emerald-600' : 'bg-sand-100 text-sand-400'"
+          >
             <span
-              class="w-2.5 h-2.5 rounded-full shrink-0"
-              :class="statusDot"
+              class="w-1.5 h-1.5 rounded-full"
+              :class="state.data.page.status === 'online' ? 'bg-emerald-500' : 'bg-sand-300'"
             />
-          </div>
+            {{ state.data.page.status === 'online' ? '上線中' : '未上線' }}
+          </span>
         </div>
 
         <!-- Content -->

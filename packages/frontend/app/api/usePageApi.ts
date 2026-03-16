@@ -11,13 +11,15 @@ export interface Page {
   name: string
   routeName: string
   contentHtml: string
+  setStatus: string
+  editedHtml: string
+  onlineHtml: string
+  previousHtml: string
   status: RecordStatus
   isEdit: boolean
-  isScheduled: boolean
   lastEditedAt: string
   createdById: string
   createdAt: string
-  updatedAt: string
 }
 
 export interface CreatePageError {
