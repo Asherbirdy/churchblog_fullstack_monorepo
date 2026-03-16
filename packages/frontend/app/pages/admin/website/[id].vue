@@ -16,8 +16,9 @@ const state = ref({
       id,
       name: '',
       routeName: '',
-      contentHtml: '',
+      editedHtml: '',
       status: 'offline' as RecordStatus,
+      setStatus: 'none',
       isEdit: false
     }
   }
@@ -28,10 +29,19 @@ const { data } = await usePageApi.getOne(id)
 const {
   execute: executeUpdate,
   status: updateStatus
-} = await usePageApi.update({
-  id,
-  body: state.value.data.page
+} = await usePageApi.editedHtml(id, {
+  editedHtml: toRef(() => state.value.data.page.editedHtml)
 })
+
+const {
+  execute: executeScheduled,
+  status: scheduledStatus
+} = await usePageApi.scheduled(id)
+
+const {
+  execute: executeCancelScheduled,
+  status: cancelScheduledStatus
+} = await usePageApi.cancelScheduled(id)
 
 const handleSave = async () => {
   await executeUpdate()
@@ -43,12 +53,26 @@ const handleSave = async () => {
   })
 }
 
+const handleScheduled = async () => {
+  if (state.value.data.page.setStatus === 'scheduledOnline') {
+    await executeCancelScheduled()
+  }
+
+  if (state.value.data.page.setStatus === 'scheduledOffline') {
+    await executeScheduled()
+  }
+
+  clearNuxtData(UserRequestUrl.Page)
+  await refreshNuxtData([UserRequestUrl.Page])
+}
+
 watch(data, (val) => {
   if (val?.page) {
     state.value.data.page.name = val.page.name
     state.value.data.page.routeName = val.page.routeName
-    state.value.data.page.contentHtml = val.page.contentHtml || ''
+    state.value.data.page.editedHtml = val.page.editedHtml || ''
     state.value.data.page.status = val.page.status as RecordStatus
+    state.value.data.page.setStatus = val.page.setStatus || 'none'
     state.value.data.page.isEdit = val.page.isEdit
   }
 }, { immediate: true })
@@ -102,7 +126,7 @@ watch(data, (val) => {
             內容
           </label>
           <ClientOnly>
-            <TiptapEditor v-model="state.data.page.contentHtml" />
+            <TiptapEditor v-model="state.data.page.editedHtml" />
             <template #fallback>
               <div class="w-full rounded-xl border border-sand-200 bg-white min-h-[290px] animate-pulse" />
             </template>
@@ -112,6 +136,23 @@ watch(data, (val) => {
 
       <!-- Footer -->
       <div class="flex justify-end gap-3 px-6 py-4 border-t border-sand-100">
+        <UButton
+          v-if="state.data.page.status === 'online'"
+          label="取消上線排程"
+          class="rounded-xl bg-warm-500 text-white hover:bg-warm-600"
+          icon="i-lucide-calendar-x"
+          :disabled="cancelScheduledStatus === 'pending'"
+          :loading="cancelScheduledStatus === 'pending'"
+          @click="handleScheduled"
+        />
+        <UButton
+          v-if="state.data.page.setStatus === 'scheduledOffline'"
+          label="安排上線"
+          class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
+          icon="i-lucide-calendar-check"
+          :loading="scheduledStatus === 'pending'"
+          @click="handleScheduled"
+        />
         <UButton
           label="儲存"
           class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"

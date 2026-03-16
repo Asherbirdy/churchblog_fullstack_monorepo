@@ -128,7 +128,7 @@ export const usePageApi = {
         lazy: true
       })
   },
-  editedHtml: async (id: string, body: { editedHtml: string }) => {
+  editedHtml: async (id: string, body: { editedHtml: MaybeRef<string> }) => {
     return await useRequestApi(
       `${UserRequestUrl.PageEditedHtml}/${id}`, {
         method: 'PATCH',
