@@ -17,7 +17,6 @@ export const CreatePageController = async (req: Req, res: Response) => {
     data: {
       name: name || '',
       routeName: routeName || '',
-      contentHtml: '',
       createdById: req.user.userId,
     },
   })

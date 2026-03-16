@@ -8,7 +8,6 @@
     - editedHtml: "<div>第一次發文</div>"
 		- onlineHtml: ""
 		- previousHtml: ""
-		備註: 
    步驟二: 安排排程
 		- status: "offline"
 		- setStatus: "scheduledOnline"
@@ -37,6 +36,8 @@
     - editedHtml: "<div>第一次發文</div>"
 		- onlineHtml: "<div>第一次發文</div>"
 		- previousHtml: ""
+----------------------------------------------------------------------
+
 二． 文章更改並上線
 	步驟一: 使用者編輯文章並按下儲存
 		- status: "online"
@@ -87,9 +88,21 @@
     - editedHtml: "<div>更改文章 第二次</div>"
 		- onlineHtml: "<div>更改文章 第二次</div>"
 		- previousHtml: ""
+----------------------------------------------------------------------
 
 3. 文章安排下線
-
-
-4. 前端打包後
-	- 把所有 page (isEdit: false / isScheduled:false)
+	步驟一: 安排下線
+		- status: "online"
+		- setStatus: "scheduledOffline"
+		- isEdit: false
+    - editedHtml: "<div>更改文章 第二次</div>"
+		- onlineHtml: "<div>更改文章 第二次</div>"
+		- previousHtml: ""
+	
+	步驟二: 前端打包下線(打包前會先打個api改變status)
+		- status: "offline"
+		- setStatus: "none"
+		- isEdit: false
+    - editedHtml: "<div>更改文章 第二次</div>"
+		- onlineHtml: "<div>更改文章 第二次</div>"
+		- previousHtml: ""

@@ -7,7 +7,6 @@ export const ResetPageController = async (req: Req, res: Response) => {
   await prisma.page.updateMany({
     data: {
       isEdit: false,
-      isScheduled: false,
     },
   })
 

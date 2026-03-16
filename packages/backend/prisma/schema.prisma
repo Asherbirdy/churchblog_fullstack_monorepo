@@ -23,14 +23,12 @@ model Page {
   id           String   @id @default(uuid())
   name         String   @default("")
   routeName    String   @default("")
-  contentHtml  String   @default("")
   status       String   @default("offline")
-  setStatus String   @default("none") // offline, scheduledOnline, scheduledOffline, none
+  setStatus String   @default("none") // scheduledOnline, scheduledOffline, none
   editedHtml   String   @default("") // 編輯中的內容
   onlineHtml   String   @default("") // 上線的內容
   previousHtml String   @default("") // 上次上線的內容
   isEdit       Boolean  @default(false)
-  isScheduled  Boolean  @default(false) // 轉true時，會把 editedHtml 複製到 onlineHtml, 並把 previousHtml 設為 onlineHtml
   lastEditedAt DateTime @default(now())
   createdBy    User     @relation(fields: [createdById], references: [id])
   createdById  String
