@@ -87,6 +87,26 @@ Routes reference methods as `AuthController.register`, etc.
 
 **IMPORTANT**: When adding a new controller, always also add the corresponding route in the matching routes file (e.g. `AuthRoutes.ts` for Auth controllers), and add the corresponding frontend API definition in `packages/frontend/app/api/` with its enum in `RequestUrlEnum.ts`.
 
+### Early Return Convention
+Controllers must use **early return** pattern instead of `if/else` blocks. Each branch should validate, execute, and `return` independently:
+```typescript
+// Good — early return
+if (condition === 'A') {
+  // handle A
+  return res.status(StatusCode.OK).json({ ... })
+}
+
+// handle default / B
+res.status(StatusCode.OK).json({ ... })
+
+// Bad — if/else
+if (condition === 'A') {
+  // handle A
+} else {
+  // handle B
+}
+```
+
 ### Error Handling Convention
 Controllers use custom error classes from `errors/` instead of manual `res.status().json()`.
 Error messages must use **UPPER_SNAKE_CASE error codes**, not human-readable text:
