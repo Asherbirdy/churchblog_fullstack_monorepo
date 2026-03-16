@@ -1,12 +1,18 @@
 使用情境：
 編輯：
 1. 文章新創(未上上線過)
-  - 使用者新增文章（status: "offline" / isEdit:true / isScheduled:false） => 
-  		- Page 新增資料 也新增一個一模一樣的到 OnlinePage(offline)
-  - 編輯儲存 (status:"offline" / isEdit:true / isScheduled:false) => 
-  		- Page 更改資料
-  - 安排排程 (status:"offline" / isEdit:true / isScheduled: true) =>
-  		- Page 資料放一個一模一樣的到 OnlinePage
+   使用者新增文章
+	  - status: "offline"
+		- isEdit: false
+		- isScheduled: false
+    - editedHtml:
+		- onlineHtml: 
+		- previousHtml:
+		備註: 
+  - 編輯儲存 => 
+    - Page 更改資料
+  - 安排排程 => 
+    - Page 資料放一個一模一樣的到 OnlinePage
   - 排程上線  文章就無法編輯，並顯示排程中...=>
   - 取消排程 把 OnlinePage status 改offline
   - 繼續排上線 OnlinePage 改online 更新html
