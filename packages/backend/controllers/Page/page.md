@@ -60,7 +60,7 @@
     - editedHtml: "<div>2222</div>"
 		- onlineHtml: "<div>1111</div>"
 		- previousHtml: "<div>1111</div>"
-	步驟二: 取消更改，回到一一個紀錄
+	步驟二: 取消更改，回到一一個紀錄 (api: GoToPreviousHtmlController)
 		- status: "online"
 		- setStatus: "none"
 		- isEdit: false

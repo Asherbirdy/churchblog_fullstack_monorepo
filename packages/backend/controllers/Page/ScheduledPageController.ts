@@ -13,6 +13,7 @@ export const ScheduledPageController = async (req: Req, res: Response) => {
   })
 
   if (!page) throw new NotFoundError('CANT_FIND_PAGE')
+  if (page.setStatus === SetStatus.scheduledOnline) throw new BadRequestError('PAGE_ALREADY_SCHEDULED')
 
   const updatedPage = await prisma.page.update({
     where: { id },
