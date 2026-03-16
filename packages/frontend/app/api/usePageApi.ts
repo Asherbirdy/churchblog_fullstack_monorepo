@@ -125,5 +125,56 @@ export const usePageApi = {
         method: 'GET',
         lazy: true
       })
+  },
+  editedHtml: async (id: string, body: { editedHtml: string }) => {
+    return await useRequestApi(
+      `${UserRequestUrl.PageEditedHtml}/${id}`, {
+        method: 'PATCH',
+        body,
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
+  },
+  scheduled: async (id: string) => {
+    return await useRequestApi(
+      `${UserRequestUrl.PageScheduled}/${id}`, {
+        method: 'PATCH',
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
+  },
+  cancelScheduled: async (id: string) => {
+    return await useRequestApi(
+      `${UserRequestUrl.PageCancelScheduled}/${id}`, {
+        method: 'PATCH',
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
+  },
+  goToPreviousHtml: async (id: string) => {
+    return await useRequestApi(
+      `${UserRequestUrl.PageGoToPreviousHtml}/${id}`, {
+        method: 'PATCH',
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
+  },
+  beforeBuildAndDeploy: async () => {
+    return await useRequestApi(
+      UserRequestUrl.PageBeforeBuildAndDeploy, {
+        method: 'PATCH',
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
   }
 }

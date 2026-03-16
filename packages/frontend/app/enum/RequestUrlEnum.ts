@@ -13,5 +13,10 @@ export enum UserRequestUrl {
   Page = '/page',
   PageInfo = '/page/info',
   PageUpdate = '/page/update',
-  PageOnline = '/page/online'
+  PageOnline = '/page/online',
+  PageEditedHtml = '/page/edited-html',
+  PageScheduled = '/page/scheduled',
+  PageCancelScheduled = '/page/cancel-scheduled',
+  PageGoToPreviousHtml = '/page/go-to-previous-html',
+  PageBeforeBuildAndDeploy = '/page/before-build-and-deploy'
 }
