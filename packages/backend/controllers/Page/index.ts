@@ -1,4 +1,5 @@
 import { CreatePageController } from './CreatePageController'
+import { EditedHtmlController } from './EditedHtmlController'
 import { GetAllPagesController } from './GetAllPagesController'
 import { GetOnlinePageController } from './GetOnlinePageController'
 import { GetPageByRouteNameController } from './GetPageByRouteNameController'
@@ -8,6 +9,7 @@ import { UpdatePageController } from './UpdatePageController'
 
 export const PageController = {
   create: CreatePageController,
+  editedHtml: EditedHtmlController,
   getAll: GetAllPagesController,
   getByRouteName: GetPageByRouteNameController,
   getOnline: GetOnlinePageController,
