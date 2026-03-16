@@ -67,13 +67,14 @@ const handleScheduled = async () => {
 }
 
 watch(data, (val) => {
+  const { data: pageData } = state.value
   if (val?.page) {
-    state.value.data.page.name = val.page.name
-    state.value.data.page.routeName = val.page.routeName
-    state.value.data.page.editedHtml = val.page.editedHtml || ''
-    state.value.data.page.status = val.page.status as RecordStatus
-    state.value.data.page.setStatus = val.page.setStatus || 'none'
-    state.value.data.page.isEdit = val.page.isEdit
+    pageData.page.name = val.page.name
+    pageData.page.routeName = val.page.routeName
+    pageData.page.editedHtml = val.page.editedHtml || ''
+    pageData.page.status = val.page.status as RecordStatus
+    pageData.page.setStatus = val.page.setStatus || 'none'
+    pageData.page.isEdit = val.page.isEdit
   }
 }, { immediate: true })
 </script>
