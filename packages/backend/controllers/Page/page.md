@@ -3,9 +3,18 @@
 	  - status: "offline"
 		- setStatus: "offline"
 		- isEdit: true
+    - editedHtml: ""
+		- onlineHtml: ""
+		- previousHtml: ""
+
+	步驟一之二: 寫文章內容
+	  - status: "offline"
+		- setStatus: "offline"
+		- isEdit: true
     - editedHtml: "<div>第一次發文</div>"
 		- onlineHtml: ""
 		- previousHtml: ""
+
    步驟二: 安排排程
 		- status: "offline"
 		- setStatus: "scheduledOnline"
