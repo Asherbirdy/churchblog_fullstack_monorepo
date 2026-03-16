@@ -1,3 +1,4 @@
+import { BeforeBuildAndDeployController } from './BeforeBuildAndDeployController'
 import { CreatePageController } from './CreatePageController'
 import { EditedHtmlController } from './EditedHtmlController'
 import { GoToPreviousHtmlController } from './GoToPreviousHtmlController'
@@ -11,6 +12,7 @@ import { CancelScheduledPageController } from './CancelScheduledPageController'
 import { UpdatePageController } from './UpdatePageController'
 
 export const PageController = {
+  beforeBuildAndDeploy: BeforeBuildAndDeployController,
   create: CreatePageController,
   editedHtml: EditedHtmlController,
   goToPreviousHtml: GoToPreviousHtmlController,

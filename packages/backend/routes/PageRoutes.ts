@@ -14,6 +14,7 @@ router.patch('/edited-html/:id', authenticateUser, PageController.editedHtml)
 router.patch('/scheduled/:id', authenticateUser, PageController.scheduled)
 router.patch('/cancel-scheduled/:id', authenticateUser, PageController.cancelScheduled)
 router.patch('/go-to-previous-html/:id', authenticateUser, PageController.goToPreviousHtml)
+router.patch('/before-build-and-deploy', authenticateUser, PageController.beforeBuildAndDeploy)
 router.patch('/reset', authenticateUser, authorizePermission(Role.admin), PageController.reset)
 
 export default router
