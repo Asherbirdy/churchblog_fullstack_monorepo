@@ -19,8 +19,6 @@ export const CancelScheduledPageController = async (req: Req, res: Response) => 
     where: { id },
     data: {
       setStatus: SetStatus.none,
-      onlineHtml: page.previousHtml,
-      previousHtml: '',
     },
   })
 

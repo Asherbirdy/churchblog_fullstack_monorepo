@@ -5,22 +5,28 @@ import { Req } from '../../types'
 
 export const BeforeBuildAndDeployController = async (req: Req, res: Response) => {
   // scheduledOnline -> status: online, setStatus: none
-  await prisma.page.updateMany({
+  const online = await prisma.page.updateMany({
     where: { setStatus: SetStatus.scheduledOnline },
     data: {
       status: RecordStatus.online,
       setStatus: SetStatus.none,
+      isEdit: false,
     },
   })
 
   // scheduledOffline -> status: offline, setStatus: none
-  await prisma.page.updateMany({
+  const offline = await prisma.page.updateMany({
     where: { setStatus: SetStatus.scheduledOffline },
     data: {
       status: RecordStatus.offline,
       setStatus: SetStatus.none,
+      isEdit: false,
     },
   })
 
-  res.status(StatusCode.OK).json({ message: 'ok' })
+  res.status(StatusCode.OK).json({
+    msg: 'ok', 
+    online: online.count,
+    offline: offline.count,
+  })
 }

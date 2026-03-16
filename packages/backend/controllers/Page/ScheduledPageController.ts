@@ -19,6 +19,7 @@ export const ScheduledPageController = async (req: Req, res: Response) => {
     data: {
       setStatus: SetStatus.scheduledOnline,
       onlineHtml: page.editedHtml,
+      previousHtml: page.onlineHtml,
     },
   })
 
