@@ -4,7 +4,7 @@ import { NotFoundError, BadRequestError } from '../../errors'
 import prisma from '../../db'
 import { Req } from '../../types'
 
-export const ScheduledPageController = async (req: Req, res: Response) => {
+export const GoToPreviousHtmlController = async (req: Req, res: Response) => {
   const { id } = req.params
   if (!id) throw new BadRequestError('PAGE_ID_REQUIRED')
 
@@ -13,12 +13,16 @@ export const ScheduledPageController = async (req: Req, res: Response) => {
   })
 
   if (!page) throw new NotFoundError('CANT_FIND_PAGE')
+  if (!page.onlineHtml) throw new BadRequestError('NO_ONLINE_HTML')
+  if (page.setStatus === SetStatus.scheduledOnline || page.setStatus === SetStatus.scheduledOffline) {
+    throw new BadRequestError('PAGE_IS_SCHEDULED')
+  }
 
   const updatedPage = await prisma.page.update({
     where: { id },
     data: {
-      setStatus: SetStatus.scheduledOnline,
-      onlineHtml: page.editedHtml,
+      editedHtml: page.onlineHtml,
+      isEdit: false,
     },
   })
 

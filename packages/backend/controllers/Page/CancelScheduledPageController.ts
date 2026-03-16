@@ -1,5 +1,5 @@
 import { Response } from 'express'
-import { StatusCode } from '../../enum'
+import { StatusCode, SetStatus } from '../../enum'
 import { NotFoundError, BadRequestError } from '../../errors'
 import prisma from '../../db'
 import { Req } from '../../types'
@@ -13,12 +13,12 @@ export const CancelScheduledPageController = async (req: Req, res: Response) => 
   })
 
   if (!page) throw new NotFoundError('CANT_FIND_PAGE')
-  if (page.setStatus !== 'scheduledOnline') throw new BadRequestError('PAGE_NOT_SCHEDULED_ONLINE')
+  if (page.setStatus !== SetStatus.scheduledOnline) throw new BadRequestError('PAGE_NOT_SCHEDULED_ONLINE')
 
   const updatedPage = await prisma.page.update({
     where: { id },
     data: {
-      setStatus: 'none',
+      setStatus: SetStatus.none,
       onlineHtml: page.previousHtml,
       previousHtml: '',
     },
