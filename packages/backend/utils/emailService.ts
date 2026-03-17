@@ -32,4 +32,3 @@ export const sendOTP = (email: string, OTP: string) => {
   })
 }
 
-module.exports = { generateOTP, sendOTP }
