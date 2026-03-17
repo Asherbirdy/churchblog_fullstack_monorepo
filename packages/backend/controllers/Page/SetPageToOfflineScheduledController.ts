@@ -14,6 +14,9 @@ export const SetPageToOfflineScheduledController = async (req: Req, res: Respons
 
   if (!page) throw new NotFoundError('CANT_FIND_PAGE')
   if (page.status === RecordStatus.offline) throw new BadRequestError('PAGE_ALREADY_OFFLINE')
+  if (page.setStatus === SetStatus.scheduledOnline || page.setStatus === SetStatus.scheduledOffline) {
+    throw new BadRequestError('PAGE_ALREADY_SCHEDULED')
+  }
 
   const updatedPage = await prisma.page.update({
     where: { id },
