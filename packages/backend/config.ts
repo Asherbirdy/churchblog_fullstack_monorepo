@@ -7,5 +7,7 @@ export default {
   environment: process.env.ENVIRONMENT as 'DEV' | 'PROD',
   database_url: process.env.DATABASE_URL,
   auth_token: process.env.AUTH_TOKEN as 'HEADER' | 'COOKIES',
+  email_service_user: process.env.EMAIL_SERVICE_USER,
+  email_service_pass: process.env.EMAIL_SERVICE_PASS,
   // jwt_secret: process.env.JWT_SECRET
 }
