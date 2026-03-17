@@ -9,6 +9,7 @@ import { GetPageInfoController } from './GetPageInfoController'
 import { ResetPageController } from './ResetPageController'
 import { ScheduledPageController } from './ScheduledPageController'
 import { CancelScheduledPageController } from './CancelScheduledPageController'
+import { SetPageToOfflineController } from './SetPageToOfflineController'
 import { UpdatePageController } from './UpdatePageController'
 
 export const PageController = {
@@ -23,5 +24,6 @@ export const PageController = {
   reset: ResetPageController,
   scheduled: ScheduledPageController,
   cancelScheduled: CancelScheduledPageController,
+  setToOffline: SetPageToOfflineController,
   update: UpdatePageController,
 }

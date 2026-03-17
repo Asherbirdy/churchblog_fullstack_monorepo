@@ -17,6 +17,7 @@ export enum UserRequestUrl {
   PageEditedHtml = '/page/edited-html',
   PageScheduled = '/page/scheduled',
   PageCancelScheduled = '/page/cancel-scheduled',
+  PageSetToOffline = '/page/set-to-offline',
   PageGoToPreviousHtml = '/page/go-to-previous-html',
   PageBeforeBuildAndDeploy = '/page/before-build-and-deploy'
 }

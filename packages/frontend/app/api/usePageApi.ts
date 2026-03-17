@@ -159,6 +159,16 @@ export const usePageApi = {
         lazy: true
       })
   },
+  setToOffline: async (id: string) => {
+    return await useRequestApi(
+      `${UserRequestUrl.PageSetToOffline}/${id}`, {
+        method: 'PATCH',
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
+  },
   goToPreviousHtml: async (id: string) => {
     return await useRequestApi(
       `${UserRequestUrl.PageGoToPreviousHtml}/${id}`, {
