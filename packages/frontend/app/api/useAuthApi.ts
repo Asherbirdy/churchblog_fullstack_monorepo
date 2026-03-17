@@ -14,8 +14,8 @@ interface LoginResponse {
 }
 
 export const useAuthApi = {
-  register: async (body: { name: string, email: string, password: string }) => {
-    return await useRequestApi(PublicRequestUrl.AuthRegister, {
+  adminInit: async (body: { name: string, email: string, password: string }) => {
+    return await useRequestApi(PublicRequestUrl.AuthAdminInit, {
       method: 'POST',
       body
     })

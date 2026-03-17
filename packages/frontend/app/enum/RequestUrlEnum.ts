@@ -1,6 +1,6 @@
 export enum PublicRequestUrl {
   DevCheckIp = '/dev/check-ip',
-  AuthRegister = '/auth/userRegister',
+  AuthAdminInit = '/auth/adminInit',
   AuthLogin = '/auth/login',
   PageRoute = '/page/route'
 }
