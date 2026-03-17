@@ -1,7 +1,8 @@
 export enum PublicRoutes {
   HOME = '/',
   LOGIN = '/login',
-  REGISTER = '/register'
+  REGISTER = '/register',
+  LIFE_BIBLE_STUDY = '/tool/lifebible-study'
 }
 
 export enum PrivateRoutes {

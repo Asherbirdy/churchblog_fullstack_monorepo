@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Chatroom } from '~/components'
+import { PublicRoutes } from '~/enum'
 
 const toolCards = [
   {
@@ -8,7 +9,8 @@ const toolCards = [
     icon: 'i-lucide-book-open',
     color: 'bg-sage-100',
     textColor: 'text-sage-800',
-    size: 'normal'
+    size: 'normal',
+    route: PublicRoutes.LIFE_BIBLE_STUDY
   }
 ]
 </script>
@@ -16,9 +18,7 @@ const toolCards = [
 <template>
   <div class="max-w-7xl mx-auto px-6 py-10">
     <div class="flex flex-col lg:flex-row gap-10">
-      <!-- Left Column -->
       <div class="flex-1 min-w-0">
-        <!-- Hero Text -->
         <div class="mb-8 animate-fade-up">
           <p class="text-sm font-medium text-warm-600 tracking-wide uppercase mb-3">
             小羊天地 — 教會管理平台
@@ -31,11 +31,11 @@ const toolCards = [
           </p>
         </div>
 
-        <!-- Ministry Cards Grid -->
         <div class="grid grid-cols-3 gap-4 animate-fade-up stagger-2">
-          <div
+          <NuxtLink
             v-for="(card, index) in toolCards"
             :key="card.title"
+            :to="card.route"
             :class="[
               'rounded-2xl p-5 flex flex-col justify-between cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-lg',
               card.color,
@@ -55,11 +55,10 @@ const toolCards = [
                 {{ card.desc }}
               </p>
             </div>
-          </div>
+          </NuxtLink>
         </div>
       </div>
 
-      <!-- Right Column - Chatroom -->
       <div class="w-full lg:w-[380px] shrink-0 animate-fade-up stagger-3 lg:sticky lg:top-6 lg:self-start">
         <Chatroom />
       </div>
