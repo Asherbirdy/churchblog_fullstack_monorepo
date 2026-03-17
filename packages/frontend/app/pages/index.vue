@@ -103,7 +103,7 @@ const ministryCards = [
       </div>
 
       <!-- Right Column - Chatroom -->
-      <div class="w-full lg:w-[380px] shrink-0 animate-fade-up stagger-3">
+      <div class="w-full lg:w-[380px] shrink-0 animate-fade-up stagger-3 lg:sticky lg:top-6 lg:self-start">
         <Chatroom />
       </div>
     </div>
