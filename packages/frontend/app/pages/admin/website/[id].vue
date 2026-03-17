@@ -54,14 +54,13 @@ const handleSave = async () => {
 }
 
 const handleScheduled = async () => {
-  if (state.value.data.page.setStatus === 'scheduledOnline') {
-    await executeCancelScheduled()
-  }
+  await executeScheduled()
+  clearNuxtData(UserRequestUrl.Page)
+  await refreshNuxtData([UserRequestUrl.Page])
+}
 
-  if (state.value.data.page.setStatus === 'scheduledOffline') {
-    await executeScheduled()
-  }
-
+const cancelScheduled = async () => {
+  await executeCancelScheduled()
   clearNuxtData(UserRequestUrl.Page)
   await refreshNuxtData([UserRequestUrl.Page])
 }
@@ -117,8 +116,15 @@ watch(data, (val) => {
           <UBadge
             :color="state.data.page.isEdit ? 'warning' : 'neutral'"
             variant="subtle"
-            :label="state.data.page.isEdit ? '已編輯，請安排上線' : '未編輯'"
+            :label="state.data.page.isEdit ? '已編輯' : '未編輯'"
           />
+          <UBadge
+            :color="state.data.page.isEdit ? 'warning' : 'neutral'"
+            variant="subtle"
+            :label="state.data.page.isEdit ? '已編輯' : '未編輯'"
+          >
+            {{ state.data.page.setStatus }}
+          </UBadge>
         </div>
 
         <!-- Content -->
@@ -144,7 +150,7 @@ watch(data, (val) => {
           icon="i-lucide-calendar-x"
           :disabled="cancelScheduledStatus === 'pending'"
           :loading="cancelScheduledStatus === 'pending'"
-          @click="handleScheduled"
+          @click="cancelScheduled"
         />
         <UButton
           v-if="state.data.page.isEdit"
