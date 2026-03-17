@@ -20,9 +20,6 @@ const toolCards = [
     <div class="flex flex-col lg:flex-row gap-10">
       <div class="flex-1 min-w-0">
         <div class="mb-8 animate-fade-up">
-          <p class="text-sm font-medium text-warm-600 tracking-wide uppercase mb-3">
-            小羊天地 — 教會管理平台
-          </p>
           <h1 class="font-display text-4xl md:text-5xl font-bold text-sand-950 leading-tight">
             你的話是我腳前的燈<br>是我路上的光
           </h1>
