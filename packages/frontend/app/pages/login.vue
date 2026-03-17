@@ -11,12 +11,12 @@ useHead({
 })
 
 const toast = useToast()
-
+const config = useRuntimeConfig()
 const state = ref({
   data: {
     form: {
-      email: '',
-      password: ''
+      email: config.public.USERNAME || '',
+      password: config.public.PASSWORD || ''
     }
   },
   feature: {

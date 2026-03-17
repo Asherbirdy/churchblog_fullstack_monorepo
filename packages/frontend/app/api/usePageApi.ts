@@ -11,13 +11,15 @@ export interface Page {
   name: string
   routeName: string
   contentHtml: string
+  setStatus: string
+  editedHtml: string
+  onlineHtml: string
+  previousHtml: string
   status: RecordStatus
   isEdit: boolean
-  isScheduled: boolean
   lastEditedAt: string
   createdById: string
   createdAt: string
-  updatedAt: string
 }
 
 export interface CreatePageError {
@@ -123,6 +125,67 @@ export const usePageApi = {
     return await useRequestApi<GetPageByRouteNameResponse, never>(
       `${PublicRequestUrl.PageRoute}/${routeName}`, {
         method: 'GET',
+        lazy: true
+      })
+  },
+  editedHtml: async (id: string, body: { editedHtml: MaybeRef<string> }) => {
+    return await useRequestApi(
+      `${UserRequestUrl.PageEditedHtml}/${id}`, {
+        method: 'PATCH',
+        body,
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
+  },
+  setToOnlineScheduled: async (id: string) => {
+    return await useRequestApi(
+      `${UserRequestUrl.PageSetToOnlineScheduled}/${id}`, {
+        method: 'PATCH',
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
+  },
+  cancelScheduled: async (id: string) => {
+    return await useRequestApi(
+      `${UserRequestUrl.PageCancelScheduled}/${id}`, {
+        method: 'PATCH',
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
+  },
+  setToOfflineScheduled: async (id: string) => {
+    return await useRequestApi(
+      `${UserRequestUrl.PageSetToOfflineScheduled}/${id}`, {
+        method: 'PATCH',
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
+  },
+  goToPreviousHtml: async (id: string) => {
+    return await useRequestApi(
+      `${UserRequestUrl.PageGoToPreviousHtml}/${id}`, {
+        method: 'PATCH',
+        immediate: false,
+        server: false,
+        watch: false,
+        lazy: true
+      })
+  },
+  beforeBuildAndDeploy: async () => {
+    return await useRequestApi(
+      UserRequestUrl.PageBeforeBuildAndDeploy, {
+        method: 'PATCH',
+        immediate: false,
+        server: false,
+        watch: false,
         lazy: true
       })
   }

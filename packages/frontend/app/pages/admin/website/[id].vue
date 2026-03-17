@@ -16,8 +16,9 @@ const state = ref({
       id,
       name: '',
       routeName: '',
-      contentHtml: '',
+      editedHtml: '',
       status: 'offline' as RecordStatus,
+      setStatus: 'none',
       isEdit: false
     }
   }
@@ -28,10 +29,19 @@ const { data } = await usePageApi.getOne(id)
 const {
   execute: executeUpdate,
   status: updateStatus
-} = await usePageApi.update({
-  id,
-  body: state.value.data.page
+} = await usePageApi.editedHtml(id, {
+  editedHtml: toRef(() => state.value.data.page.editedHtml)
 })
+
+const {
+  execute: executeSetToOnlineScheduled,
+  status: setToOnlineScheduledStatus
+} = await usePageApi.setToOnlineScheduled(id)
+
+const {
+  execute: executeCancelScheduled,
+  status: cancelScheduledStatus
+} = await usePageApi.cancelScheduled(id)
 
 const handleSave = async () => {
   await executeUpdate()
@@ -43,28 +53,33 @@ const handleSave = async () => {
   })
 }
 
+const handleSetToOnlineScheduled = async () => {
+  await executeSetToOnlineScheduled()
+  clearNuxtData(UserRequestUrl.Page)
+  await refreshNuxtData([UserRequestUrl.Page])
+}
+
+const cancelScheduled = async () => {
+  await executeCancelScheduled()
+  clearNuxtData(UserRequestUrl.Page)
+  await refreshNuxtData([UserRequestUrl.Page])
+}
+
 watch(data, (val) => {
+  const { data: pageData } = state.value
   if (val?.page) {
-    state.value.data.page.name = val.page.name
-    state.value.data.page.routeName = val.page.routeName
-    state.value.data.page.contentHtml = val.page.contentHtml || ''
-    state.value.data.page.status = val.page.status as RecordStatus
-    state.value.data.page.isEdit = val.page.isEdit
+    pageData.page.name = val.page.name
+    pageData.page.routeName = val.page.routeName
+    pageData.page.editedHtml = val.page.editedHtml || ''
+    pageData.page.status = val.page.status as RecordStatus
+    pageData.page.setStatus = val.page.setStatus || 'none'
+    pageData.page.isEdit = val.page.isEdit
   }
 }, { immediate: true })
-
-const statusOptions = [
-  { label: '上線中', value: 'online' },
-  { label: '未上線', value: 'offline' }
-]
-
-const statusDot = computed(() =>
-  state.value.data.page.status === 'online' ? 'bg-emerald-500' : 'bg-sand-300'
-)
 </script>
 
 <template>
-  <div class="max-w-2xl mx-auto animate-fade-up">
+  <div class="max-w-6xl mx-auto animate-fade-up">
     <!-- Header -->
     <div class="mb-8">
       <div class="flex items-center gap-3 mb-1">
@@ -85,37 +100,31 @@ const statusDot = computed(() =>
     <div class="bg-white rounded-2xl border border-sand-200 shadow-sm">
       <div class="p-6 space-y-6">
         <!-- Name -->
-        <div>
-          <label class="text-xs font-medium text-sand-500 mb-1.5 block">
-            網站名稱
-          </label>
-          <UInput
-            v-model="state.data.page.name"
-            icon="i-lucide-type"
-            size="lg"
-            class="w-full"
-            :ui="{ base: 'rounded-xl' }"
+        <div class="flex items-center gap-3">
+          <UIcon
+            name="i-lucide-file-text"
+            class="text-sage-600 text-lg"
           />
-        </div>
-
-        <!-- Status -->
-        <div>
-          <label class="text-xs font-medium text-sand-500 mb-1.5 block">
-            狀態
-          </label>
-          <div class="flex items-center gap-3 w-full">
-            <USelect
-              v-model="state.data.page.status"
-              :items="statusOptions"
-              size="lg"
-              class="w-full"
-              :ui="{ base: 'rounded-xl' }"
-            />
-            <span
-              class="w-2.5 h-2.5 rounded-full shrink-0"
-              :class="statusDot"
-            />
-          </div>
+          <h3 class="text-lg font-semibold text-sand-950">
+            {{ state.data.page.name }}
+          </h3>
+          <UBadge
+            :color="state.data.page.status === 'online' ? 'success' : 'neutral'"
+            variant="subtle"
+            :label="state.data.page.status === 'online' ? '上線中' : '未上線'"
+          />
+          <UBadge
+            :color="state.data.page.isEdit ? 'warning' : 'neutral'"
+            variant="subtle"
+            :label="state.data.page.isEdit ? '已編輯' : '未編輯'"
+          />
+          <UBadge
+            :color="state.data.page.isEdit ? 'warning' : 'neutral'"
+            variant="subtle"
+            :label="state.data.page.isEdit ? '已編輯' : '未編輯'"
+          >
+            {{ state.data.page.setStatus }}
+          </UBadge>
         </div>
 
         <!-- Content -->
@@ -124,7 +133,7 @@ const statusDot = computed(() =>
             內容
           </label>
           <ClientOnly>
-            <TiptapEditor v-model="state.data.page.contentHtml" />
+            <TiptapEditor v-model="state.data.page.editedHtml" />
             <template #fallback>
               <div class="w-full rounded-xl border border-sand-200 bg-white min-h-[290px] animate-pulse" />
             </template>
@@ -135,11 +144,40 @@ const statusDot = computed(() =>
       <!-- Footer -->
       <div class="flex justify-end gap-3 px-6 py-4 border-t border-sand-100">
         <UButton
+          v-if="state.data.page.isEdit"
+          label="安排上線"
+          class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
+          icon="i-lucide-calendar-check"
+          :loading="setToOnlineScheduledStatus === 'pending'"
+        />
+
+        <UButton
+          v-if="state.data.page.isEdit"
+          label="安排下線"
+          class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
+          icon="i-lucide-calendar-check"
+          :loading="setToOnlineScheduledStatus === 'pending'"
+        />
+
+        <UButton
+          v-if="state.data.page.isEdit"
+          label="取消排程"
+          class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
+          icon="i-lucide-calendar-check"
+          :loading="setToOnlineScheduledStatus === 'pending'"
+          @click="handleSetToOnlineScheduled"
+        />
+
+        <UButton
           label="儲存"
           class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
           icon="i-lucide-save"
           :loading="updateStatus === 'pending'"
-          :disabled="!data"
+          :disabled="
+            !data
+              || state.data.page.setStatus === 'scheduledOnline'
+              || state.data.page.setStatus === 'scheduledOffline'
+          "
           @click="handleSave"
         />
       </div>
