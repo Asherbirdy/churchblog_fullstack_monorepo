@@ -34,9 +34,9 @@ const {
 })
 
 const {
-  execute: executeScheduled,
-  status: scheduledStatus
-} = await usePageApi.scheduled(id)
+  execute: executeSetToOnline,
+  status: setToOnlineStatus
+} = await usePageApi.setToOnline(id)
 
 const {
   execute: executeCancelScheduled,
@@ -53,8 +53,8 @@ const handleSave = async () => {
   })
 }
 
-const handleScheduled = async () => {
-  await executeScheduled()
+const handleSetToOnline = async () => {
+  await executeSetToOnline()
   clearNuxtData(UserRequestUrl.Page)
   await refreshNuxtData([UserRequestUrl.Page])
 }
@@ -148,7 +148,7 @@ watch(data, (val) => {
           label="安排上線"
           class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
           icon="i-lucide-calendar-check"
-          :loading="scheduledStatus === 'pending'"
+          :loading="setToOnlineStatus === 'pending'"
         />
 
         <UButton
@@ -156,7 +156,7 @@ watch(data, (val) => {
           label="安排下線"
           class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
           icon="i-lucide-calendar-check"
-          :loading="scheduledStatus === 'pending'"
+          :loading="setToOnlineStatus === 'pending'"
         />
 
         <UButton
@@ -164,8 +164,8 @@ watch(data, (val) => {
           label="取消排程"
           class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
           icon="i-lucide-calendar-check"
-          :loading="scheduledStatus === 'pending'"
-          @click="handleScheduled"
+          :loading="setToOnlineStatus === 'pending'"
+          @click="handleSetToOnline"
         />
 
         <UButton

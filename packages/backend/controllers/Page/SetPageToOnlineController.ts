@@ -4,7 +4,7 @@ import { NotFoundError, BadRequestError } from '../../errors'
 import prisma from '../../db'
 import { Req } from '../../types'
 
-export const ScheduledPageController = async (req: Req, res: Response) => {
+export const SetPageToOnlineController = async (req: Req, res: Response) => {
   const { id } = req.params
   if (!id) throw new BadRequestError('PAGE_ID_REQUIRED')
 

@@ -19,7 +19,7 @@ export const SetPageToOfflineController = async (req: Req, res: Response) => {
     where: { id },
     data: {
       status: RecordStatus.offline,
-      onlineHtml: '',
+      onlineHtml: page.previousHtml,
       previousHtml: page.onlineHtml,
     },
   })

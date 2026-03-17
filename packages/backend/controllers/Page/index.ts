@@ -7,7 +7,7 @@ import { GetOnlinePageController } from './GetOnlinePageController'
 import { GetPageByRouteNameController } from './GetPageByRouteNameController'
 import { GetPageInfoController } from './GetPageInfoController'
 import { ResetPageController } from './ResetPageController'
-import { ScheduledPageController } from './ScheduledPageController'
+import { SetPageToOnlineController } from './SetPageToOnlineController'
 import { CancelScheduledPageController } from './CancelScheduledPageController'
 import { SetPageToOfflineController } from './SetPageToOfflineController'
 import { UpdatePageController } from './UpdatePageController'
@@ -22,7 +22,7 @@ export const PageController = {
   getOnline: GetOnlinePageController,
   getOne: GetPageInfoController,
   reset: ResetPageController,
-  scheduled: ScheduledPageController,
+  setToOnline: SetPageToOnlineController,
   cancelScheduled: CancelScheduledPageController,
   setToOffline: SetPageToOfflineController,
   update: UpdatePageController,

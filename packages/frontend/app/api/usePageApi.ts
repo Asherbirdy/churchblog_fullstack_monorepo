@@ -139,9 +139,9 @@ export const usePageApi = {
         lazy: true
       })
   },
-  scheduled: async (id: string) => {
+  setToOnline: async (id: string) => {
     return await useRequestApi(
-      `${UserRequestUrl.PageScheduled}/${id}`, {
+      `${UserRequestUrl.PageSetToOnline}/${id}`, {
         method: 'PATCH',
         immediate: false,
         server: false,
