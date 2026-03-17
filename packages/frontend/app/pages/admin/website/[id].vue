@@ -144,28 +144,40 @@ watch(data, (val) => {
       <!-- Footer -->
       <div class="flex justify-end gap-3 px-6 py-4 border-t border-sand-100">
         <UButton
-          v-if="state.data.page.status === 'online'"
-          label="取消上線排程"
-          class="rounded-xl bg-warm-500 text-white hover:bg-warm-600"
-          icon="i-lucide-calendar-x"
-          :disabled="cancelScheduledStatus === 'pending'"
-          :loading="cancelScheduledStatus === 'pending'"
-          @click="cancelScheduled"
-        />
-        <UButton
           v-if="state.data.page.isEdit"
           label="安排上線"
           class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
           icon="i-lucide-calendar-check"
           :loading="scheduledStatus === 'pending'"
+        />
+
+        <UButton
+          v-if="state.data.page.isEdit"
+          label="安排下線"
+          class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
+          icon="i-lucide-calendar-check"
+          :loading="scheduledStatus === 'pending'"
+        />
+
+        <UButton
+          v-if="state.data.page.isEdit"
+          label="取消排程"
+          class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
+          icon="i-lucide-calendar-check"
+          :loading="scheduledStatus === 'pending'"
           @click="handleScheduled"
         />
+
         <UButton
           label="儲存"
           class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
           icon="i-lucide-save"
           :loading="updateStatus === 'pending'"
-          :disabled="!data"
+          :disabled="
+            !data
+              || state.data.page.setStatus === 'scheduledOnline'
+              || state.data.page.setStatus === 'scheduledOffline'
+          "
           @click="handleSave"
         />
       </div>
