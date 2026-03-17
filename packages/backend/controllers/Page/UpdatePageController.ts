@@ -10,7 +10,12 @@ export const UpdatePageController = async (req: Req, res: Response) => {
   if (!id) throw new BadRequestError('PAGE_ID_REQUIRED')
 
   const { name, status, contentHtml, isEdit } = req.body
-  if (name === undefined || status === undefined || contentHtml === undefined || isEdit === undefined) {
+  if (
+    name === undefined ||
+    status === undefined ||
+    contentHtml === undefined ||
+    isEdit === undefined
+  ) {
     throw new BadRequestError('INPUT_REQUIRED')
   }
 

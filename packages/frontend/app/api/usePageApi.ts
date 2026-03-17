@@ -139,9 +139,9 @@ export const usePageApi = {
         lazy: true
       })
   },
-  setToOnline: async (id: string) => {
+  setToOnlineScheduled: async (id: string) => {
     return await useRequestApi(
-      `${UserRequestUrl.PageSetToOnline}/${id}`, {
+      `${UserRequestUrl.PageSetToOnlineScheduled}/${id}`, {
         method: 'PATCH',
         immediate: false,
         server: false,
@@ -159,9 +159,9 @@ export const usePageApi = {
         lazy: true
       })
   },
-  setToOffline: async (id: string) => {
+  setToOfflineScheduled: async (id: string) => {
     return await useRequestApi(
-      `${UserRequestUrl.PageSetToOffline}/${id}`, {
+      `${UserRequestUrl.PageSetToOfflineScheduled}/${id}`, {
         method: 'PATCH',
         immediate: false,
         server: false,

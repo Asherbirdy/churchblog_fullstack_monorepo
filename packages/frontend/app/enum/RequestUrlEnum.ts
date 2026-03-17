@@ -15,9 +15,9 @@ export enum UserRequestUrl {
   PageUpdate = '/page/update',
   PageOnline = '/page/online',
   PageEditedHtml = '/page/edited-html',
-  PageSetToOnline = '/page/set-to-online',
+  PageSetToOnlineScheduled = '/page/set-to-online-scheduled',
   PageCancelScheduled = '/page/cancel-scheduled',
-  PageSetToOffline = '/page/set-to-offline',
+  PageSetToOfflineScheduled = '/page/set-to-offline-scheduled',
   PageGoToPreviousHtml = '/page/go-to-previous-html',
   PageBeforeBuildAndDeploy = '/page/before-build-and-deploy'
 }

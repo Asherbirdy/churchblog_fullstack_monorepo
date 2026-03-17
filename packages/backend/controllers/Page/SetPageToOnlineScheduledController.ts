@@ -1,10 +1,10 @@
 import { Response } from 'express'
-import { StatusCode, RecordStatus } from '../../enum'
+import { StatusCode, SetStatus } from '../../enum'
 import { NotFoundError, BadRequestError } from '../../errors'
 import prisma from '../../db'
 import { Req } from '../../types'
 
-export const SetPageToOfflineController = async (req: Req, res: Response) => {
+export const SetPageToOnlineScheduledController = async (req: Req, res: Response) => {
   const { id } = req.params
   if (!id) throw new BadRequestError('PAGE_ID_REQUIRED')
 
@@ -13,13 +13,13 @@ export const SetPageToOfflineController = async (req: Req, res: Response) => {
   })
 
   if (!page) throw new NotFoundError('CANT_FIND_PAGE')
-  if (page.status === RecordStatus.offline) throw new BadRequestError('PAGE_ALREADY_OFFLINE')
+  if (page.setStatus === SetStatus.scheduledOnline) throw new BadRequestError('PAGE_ALREADY_SCHEDULED')
 
   const updatedPage = await prisma.page.update({
     where: { id },
     data: {
-      status: RecordStatus.offline,
-      onlineHtml: page.previousHtml,
+      setStatus: SetStatus.scheduledOnline,
+      onlineHtml: page.editedHtml,
       previousHtml: page.onlineHtml,
     },
   })
