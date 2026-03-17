@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { Chatroom } from '~/components'
+
 const state = ref({
   data: {
-    searchQuery: '',
-    selectedSize: 1,
-    selectedTime: { date: 0, time: 1 }
+    searchQuery: ''
   },
   feature: {}
 })
@@ -43,26 +43,6 @@ const ministryCards = [
     color: 'bg-sage-200',
     textColor: 'text-sage-900',
     size: 'normal'
-  }
-]
-
-const churchSizes = [
-  { label: '小型聚會', desc: '10-30人' },
-  { label: '中型聚會', desc: '30-80人' },
-  { label: '大型聚會', desc: '80人以上' }
-]
-const dates = [
-  {
-    date: '3月16日 (日)',
-    times: ['09:30', '11:00', '14:30', '19:00']
-  },
-  {
-    date: '3月23日 (日)',
-    times: ['09:30', '11:00', '14:30']
-  },
-  {
-    date: '3月30日 (日)',
-    times: ['09:30', '11:00', '14:30', '19:00']
   }
 ]
 </script>
@@ -122,88 +102,9 @@ const dates = [
         </div>
       </div>
 
-      <!-- Right Column - Event Registration Sidebar -->
+      <!-- Right Column - Chatroom -->
       <div class="w-full lg:w-[380px] shrink-0 animate-fade-up stagger-3">
-        <div class="bg-white rounded-3xl border border-sand-200 p-6 shadow-sm">
-          <!-- Title -->
-          <h2 class="font-display text-2xl font-bold text-sand-950 mb-1">
-            預約聚會體驗
-          </h2>
-          <p class="text-sm text-sand-500 mb-6">
-            選擇適合你的聚會
-          </p>
-
-          <!-- Size Selection -->
-          <div class="flex gap-2 mb-6">
-            <button
-              v-for="(size, index) in churchSizes"
-              :key="size.label"
-              :class="[
-                'flex-1 rounded-xl border-2 p-3 text-center transition-all duration-200',
-                state.data.selectedSize === index
-                  ? 'border-sage-500 bg-sage-50'
-                  : 'border-sand-200 hover:border-sand-300'
-              ]"
-              @click="state.data.selectedSize = index"
-            >
-              <p :class="['text-xs font-bold', state.data.selectedSize === index ? 'text-sage-700' : 'text-sand-600']">
-                {{ size.label }}
-              </p>
-              <p :class="['text-[11px] mt-0.5', state.data.selectedSize === index ? 'text-sage-500' : 'text-sand-400']">
-                {{ size.desc }}
-              </p>
-            </button>
-          </div>
-
-          <!-- Date / Time Selection -->
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="text-sm font-semibold text-sand-950">
-              選擇日期 / 時間
-            </h3>
-            <UIcon
-              name="i-lucide-calendar"
-              class="text-sand-400"
-            />
-          </div>
-
-          <div class="space-y-5 mb-6">
-            <div
-              v-for="(dateGroup, dateIndex) in dates"
-              :key="dateGroup.date"
-            >
-              <p class="text-xs font-medium text-sand-500 mb-2">
-                {{ dateGroup.date }}
-              </p>
-              <div class="flex flex-wrap gap-2">
-                <button
-                  v-for="(time, timeIndex) in dateGroup.times"
-                  :key="time"
-                  :class="[
-                    'px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200',
-                    state.data.selectedTime.date === dateIndex && state.data.selectedTime.time === timeIndex
-                      ? 'bg-sand-950 text-white border-sand-950'
-                      : 'border-sand-200 text-sand-700 hover:border-sand-400'
-                  ]"
-                  @click="state.data.selectedTime = { date: dateIndex, time: timeIndex }"
-                >
-                  {{ time }}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Book Button -->
-          <div class="flex items-center justify-between pt-4 border-t border-sand-100">
-            <p class="text-xs text-sand-400">
-              也可用日曆預約
-            </p>
-            <UButton
-              label="立即預約"
-              size="lg"
-              class="rounded-xl bg-sage-600 text-white hover:bg-sage-700 px-8"
-            />
-          </div>
-        </div>
+        <Chatroom />
       </div>
     </div>
   </div>
