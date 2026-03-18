@@ -29,7 +29,6 @@ router.post(
 router.post(
   '/changePasswordWithOTP',
   authenticateUser,
-  authorizePermission(Role.admin),
   AccountController.changePasswordWithOTP
 )
 
