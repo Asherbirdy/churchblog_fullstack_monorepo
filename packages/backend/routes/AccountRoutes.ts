@@ -32,4 +32,11 @@ router.post(
   AccountController.changePasswordWithOTP
 )
 
+router.get(
+  '/getAllUser',
+  authenticateUser,
+  authorizePermission(Role.admin),
+  AccountController.getAllUser
+)
+
 export default router
