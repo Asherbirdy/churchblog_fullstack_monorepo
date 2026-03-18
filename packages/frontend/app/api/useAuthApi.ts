@@ -14,12 +14,6 @@ interface LoginResponse {
 }
 
 export const useAuthApi = {
-  adminInit: async (body: { name: string, email: string, password: string }) => {
-    return await useRequestApi(PublicRequestUrl.AuthAdminInit, {
-      method: 'POST',
-      body
-    })
-  },
   login: async (body: { email: string, password: string }) => {
     return await useRequestApi<LoginResponse, null>(PublicRequestUrl.AuthLogin, {
       method: 'POST',

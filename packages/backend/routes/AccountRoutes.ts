@@ -6,9 +6,12 @@ import { Role } from '../enum'
 const router = Router()
 
 router.post(
+  '/adminInit',
+  AccountController.adminInit
+)
+
+router.post(
   '/adminRegisterUser',
-  authenticateUser,
-  authorizePermission(Role.admin),
   AccountController.adminRegisterUser
 )
 
@@ -30,6 +33,13 @@ router.post(
   '/changePasswordWithOTP',
   authenticateUser,
   AccountController.changePasswordWithOTP
+)
+
+router.get(
+  '/getAllUser',
+  authenticateUser,
+  authorizePermission(Role.admin),
+  AccountController.getAllUser
 )
 
 export default router

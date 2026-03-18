@@ -1,6 +1,6 @@
 export enum PublicRequestUrl {
   DevCheckIp = '/dev/check-ip',
-  AuthAdminInit = '/auth/adminInit',
+  AccountAdminInit = '/account/adminInit',
   AuthLogin = '/auth/login',
   PageRoute = '/page/route'
 }
@@ -19,5 +19,10 @@ export enum UserRequestUrl {
   PageCancelScheduled = '/page/cancel-scheduled',
   PageSetToOfflineScheduled = '/page/set-to-offline-scheduled',
   PageGoToPreviousHtml = '/page/go-to-previous-html',
-  PageBeforeBuildAndDeploy = '/page/before-build-and-deploy'
+  PageBeforeBuildAndDeploy = '/page/before-build-and-deploy',
+  AccountAdminRegisterUser = '/account/adminRegisterUser',
+  AccountDeleteUser = '/account/deleteUser',
+  AccountSendVerificationEmail = '/account/sendVerificationEmail',
+  AccountChangePasswordWithOTP = '/account/changePasswordWithOTP',
+  AccountGetAllUser = '/account/getAllUser'
 }
