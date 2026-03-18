@@ -3,7 +3,6 @@ import { AuthController } from '../controllers'
 import { authenticateUser } from '../middleware'
 const router = Router()
 
-router.post('/adminInit', AuthController.adminInit)
 router.post('/login', AuthController.login)
 router.delete('/logout', authenticateUser, AuthController.logout)
 router.get('/refreshToken', AuthController.refreshToken)
