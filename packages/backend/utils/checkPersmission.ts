@@ -4,7 +4,10 @@ interface checkPersmissionPayload {
   role?: string
 }
 
-export const checkPersmission = (requestUser: { role: string; userId: string }, resourceUserId: checkPersmissionPayload) => {
+export const checkPersmission = (
+  requestUser: checkPersmissionPayload,
+  resourceUserId: checkPersmissionPayload
+) => {
   // console.log(requestUser)
   // console.log(resourceUserId)
   // console.log(typeof resourceUserId)
