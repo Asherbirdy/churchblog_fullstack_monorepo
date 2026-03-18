@@ -1,4 +1,5 @@
 export * from './bad-request'
+export * from './forbidden'
 export * from './not-found'
 export * from './unauthenticated'
 export * from './custom-api'

@@ -19,4 +19,17 @@ router.delete(
   AccountController.deleteUser
 )
 
+router.post(
+  '/sendVerificationEmail',
+  authenticateUser,
+  authorizePermission(Role.admin),
+  AccountController.sendVerificationEmail
+)
+
+router.post(
+  '/changePasswordWithOTP',
+  authenticateUser,
+  AccountController.changePasswordWithOTP
+)
+
 export default router

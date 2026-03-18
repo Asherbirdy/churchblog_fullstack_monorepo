@@ -12,8 +12,13 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      String   @default("user")
-  tokens    Token[]
+  role           String    @default("user")
+  otp            String?
+  otpCreatedTime DateTime?
+  otpAttempts    Int       @default(0)
+  isBlocked      Boolean   @default(false)
+  blockUntil     DateTime?
+  tokens         Token[]
   pages     Page[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
