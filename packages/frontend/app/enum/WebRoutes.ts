@@ -9,5 +9,6 @@ export enum PrivateRoutes {
   ADMIN_CHATBOT = '/admin/chatbot',
   ADMIN_WEBSITE = '/admin/website',
   ADMIN_IMAGE = '/admin/image',
-  ADMIN_HOME = '/admin/home'
+  ADMIN_HOME = '/admin/home',
+  ADMIN_ACCOUNT = '/admin/account'
 }
