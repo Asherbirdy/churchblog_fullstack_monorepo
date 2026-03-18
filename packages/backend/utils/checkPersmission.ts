@@ -1,13 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 interface checkPersmissionPayload {
   userId: string
   role?: string
 }
 
-export const checkPersmission = (
-  requestUser: checkPersmissionPayload,
-  resourceUserId: checkPersmissionPayload
-) => {
+export const checkPersmission = (requestUser : any, resourceUserId: checkPersmissionPayload) => {
   // console.log(requestUser)
   // console.log(resourceUserId)
   // console.log(typeof resourceUserId)
@@ -20,7 +18,17 @@ export const checkPersmission = (
   )
 }
 
-export const getUserIdByString = (obj: { userId: string }) => {
+export const checkPermissionForDistrict = (
+  requestDistrictId: string,
+  resourceDistrictId: string
+) => {
+  if (requestDistrictId === resourceDistrictId) return
+  throw new Error(
+    'Not authorized to access this route'
+  )
+}
+
+export const getUserIdByString = (obj: any) => {
   return {
     userId: obj.userId.toString(),
   }
