@@ -13,7 +13,6 @@ model User {
   email     String   @unique
   password  String
   role           String    @default("user")
-  emailVerified  Boolean   @default(false)
   otp            String?
   otpCreatedTime DateTime?
   otpAttempts    Int       @default(0)

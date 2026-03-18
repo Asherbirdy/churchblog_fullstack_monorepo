@@ -26,4 +26,11 @@ router.post(
   AccountController.sendVerificationEmail
 )
 
+router.post(
+  '/changePasswordWithOTP',
+  authenticateUser,
+  authorizePermission(Role.admin),
+  AccountController.changePasswordWithOTP
+)
+
 export default router

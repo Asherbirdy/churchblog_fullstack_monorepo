@@ -1,6 +1,6 @@
 import { Response } from 'express'
 import { StatusCode } from '../../enum'
-import { BadRequestError, NotFoundError } from '../../errors'
+import { BadRequestError, ForbiddenError, NotFoundError } from '../../errors'
 import prisma from '../../db'
 import { Req } from '../../types'
 import { generateOTP, sendOTP } from '../../utils/emailService'
@@ -29,11 +29,7 @@ export const SendVerificationEmailController = async (req: Req, res: Response) =
   if (user.isBlocked) {
     const currentTime = new Date()
     if (user.blockUntil && currentTime < user.blockUntil) {
-      res.status(StatusCode.FORBIDDEN).json({
-        errCode: 'ACCOUNT_BLOCKED',
-        msg: 'Account blocked. Try after some time.',
-      })
-      return
+      throw new ForbiddenError('ACCOUNT_BLOCKED')
     }
 
     await prisma.user.update({
@@ -46,11 +42,7 @@ export const SendVerificationEmailController = async (req: Req, res: Response) =
   const currentTime = new Date()
 
   if (user.otpCreatedTime && currentTime.getTime() - user.otpCreatedTime.getTime() < 60000) {
-    res.status(StatusCode.BAD_REQUEST).json({
-      errCode: 'MINIMUM_1_MINUTE_GAP_REQUIRED',
-      msg: 'Minimum 1-minute gap required between OTP requests',
-    })
-    return
+    throw new BadRequestError('MINIMUM_1_MINUTE_GAP_REQUIRED')
   }
 
   const otp = generateOTP()
