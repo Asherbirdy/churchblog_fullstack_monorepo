@@ -19,4 +19,11 @@ router.delete(
   AccountController.deleteUser
 )
 
+router.post(
+  '/sendVerificationEmail',
+  authenticateUser,
+  authorizePermission(Role.admin),
+  AccountController.sendVerificationEmail
+)
+
 export default router
