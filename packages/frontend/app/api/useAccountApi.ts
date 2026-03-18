@@ -1,7 +1,13 @@
 import { useRequestApi } from '~/composables'
-import { UserRequestUrl } from '~/enum'
+import { PublicRequestUrl, UserRequestUrl } from '~/enum'
 
 export const useAccountApi = {
+  adminInit: async (body: { name: string, email: string, password: string }) => {
+    return await useRequestApi(PublicRequestUrl.AccountAdminInit, {
+      method: 'POST',
+      body
+    })
+  },
   adminRegisterUser: async (body: { name: string, email: string, password: string }) => {
     return await useRequestApi(UserRequestUrl.AccountAdminRegisterUser, {
       method: 'POST',
