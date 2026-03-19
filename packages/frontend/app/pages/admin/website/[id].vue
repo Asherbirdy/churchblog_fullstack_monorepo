@@ -30,9 +30,10 @@ const { data, refresh: refreshPageInfo } = await usePageApi.getOne(id)
 const {
   execute: executeUpdate,
   status: updateStatus
-} = await usePageApi.editedHtml(id, {
-  editedHtml: toRef(() => state.value.data.page.editedHtml)
-})
+} = await usePageApi.editedHtml(
+  id,
+  { editedHtml: toRef(() => state.value.data.page.editedHtml) }
+)
 
 const {
   execute: executeSetToOnlineScheduled,
@@ -49,11 +50,15 @@ const {
   status: cancelScheduledStatus
 } = await usePageApi.cancelScheduled(id)
 
-const handleSave = async () => {
-  await executeUpdate()
+const refreshData = async () => {
   clearNuxtData(UserRequestUrl.Page)
   await refreshNuxtData([UserRequestUrl.Page])
   await refreshPageInfo()
+}
+
+const handleSave = async () => {
+  await executeUpdate()
+  await refreshData()
   toast.add({
     title: '儲存成功',
     color: 'success'
@@ -62,23 +67,17 @@ const handleSave = async () => {
 
 const handleSetToOnlineScheduled = async () => {
   await executeSetToOnlineScheduled()
-  clearNuxtData(UserRequestUrl.Page)
-  await refreshNuxtData([UserRequestUrl.Page])
-  await refreshPageInfo()
+  await refreshData()
 }
 
 const handleSetToOfflineScheduled = async () => {
   await executeSetToOfflineScheduled()
-  clearNuxtData(UserRequestUrl.Page)
-  await refreshNuxtData([UserRequestUrl.Page])
-  await refreshPageInfo()
+  await refreshData()
 }
 
 const cancelScheduled = async () => {
   await executeCancelScheduled()
-  clearNuxtData(UserRequestUrl.Page)
-  await refreshNuxtData([UserRequestUrl.Page])
-  await refreshPageInfo()
+  await refreshData()
 }
 
 watch(data, (val) => {
@@ -160,7 +159,7 @@ watch(data, (val) => {
       <!-- Footer -->
       <div class="flex justify-end gap-3 px-6 py-4 border-t border-sand-100">
         <UButton
-          v-if="state.data.page.isEdit"
+          v-if="state.data.page.setStatus === 'none'"
           label="安排上線"
           class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
           icon="i-lucide-calendar-check"
@@ -169,7 +168,7 @@ watch(data, (val) => {
         />
 
         <UButton
-          v-if="state.data.page.isEdit"
+          v-if="state.data.page.setStatus === 'none' && state.data.page.status === 'online'"
           label="安排下線"
           class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
           icon="i-lucide-calendar-check"
@@ -178,7 +177,7 @@ watch(data, (val) => {
         />
 
         <UButton
-          v-if="state.data.page.isEdit"
+          v-if="state.data.page.setStatus === 'scheduledOnline'|| state.data.page.setStatus === 'scheduledOffline'"
           label="取消排程"
           class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
           icon="i-lucide-calendar-check"
