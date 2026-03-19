@@ -25,7 +25,7 @@ const state = ref({
   }
 })
 
-const { data } = await usePageApi.getOne(id)
+const { data, refresh: refreshPageInfo } = await usePageApi.getOne(id)
 
 const {
   execute: executeUpdate,
@@ -53,6 +53,7 @@ const handleSave = async () => {
   await executeUpdate()
   clearNuxtData(UserRequestUrl.Page)
   await refreshNuxtData([UserRequestUrl.Page])
+  await refreshPageInfo()
   toast.add({
     title: '儲存成功',
     color: 'success'
@@ -63,18 +64,21 @@ const handleSetToOnlineScheduled = async () => {
   await executeSetToOnlineScheduled()
   clearNuxtData(UserRequestUrl.Page)
   await refreshNuxtData([UserRequestUrl.Page])
+  await refreshPageInfo()
 }
 
 const handleSetToOfflineScheduled = async () => {
   await executeSetToOfflineScheduled()
   clearNuxtData(UserRequestUrl.Page)
   await refreshNuxtData([UserRequestUrl.Page])
+  await refreshPageInfo()
 }
 
 const cancelScheduled = async () => {
   await executeCancelScheduled()
   clearNuxtData(UserRequestUrl.Page)
   await refreshNuxtData([UserRequestUrl.Page])
+  await refreshPageInfo()
 }
 
 watch(data, (val) => {
