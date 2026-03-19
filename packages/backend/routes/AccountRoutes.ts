@@ -12,6 +12,8 @@ router.post(
 
 router.post(
   '/adminRegisterUser',
+  authenticateUser,
+  authorizePermission(Role.admin),
   AccountController.adminRegisterUser
 )
 
