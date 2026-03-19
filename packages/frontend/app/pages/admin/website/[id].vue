@@ -104,6 +104,11 @@ const handleGoToPreviousHtml = async () => {
   }
 }
 
+const hasUnsavedChanges = computed(() => {
+  const original = data.value?.page?.editedHtml || ''
+  return state.value.data.page.editedHtml !== original
+})
+
 watch(data, (val) => {
   const { data: pageData } = state.value
   if (val?.page) {
@@ -227,7 +232,7 @@ watch(data, (val) => {
       <!-- Footer -->
       <div class="flex justify-end gap-3 px-6 py-4 border-t border-sand-100">
         <UButton
-          v-if="state.data.page.setStatus === 'none'"
+          v-if="state.data.page.setStatus === 'none' && !hasUnsavedChanges"
           label="安排上線"
           class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
           icon="i-lucide-calendar-check"
@@ -236,7 +241,7 @@ watch(data, (val) => {
         />
 
         <UButton
-          v-if="state.data.page.setStatus === 'none' && state.data.page.status === 'online'"
+          v-if="state.data.page.setStatus === 'none' && state.data.page.status === 'online' && !hasUnsavedChanges"
           label="安排下線"
           class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
           icon="i-lucide-calendar-check"
