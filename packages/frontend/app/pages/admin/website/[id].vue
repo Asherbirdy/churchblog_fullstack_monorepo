@@ -18,6 +18,8 @@ const state = ref({
       name: '',
       routeName: '',
       editedHtml: '',
+      onlineHtml: '',
+      previousHtml: '',
       status: 'offline' as RecordStatus,
       setStatus: 'none',
       isEdit: false
@@ -86,6 +88,8 @@ watch(data, (val) => {
     pageData.page.name = val.page.name
     pageData.page.routeName = val.page.routeName
     pageData.page.editedHtml = val.page.editedHtml || ''
+    pageData.page.onlineHtml = val.page.onlineHtml || ''
+    pageData.page.previousHtml = val.page.previousHtml || ''
     pageData.page.status = val.page.status as RecordStatus
     pageData.page.setStatus = val.page.setStatus || 'none'
     pageData.page.isEdit = val.page.isEdit
@@ -147,7 +151,49 @@ watch(data, (val) => {
           <label class="text-xs font-medium text-sand-500 mb-1.5 block w-full">
             內容
           </label>
-          <ClientOnly>
+
+          <!-- 排程中：左右對比 -->
+          <div
+            v-if="state.data.page.setStatus === 'scheduledOnline' || state.data.page.setStatus === 'scheduledOffline'"
+            class="grid grid-cols-2 gap-4"
+          >
+            <!-- 左：預計上線內容 -->
+            <div>
+              <p class="text-xs font-medium text-sand-500 mb-1.5">
+                預計上線內容
+              </p>
+              <div class="w-full rounded-xl border border-sand-200 bg-white p-4 min-h-[240px]">
+                <div
+                  class="tiptap prose prose-sm max-w-none text-left"
+                  v-html="state.data.page.onlineHtml"
+                />
+              </div>
+            </div>
+
+            <!-- 右：目前上線版本 -->
+            <div>
+              <p class="text-xs font-medium text-sand-500 mb-1.5">
+                目前上線版本
+              </p>
+              <div class="w-full rounded-xl border border-sand-200 bg-white p-4 min-h-[240px]">
+                <template v-if="state.data.page.previousHtml">
+                  <div
+                    class="tiptap prose prose-sm max-w-none text-left"
+                    v-html="state.data.page.previousHtml"
+                  />
+                </template>
+                <p
+                  v-else
+                  class="text-sand-400 text-sm"
+                >
+                  無
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 一般狀態：編輯器 -->
+          <ClientOnly v-else>
             <TiptapEditor v-model="state.data.page.editedHtml" />
             <template #fallback>
               <div class="w-full rounded-xl border border-sand-200 bg-white min-h-[290px] animate-pulse" />
