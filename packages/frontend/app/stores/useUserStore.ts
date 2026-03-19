@@ -5,7 +5,9 @@ export const useUserStore = defineStore('user', () => {
     data: {
       id: '',
       name: '',
-      email: ''
+      email: '',
+      role: '',
+      access: [] as string[]
     },
     feature: {
       loading: false
