@@ -191,8 +191,8 @@ watch(data, (val) => {
               </p>
               <div class="w-full rounded-xl border border-sand-200 bg-white p-4 min-h-[240px]">
                 <div
+                  v-dompurify-html="state.data.page.onlineHtml"
                   class="tiptap prose prose-sm max-w-none text-left"
-                  v-html="state.data.page.onlineHtml"
                 />
               </div>
             </div>
@@ -205,8 +205,8 @@ watch(data, (val) => {
               <div class="w-full rounded-xl border border-sand-200 bg-white p-4 min-h-[240px]">
                 <template v-if="state.data.page.previousHtml">
                   <div
+                    v-dompurify-html="state.data.page.previousHtml"
                     class="tiptap prose prose-sm max-w-none text-left"
-                    v-html="state.data.page.previousHtml"
                   />
                 </template>
                 <p
@@ -293,8 +293,8 @@ watch(data, (val) => {
           <div class="w-full rounded-xl border border-sand-200 bg-sand-50 p-4 max-h-[400px] overflow-y-auto">
             <template v-if="state.data.page.previousHtml">
               <div
+                v-dompurify-html="state.data.page.previousHtml"
                 class="tiptap prose prose-sm max-w-none text-left"
-                v-html="state.data.page.previousHtml"
               />
             </template>
             <p
