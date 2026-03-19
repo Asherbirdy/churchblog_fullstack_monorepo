@@ -24,6 +24,9 @@ const state = ref({
       setStatus: 'none',
       isEdit: false
     }
+  },
+  feature: {
+    revertModal: false
   }
 })
 
@@ -51,6 +54,12 @@ const {
   execute: executeCancelScheduled,
   status: cancelScheduledStatus
 } = await usePageApi.cancelScheduled(id)
+
+const {
+  execute: executeGoToPreviousHtml,
+  status: goToPreviousHtmlStatus,
+  error: goToPreviousHtmlError
+} = await usePageApi.goToPreviousHtml(id)
 
 const refreshData = async () => {
   clearNuxtData(UserRequestUrl.Page)
@@ -80,6 +89,19 @@ const handleSetToOfflineScheduled = async () => {
 const cancelScheduled = async () => {
   await executeCancelScheduled()
   await refreshData()
+}
+
+const handleGoToPreviousHtml = async () => {
+  await executeGoToPreviousHtml()
+  await refreshData()
+  state.value.feature.revertModal = false
+  if (goToPreviousHtmlError.value) {
+    toast.add({
+      title: '還原失敗',
+      description: goToPreviousHtmlError.value as string,
+      color: 'error'
+    })
+  }
 }
 
 watch(data, (val) => {
@@ -232,10 +254,11 @@ watch(data, (val) => {
         />
 
         <UButton
-          v-if="state.data.page.setStatus === 'none'"
+          v-if="state.data.page.previousHtml !== ''"
           label="取消編輯"
           class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
           icon="i-lucide-undo"
+          @click="state.feature.revertModal = true"
         />
 
         <UButton
@@ -252,5 +275,47 @@ watch(data, (val) => {
         />
       </div>
     </div>
+    <!-- Revert Modal -->
+    <UModal v-model:open="state.feature.revertModal">
+      <template #content>
+        <div class="p-6 space-y-4">
+          <h3 class="text-lg font-semibold text-sand-950">
+            確認取消編輯
+          </h3>
+          <p class="text-sm text-sand-500">
+            將還原為以下的上線版本內容：
+          </p>
+          <div class="w-full rounded-xl border border-sand-200 bg-sand-50 p-4 max-h-[400px] overflow-y-auto">
+            <template v-if="state.data.page.previousHtml">
+              <div
+                class="tiptap prose prose-sm max-w-none text-left"
+                v-html="state.data.page.previousHtml"
+              />
+            </template>
+            <p
+              v-else
+              class="text-sand-400 text-sm"
+            >
+              無
+            </p>
+          </div>
+          <div class="flex justify-end gap-3 pt-2">
+            <UButton
+              label="取消"
+              variant="outline"
+              class="rounded-xl"
+              @click="state.feature.revertModal = false"
+            />
+            <UButton
+              label="確認還原"
+              class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
+              icon="i-lucide-undo"
+              :loading="goToPreviousHtmlStatus === 'pending'"
+              @click="handleGoToPreviousHtml"
+            />
+          </div>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>
