@@ -1,5 +1,5 @@
 import { isTokenValid, attachCookieToResponse } from '../utils'
-import { StatusCode, Role } from '../enum'
+import { StatusCode, Role, AccessEnum } from '../enum'
 import prisma from '../db'
 import { Request, Response, NextFunction } from 'express'
 import { Req } from '../types'
@@ -10,6 +10,7 @@ interface UserPayload {
     name: string;
     userId: string;
     role: string;
+    access: string[];
   };
   refreshToken?: string;
 }
@@ -83,12 +84,33 @@ export const authenticateUser = async (req: CustomRequest, res: Response, next: 
 export const authorizePermission = (... roles: Role[]) => {
   return (req: Req, res: Response, next: NextFunction) => {
     if (!req.user || !roles.includes(req.user.role as Role)) {
-      res.status(StatusCode.UNAUTHORIZED).json({ 
+      res.status(StatusCode.UNAUTHORIZED).json({
         errCode: 'AUTHENTICATION_INVALID',
-        msg: 'Authentication Invalid(如果是postman 要記得在header 加上Authorization: Bearer <token>)' 
+        msg: 'Authentication Invalid(如果是postman 要記得在header 加上Authorization: Bearer <token>)'
       })
       return
     }
+    next()
+  }
+}
+
+export const authAccess = (... accesses: AccessEnum[]) => {
+  return (req: Req, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      res.status(StatusCode.UNAUTHORIZED).json({
+        errCode: 'AUTHENTICATION_INVALID',
+      })
+      return
+    }
+
+    const hasAccess = accesses.every((a) => req.user!.access.includes(a))
+    if (!hasAccess) {
+      res.status(StatusCode.FORBIDDEN).json({
+        errCode: `${ accesses.join('_') }_ACCESS_DENIED`,
+      })
+      return
+    }
+
     next()
   }
 }

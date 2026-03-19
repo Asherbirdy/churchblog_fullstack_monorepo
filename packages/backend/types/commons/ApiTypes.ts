@@ -5,5 +5,6 @@ export interface Req extends Request {
   user?: {
     userId: string
     role: string
+    access: string[]
   }
 }
