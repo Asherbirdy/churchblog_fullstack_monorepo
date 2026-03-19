@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { usePageApi } from '~/api'
 import { UserRequestUrl, type RecordStatus } from '~/enum'
+import { TiptapEditor } from '@/components'
 
 definePageMeta({
   layout: 'editor'
