@@ -9,10 +9,25 @@ const state = ref({
       { id: '5', name: '林雅婷', email: 'yating@example.com', role: 'admin', isBlocked: false, createdAt: '2026-03-10' }
     ]
   },
-  feature: {}
+  feature: {
+    deleteModal: false,
+    deleteTargetId: ''
+  }
 })
 
 const roleLabel = (role: string) => role === 'admin' ? '管理員' : '一般用戶'
+
+const openDeleteModal = (id: string) => {
+  state.value.feature.deleteTargetId = id
+  state.value.feature.deleteModal = true
+}
+
+const confirmDelete = () => {
+  const id = state.value.feature.deleteTargetId
+  state.value.data.users = state.value.data.users.filter(user => user.id !== id)
+  state.value.feature.deleteModal = false
+  state.value.feature.deleteTargetId = ''
+}
 </script>
 
 <template>
@@ -47,6 +62,9 @@ const roleLabel = (role: string) => role === 'admin' ? '管理員' : '一般用�
             <th class="text-left px-6 py-3 text-xs font-medium text-sand-400 uppercase tracking-wide">
               建立日期
             </th>
+            <th class="text-left px-6 py-3 text-xs font-medium text-sand-400 uppercase tracking-wide">
+              操作
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -80,9 +98,55 @@ const roleLabel = (role: string) => role === 'admin' ? '管理員' : '一般用�
             <td class="px-6 py-4 text-sand-500">
               {{ user.createdAt }}
             </td>
+            <td class="px-6 py-4">
+              <UButton
+                color="error"
+                variant="soft"
+                size="xs"
+                icon="i-lucide-trash-2"
+                @click="openDeleteModal(user.id)"
+              >
+                刪除
+              </UButton>
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <!-- Delete Confirm Modal -->
+    <UModal v-model:open="state.feature.deleteModal">
+      <template #content>
+        <div class="p-6 text-center">
+          <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+            <UIcon
+              name="i-lucide-triangle-alert"
+              class="text-red-600 text-xl"
+            />
+          </div>
+          <h3 class="text-lg font-semibold text-sand-950 mb-2">
+            確認刪除
+          </h3>
+          <p class="text-sm text-sand-500 mb-6">
+            確定要刪除此帳號嗎？此操作無法復原。
+          </p>
+          <div class="flex justify-center gap-3">
+            <UButton
+              variant="outline"
+              color="neutral"
+              @click="state.feature.deleteModal = false"
+            >
+              取消
+            </UButton>
+            <UButton
+              color="error"
+              @click="confirmDelete"
+            >
+              確認刪除
+            </UButton>
+          </div>
+        </div>
+      </template>
+    </UModal>
   </div>
 </template>
