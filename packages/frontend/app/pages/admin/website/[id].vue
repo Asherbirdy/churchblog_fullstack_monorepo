@@ -232,6 +232,13 @@ watch(data, (val) => {
         />
 
         <UButton
+          v-if="state.data.page.setStatus === 'none'"
+          label="取消編輯"
+          class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
+          icon="i-lucide-undo"
+        />
+
+        <UButton
           label="儲存"
           class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
           icon="i-lucide-save"
