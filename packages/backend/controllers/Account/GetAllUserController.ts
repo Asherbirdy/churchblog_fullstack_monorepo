@@ -9,6 +9,7 @@ export const GetAllUserController = async (req: Request, res: Response) => {
       name: true,
       email: true,
       role: true,
+      access: true,
       isBlocked: true,
       createdAt: true,
       updatedAt: true,
