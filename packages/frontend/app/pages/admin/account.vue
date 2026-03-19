@@ -15,16 +15,17 @@ const users = computed(() => data.value?.users ?? [])
 const roleLabel = (role: string) => role === 'admin' ? '管理員' : '一般用戶'
 
 const openDeleteModal = (id: string) => {
-  state.value.feature.deleteTargetId = id
-  state.value.feature.deleteModal = true
+  const { feature } = state.value
+  feature.deleteTargetId = id
+  feature.deleteModal = true
 }
 
 const confirmDelete = async () => {
-  const id = state.value.feature.deleteTargetId
-  await useAccountApi.deleteUser(id)
+  const { feature } = state.value
+  await useAccountApi.deleteUser(feature.deleteTargetId)
   await execute()
-  state.value.feature.deleteModal = false
-  state.value.feature.deleteTargetId = ''
+  feature.deleteModal = false
+  feature.deleteTargetId = ''
 }
 </script>
 

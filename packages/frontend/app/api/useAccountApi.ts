@@ -46,8 +46,6 @@ export const useAccountApi = {
       method: 'GET',
       server: false,
       lazy: true,
-      immediate: false,
-      watch: false,
       key: UserRequestUrl.AccountGetAllUser,
       getCachedData: key => useNuxtApp().payload.data[key] || useNuxtApp().static.data[key]
     })

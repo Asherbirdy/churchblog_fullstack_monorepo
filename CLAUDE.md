@@ -198,6 +198,23 @@ const state = ref({
 })
 ```
 
+### State Destructuring Convention
+When a function accesses multiple properties on `state.value.data` or `state.value.feature`, destructure first to avoid repeating the full path:
+```typescript
+// Good — destructure then use
+const openDeleteModal = (id: string) => {
+  const { feature } = state.value
+  feature.deleteTargetId = id
+  feature.deleteModal = true
+}
+
+// Bad — repeating full path
+const openDeleteModal = (id: string) => {
+  state.value.feature.deleteTargetId = id
+  state.value.feature.deleteModal = true
+}
+```
+
 ### Reactivity Convention
 - Always use `ref()` for all reactive variables — **never use `reactive()`**
 
