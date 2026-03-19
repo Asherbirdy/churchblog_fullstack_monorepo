@@ -5,7 +5,7 @@ import { createTokenUser, attachCookieToResponse } from '../../utils'
 import { BadRequestError } from '../../errors'
 import bcrypt from 'bcryptjs'
 
-export const AdminInitController = async (req: Request, res: Response) => {
+export const RegisterFirstAdminController = async (req: Request, res: Response) => {
   const existingAdmin = await prisma.user.findFirst({ where: { role: Role.admin } })
   if (existingAdmin) {
     throw new BadRequestError('ADMIN_ALREADY_EXISTS')
