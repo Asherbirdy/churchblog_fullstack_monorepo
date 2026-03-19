@@ -1,6 +1,20 @@
 import { useRequestApi } from '~/composables'
 import { PublicRequestUrl, UserRequestUrl } from '~/enum'
 
+export interface GetAllUserResponse {
+  users: User[]
+}
+
+export interface User {
+  id: string
+  name: string
+  email: string
+  role: string
+  isBlocked: boolean
+  createdAt: string
+  updatedAt: string
+}
+
 export const useAccountApi = {
   adminInit: async (body: { name: string, email: string, password: string }) => {
     return await useRequestApi(PublicRequestUrl.AccountAdminInit, {
@@ -28,12 +42,14 @@ export const useAccountApi = {
     })
   },
   getAllUser: async () => {
-    return await useRequestApi(UserRequestUrl.AccountGetAllUser, {
+    return await useRequestApi<GetAllUserResponse, never>(UserRequestUrl.AccountGetAllUser, {
       method: 'GET',
       server: false,
       lazy: true,
       immediate: false,
-      watch: false
+      watch: false,
+      key: UserRequestUrl.AccountGetAllUser,
+      getCachedData: key => useNuxtApp().payload.data[key] || useNuxtApp().static.data[key]
     })
   }
 }

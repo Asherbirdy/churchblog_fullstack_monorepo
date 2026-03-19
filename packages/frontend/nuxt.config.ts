@@ -25,10 +25,12 @@ export default defineNuxtConfig({
   },
 
   routeRules: {
-    '/': { prerender: true }
+    '/': { prerender: true },
+    '/admin/*': { ssr: false }
   },
 
   compatibilityDate: '2025-01-15',
+
   hooks: {
     async 'prerender:routes'(ctx) {
       const apiUrl = process.env.NUXT_PUBLIC_API_URL
@@ -39,7 +41,7 @@ export default defineNuxtConfig({
       try {
         const res = await fetch(`${apiUrl}/page/online`)
         if (!res.ok) throw new Error(`API responded with ${res.status}`)
-        const { onlinePages } = await res.json() as { onlinePages: { routeName: string }[] }
+        const { onlinePages } = await res.json()
         for (const p of onlinePages) {
           ctx.routes.add(`/C/${p.routeName}`)
         }

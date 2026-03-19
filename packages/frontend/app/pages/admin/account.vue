@@ -1,19 +1,16 @@
 <script setup lang="ts">
+import { useAccountApi } from '~/api'
+
 const state = ref({
-  data: {
-    users: [
-      { id: '1', name: '王小明', email: 'ming@example.com', role: 'admin', isBlocked: false, createdAt: '2025-12-01' },
-      { id: '2', name: '李美麗', email: 'meili@example.com', role: 'user', isBlocked: false, createdAt: '2026-01-15' },
-      { id: '3', name: '張大華', email: 'dahua@example.com', role: 'user', isBlocked: true, createdAt: '2026-02-20' },
-      { id: '4', name: '陳志偉', email: 'zhiwei@example.com', role: 'user', isBlocked: false, createdAt: '2026-03-05' },
-      { id: '5', name: '林雅婷', email: 'yating@example.com', role: 'admin', isBlocked: false, createdAt: '2026-03-10' }
-    ]
-  },
+  data: {},
   feature: {
     deleteModal: false,
     deleteTargetId: ''
   }
 })
+
+const { data, execute } = await useAccountApi.getAllUser()
+const users = computed(() => data.value?.users ?? [])
 
 const roleLabel = (role: string) => role === 'admin' ? '管理員' : '一般用戶'
 
@@ -22,9 +19,10 @@ const openDeleteModal = (id: string) => {
   state.value.feature.deleteModal = true
 }
 
-const confirmDelete = () => {
+const confirmDelete = async () => {
   const id = state.value.feature.deleteTargetId
-  state.value.data.users = state.value.data.users.filter(user => user.id !== id)
+  await useAccountApi.deleteUser(id)
+  await execute()
   state.value.feature.deleteModal = false
   state.value.feature.deleteTargetId = ''
 }
@@ -69,7 +67,7 @@ const confirmDelete = () => {
         </thead>
         <tbody>
           <tr
-            v-for="user in state.data.users"
+            v-for="user in users"
             :key="user.id"
             class="border-b border-sand-100 last:border-b-0 hover:bg-sand-50 transition-colors"
           >
