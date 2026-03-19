@@ -5,7 +5,7 @@ import { AddWebsiteButton } from '~/components'
 const state = ref({
   data: {},
   feature: {
-    activeTab: 'all'
+    activeTab: 'online'
   }
 })
 
@@ -13,9 +13,10 @@ const { data, status } = await usePageApi.getAll()
 const pages = computed(() => data.value?.pages ?? [])
 
 const tabs = [
-  { key: 'all', label: '全部' },
   { key: 'online', label: '上線中' },
-  { key: 'offline', label: '未上線' }
+  { key: 'offline', label: '未上線' },
+  { key: 'scheduledOnline', label: '安排上線中' },
+  { key: 'scheduledOffline', label: '安排下線中' }
 ]
 
 const statusMap: Record<string, { label: string, dotClass: string }> = {
@@ -26,8 +27,11 @@ const statusMap: Record<string, { label: string, dotClass: string }> = {
 const getStatus = (status: string) => statusMap[status] || statusMap.offline
 
 const filteredPages = computed(() => {
-  if (state.value.feature.activeTab === 'all') return pages.value
-  return pages.value.filter((p: { status: string }) => p.status === state.value.feature.activeTab)
+  const tab = state.value.feature.activeTab
+  if (tab === 'scheduledOnline' || tab === 'scheduledOffline') {
+    return pages.value.filter((p: { setStatus: string }) => p.setStatus === tab)
+  }
+  return pages.value.filter((p: { status: string }) => p.status === tab)
 })
 </script>
 
