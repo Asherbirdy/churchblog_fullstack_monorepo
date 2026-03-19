@@ -31,4 +31,11 @@ router.get(
   AccountController.getAllUser
 )
 
+router.patch(
+  '/editAccess',
+  authenticateUser,
+  authorizePermission(Role.admin),
+  AccountController.editAccess
+)
+
 export default router
