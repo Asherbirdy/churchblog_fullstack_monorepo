@@ -8,6 +8,5 @@
 先註冊admin帳號
 登入admin帳號
 幫user註冊user帳號
-寄送驗證郵件給user
-user收到郵件後改密碼
 user登入
+admin刪掉user帳號
