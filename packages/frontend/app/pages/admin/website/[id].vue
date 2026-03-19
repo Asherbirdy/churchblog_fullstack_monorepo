@@ -98,7 +98,9 @@ const handleGoToPreviousHtml = async () => {
   if (goToPreviousHtmlError.value) {
     toast.add({
       title: '還原失敗',
-      description: goToPreviousHtmlError.value as string,
+      description: goToPreviousHtmlError.value.data.error === 'NO_ONLINE_HTML'
+        ? '沒有線上版本可以還原'
+        : '頁面已排程，無法還原',
       color: 'error'
     })
   }

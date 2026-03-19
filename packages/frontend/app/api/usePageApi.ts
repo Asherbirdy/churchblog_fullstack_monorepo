@@ -71,6 +71,13 @@ export interface OnlinePage {
   routeName: string
 }
 
+export interface GoToPreviousHtmlError {
+  data: {
+    success: boolean
+    error: 'asdas'
+  }
+}
+
 export const usePageApi = {
   getOne: async (id: string) => {
     return await useRequestApi<GetPageInfoResponse, never>(
@@ -170,7 +177,7 @@ export const usePageApi = {
       })
   },
   goToPreviousHtml: async (id: string) => {
-    return await useRequestApi(
+    return await useRequestApi<unknown, never>(
       `${UserRequestUrl.PageGoToPreviousHtml}/${id}`, {
         method: 'PATCH',
         immediate: false,
