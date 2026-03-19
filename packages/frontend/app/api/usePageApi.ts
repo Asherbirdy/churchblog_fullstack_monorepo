@@ -74,7 +74,7 @@ export interface OnlinePage {
 export interface GoToPreviousHtmlError {
   data: {
     success: boolean
-    error: 'asdas'
+    error: 'NO_ONLINE_HTML' | 'PAGE_IS_SCHEDULED'
   }
 }
 
@@ -177,7 +177,7 @@ export const usePageApi = {
       })
   },
   goToPreviousHtml: async (id: string) => {
-    return await useRequestApi<unknown, never>(
+    return await useRequestApi<unknown, GoToPreviousHtmlError>(
       `${UserRequestUrl.PageGoToPreviousHtml}/${id}`, {
         method: 'PATCH',
         immediate: false,
