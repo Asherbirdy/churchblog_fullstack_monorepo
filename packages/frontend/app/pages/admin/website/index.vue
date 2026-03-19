@@ -94,8 +94,8 @@ const filteredPages = computed(() => {
         </div>
       </div>
 
-      <!-- Empty filtered -->
-      <template v-if="filteredPages.length === 0">
+      <!-- Loading skeleton -->
+      <template v-if="status === 'pending'">
         <div
           v-for="i in 3"
           :key="i"
@@ -108,6 +108,20 @@ const filteredPages = computed(() => {
           </div>
         </div>
       </template>
+
+      <!-- Empty -->
+      <div
+        v-else-if="filteredPages.length === 0"
+        class="flex flex-col items-center justify-center py-16 text-sand-400"
+      >
+        <UIcon
+          name="i-lucide-file-x"
+          class="text-4xl mb-3"
+        />
+        <p class="text-sm">
+          沒有任何內容
+        </p>
+      </div>
     </div>
   </div>
 </template>
