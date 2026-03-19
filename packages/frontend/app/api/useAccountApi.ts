@@ -27,26 +27,6 @@ export const useAccountApi = {
       watch: false
     })
   },
-  sendVerificationEmail: async (body: { email: string }) => {
-    return await useRequestApi(UserRequestUrl.AccountSendVerificationEmail, {
-      method: 'POST',
-      body,
-      server: false,
-      lazy: true,
-      immediate: false,
-      watch: false
-    })
-  },
-  changePasswordWithOTP: async (body: { otp: string, newPassword: string }) => {
-    return await useRequestApi(UserRequestUrl.AccountChangePasswordWithOTP, {
-      method: 'POST',
-      body,
-      server: false,
-      lazy: true,
-      immediate: false,
-      watch: false
-    })
-  },
   getAllUser: async () => {
     return await useRequestApi(UserRequestUrl.AccountGetAllUser, {
       method: 'GET',

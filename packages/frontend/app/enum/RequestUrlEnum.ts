@@ -20,9 +20,9 @@ export enum UserRequestUrl {
   PageSetToOfflineScheduled = '/page/set-to-offline-scheduled',
   PageGoToPreviousHtml = '/page/go-to-previous-html',
   PageBeforeBuildAndDeploy = '/page/before-build-and-deploy',
+  AuthSendVerificationEmail = '/auth/sendVerificationEmail',
+  AuthChangePasswordWithOTP = '/auth/changePasswordWithOTP',
   AccountAdminRegisterUser = '/account/adminRegisterUser',
   AccountDeleteUser = '/account/deleteUser',
-  AccountSendVerificationEmail = '/account/sendVerificationEmail',
-  AccountChangePasswordWithOTP = '/account/changePasswordWithOTP',
   AccountGetAllUser = '/account/getAllUser'
 }

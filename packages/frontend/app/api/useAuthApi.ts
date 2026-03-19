@@ -38,5 +38,25 @@ export const useAuthApi = {
     return await useRequestApi(UserRequestUrl.AuthCheckValidToken, {
       method: 'GET'
     })
+  },
+  sendVerificationEmail: async (body: { email: string }) => {
+    return await useRequestApi(UserRequestUrl.AuthSendVerificationEmail, {
+      method: 'POST',
+      body,
+      server: false,
+      lazy: true,
+      immediate: false,
+      watch: false
+    })
+  },
+  changePasswordWithOTP: async (body: { otp: string, newPassword: string }) => {
+    return await useRequestApi(UserRequestUrl.AuthChangePasswordWithOTP, {
+      method: 'POST',
+      body,
+      server: false,
+      lazy: true,
+      immediate: false,
+      watch: false
+    })
   }
 }
