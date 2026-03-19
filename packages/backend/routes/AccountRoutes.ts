@@ -12,6 +12,8 @@ router.post(
 
 router.post(
   '/adminRegisterUser',
+  authenticateUser,
+  authorizePermission(Role.admin),
   AccountController.adminRegisterUser
 )
 
@@ -20,19 +22,6 @@ router.delete(
   authenticateUser,
   authorizePermission(Role.admin),
   AccountController.deleteUser
-)
-
-router.post(
-  '/sendVerificationEmail',
-  authenticateUser,
-  authorizePermission(Role.admin),
-  AccountController.sendVerificationEmail
-)
-
-router.post(
-  '/changePasswordWithOTP',
-  authenticateUser,
-  AccountController.changePasswordWithOTP
 )
 
 router.get(

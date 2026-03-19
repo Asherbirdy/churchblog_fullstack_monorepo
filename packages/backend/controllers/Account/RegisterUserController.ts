@@ -10,6 +10,11 @@ export const RegisterUserController = async (req: Request, res: Response) => {
     throw new BadRequestError('MISSING_REQUIRED_FIELDS')
   }
 
+  const existingUser = await prisma.user.findUnique({ where: { email } })
+  if (existingUser) {
+    throw new BadRequestError('EMAIL_ALREADY_IN_USE')
+  }
+
   const salt = await bcrypt.genSalt(10)
   const hashedPassword = await bcrypt.hash(password, salt)
 
@@ -18,7 +23,7 @@ export const RegisterUserController = async (req: Request, res: Response) => {
       name, 
       email, 
       password: hashedPassword, 
-      role: Role.admin 
+      role: Role.user 
     },
   })
 
