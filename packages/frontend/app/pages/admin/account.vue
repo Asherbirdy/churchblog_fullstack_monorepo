@@ -90,8 +90,8 @@ const confirmEditAccess = async () => {
       </p>
     </div>
 
-    <!-- User Table Card -->
-    <div class="bg-white rounded-2xl border border-sand-200 shadow-sm">
+    <!-- User Table (Desktop) -->
+    <div class="hidden lg:block bg-white rounded-2xl border border-sand-200 shadow-sm">
       <table class="w-full text-sm">
         <thead>
           <tr class="border-b border-sand-200 bg-sand-50">
@@ -190,6 +190,77 @@ const confirmEditAccess = async () => {
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- User Cards (Mobile) -->
+    <div class="lg:hidden space-y-3">
+      <div
+        v-for="user in users"
+        :key="user.id"
+        class="bg-white rounded-2xl border border-sand-200 shadow-sm p-4"
+      >
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <p class="font-medium text-sand-950">
+              {{ user.name }}
+            </p>
+            <p class="text-xs text-sand-500 mt-0.5">
+              {{ user.email }}
+            </p>
+          </div>
+          <span
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+            :class="user.isBlocked ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'"
+          >
+            {{ user.isBlocked ? '已封鎖' : '正常' }}
+          </span>
+        </div>
+        <div class="flex flex-wrap items-center gap-1.5 mb-3">
+          <span
+            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+            :class="user.role === 'admin' ? 'bg-sage-100 text-sage-700' : 'bg-sand-100 text-sand-600'"
+          >
+            {{ roleLabel(user.role) }}
+          </span>
+          <span
+            v-for="acc in user.access"
+            :key="acc"
+            class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-sage-100 text-sage-700"
+          >
+            {{ accessLabel(acc) }}
+          </span>
+          <span
+            v-if="!user.access?.length"
+            class="text-sand-400 text-xs"
+          >
+            無權限
+          </span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-sand-400">
+            {{ user.createdAt }}
+          </span>
+          <div class="flex gap-2">
+            <UButton
+              variant="soft"
+              size="xs"
+              icon="i-lucide-shield"
+              @click="openAccessModal(user)"
+            >
+              權限
+            </UButton>
+            <UButton
+              color="error"
+              variant="soft"
+              size="xs"
+              icon="i-lucide-trash-2"
+              @click="openDeleteModal(user.id)"
+            >
+              刪除
+            </UButton>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Delete Confirm Modal -->
