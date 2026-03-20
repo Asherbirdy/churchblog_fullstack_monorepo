@@ -4,6 +4,7 @@ export const createTokenUser = (user: User) => {
   return {
     name: user.name,
     userId: user.id,
-    role: user.role
+    role: user.role,
+    access: user.access,
   }
 }

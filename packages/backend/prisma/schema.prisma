@@ -13,6 +13,7 @@ model User {
   email     String   @unique
   password  String
   role           String    @default("user")
+  access    String[] 
   otp            String?
   otpCreatedTime DateTime?
   otpAttempts    Int       @default(0)

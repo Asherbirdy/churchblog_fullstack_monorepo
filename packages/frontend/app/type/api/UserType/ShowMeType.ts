@@ -3,5 +3,7 @@ export interface ShowMeResponse {
     id: string
     name: string
     email: string
+    role: string
+    access: string[]
   }
 }

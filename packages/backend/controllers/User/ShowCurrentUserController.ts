@@ -14,6 +14,8 @@ export const ShowCurrentUserController = async (req: Req, res: Response) => {
       id: true,
       name: true,
       email: true,
+      access: true,
+      role: true,
     },
   })
 
