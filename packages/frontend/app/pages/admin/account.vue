@@ -91,7 +91,7 @@ const confirmEditAccess = async () => {
     </div>
 
     <!-- User Table Card -->
-    <div class="bg-white rounded-2xl border border-sand-200 shadow-sm overflow-hidden">
+    <div class="bg-white rounded-2xl border border-sand-200 shadow-sm">
       <table class="w-full text-sm">
         <thead>
           <tr class="border-b border-sand-200 bg-sand-50">
