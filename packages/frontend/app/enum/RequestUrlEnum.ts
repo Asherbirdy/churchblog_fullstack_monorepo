@@ -25,5 +25,6 @@ export enum UserRequestUrl {
   AuthChangePasswordWithOTP = '/auth/changePasswordWithOTP',
   AccountAdminRegisterUser = '/account/adminRegisterUser',
   AccountDeleteUser = '/account/deleteUser',
-  AccountGetAllUser = '/account/getAllUser'
+  AccountGetAllUser = '/account/getAllUser',
+  AccountEditAccess = '/account/editAccess'
 }

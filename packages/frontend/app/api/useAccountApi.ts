@@ -10,6 +10,7 @@ export interface User {
   name: string
   email: string
   role: string
+  access: string[]
   isBlocked: boolean
   createdAt: string
   updatedAt: string
@@ -35,6 +36,16 @@ export const useAccountApi = {
   deleteUser: async (id: string) => {
     return await useRequestApi(`${UserRequestUrl.AccountDeleteUser}/${id}`, {
       method: 'DELETE',
+      server: false,
+      lazy: true,
+      immediate: false,
+      watch: false
+    })
+  },
+  editAccess: async (body: Ref<{ userId: string, access: string[] }>) => {
+    return await useRequestApi(UserRequestUrl.AccountEditAccess, {
+      method: 'PATCH',
+      body,
       server: false,
       lazy: true,
       immediate: false,
