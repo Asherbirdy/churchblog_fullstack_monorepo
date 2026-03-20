@@ -30,6 +30,8 @@ const state = ref({
   }
 })
 
+const userStore = useUserStore()
+
 const { data, refresh: refreshPageInfo } = await usePageApi.getOne(id)
 
 const {
@@ -232,7 +234,10 @@ watch(data, (val) => {
       </div>
 
       <!-- Footer -->
-      <div class="flex justify-end gap-3 px-6 py-4 border-t border-sand-100">
+      <div
+        v-if="userStore.hasAccess('page')"
+        class="flex justify-end gap-3 px-6 py-4 border-t border-sand-100"
+      >
         <UButton
           v-if="state.data.page.setStatus === 'none' && !hasUnsavedChanges"
           label="安排上線"
@@ -280,6 +285,12 @@ watch(data, (val) => {
           "
           @click="handleSave"
         />
+      </div>
+      <div
+        v-else
+        class="flex justify-end gap-3 px-6 py-4 border-t border-sand-100"
+      >
+        無權限編輯
       </div>
     </div>
     <!-- Revert Modal -->

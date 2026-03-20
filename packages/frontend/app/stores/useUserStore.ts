@@ -19,11 +19,13 @@ export const useUserStore = defineStore('user', () => {
 
   const setLoading = (value: boolean) => state.value.feature.loading = value
   const setUserInfo = (data: ShowMeResponse['user']) => state.value.data = data
+  const hasAccess = (access: string) => state.value.data.access.includes(access)
 
   return {
     isLoading,
     userInfo,
     setLoading,
-    setUserInfo
+    setUserInfo,
+    hasAccess
   }
 })
