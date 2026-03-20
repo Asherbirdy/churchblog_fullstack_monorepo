@@ -9,5 +9,6 @@ export default {
   auth_token: process.env.AUTH_TOKEN as 'HEADER' | 'COOKIES',
   email_service_user: process.env.EMAIL_SERVICE_USER,
   email_service_pass: process.env.EMAIL_SERVICE_PASS,
+  cors_origin: process.env.CORS_ORIGIN || '*'
   // jwt_secret: process.env.JWT_SECRET
 }

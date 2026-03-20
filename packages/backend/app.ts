@@ -28,7 +28,7 @@ class Server {
   }
 
   middlewares () {
-    this.app.use(cors())
+    this.app.use(cors({ origin: config.cors_origin }))
     this.app.use(express.json())
     this.app.use(cookieParser(process.env.JWT_SECRET))
     this.app.use(express.static('public'))
@@ -77,6 +77,7 @@ class Server {
   listen () {
     this.app.listen(config.port, () => {
       // eslint-disable-next-line no-console
+      console.table(config)
       console.log(`Server up and running at port: ${ config.port }`)
     })
   }
