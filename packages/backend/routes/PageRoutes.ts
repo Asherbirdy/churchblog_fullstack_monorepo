@@ -16,7 +16,7 @@ router.patch('/set-to-online-scheduled/:id', authenticateUser, authAccess(Access
 router.patch('/cancel-scheduled/:id', authenticateUser, authAccess(AccessEnum.PAGE), PageController.cancelScheduled)
 router.patch('/set-to-offline-scheduled/:id', authenticateUser, authAccess(AccessEnum.PAGE), PageController.setToOfflineScheduled)
 router.patch('/go-to-previous-html/:id', authenticateUser, authAccess(AccessEnum.PAGE), PageController.goToPreviousHtml)
-router.patch('/before-build-and-deploy', authenticateUser, PageController.beforeBuildAndDeploy)
+router.get('/before-build-and-deploy', PageController.beforeBuildAndDeploy)
 router.patch('/reset', authenticateUser, authorizePermission(Role.admin), PageController.reset)
 
 export default router
