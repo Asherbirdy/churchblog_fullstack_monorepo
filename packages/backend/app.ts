@@ -33,11 +33,21 @@ class Server {
     this.app.use(cookieParser(process.env.JWT_SECRET))
     this.app.use(express.static('public'))
 
-    if (config.environment === 'DEV') {
-      this.app.use(
-        morgan('tiny')
-      )
-    }
+    const sensitiveRoutes = ['/api/v1/auth/login', '/api/v1/auth/loginSendOtp']
+    this.app.use(
+      morgan((tokens, req, res) => {
+        const url = tokens.url(req, res) || ''
+        const isSensitive = sensitiveRoutes.some((route) => url.startsWith(route))
+        return [
+          tokens.method(req, res),
+          url,
+          tokens.status(req, res),
+          `${ new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }) }`,
+          `ips: ${ req.ips }`,
+          'payload:', isSensitive ? '[HIDDEN]' : JSON.stringify(req.body),
+        ].join(' ')
+      }))
+    
     this.app.set('trust proxy', 1)
     this.app.use(
       rateLimit({
