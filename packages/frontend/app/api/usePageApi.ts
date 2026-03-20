@@ -131,8 +131,7 @@ export const usePageApi = {
   getByRouteName: async (routeName: string) => {
     return await useRequestApi<GetPageByRouteNameResponse, never>(
       `${PublicRequestUrl.PageRoute}/${routeName}`, {
-        method: 'GET',
-        lazy: true
+        method: 'GET'
       })
   },
   editedHtml: async (id: string, body: { editedHtml: MaybeRef<string> }) => {

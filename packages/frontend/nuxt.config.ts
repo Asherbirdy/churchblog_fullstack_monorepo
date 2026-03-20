@@ -26,7 +26,8 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/': { prerender: true },
-    '/admin/*': { ssr: false }
+    '/admin/*': { ssr: false },
+    '/C/*': { prerender: true }
   },
 
   compatibilityDate: '2025-01-15',
@@ -39,6 +40,7 @@ export default defineNuxtConfig({
         return
       }
       try {
+        await fetch(`${apiUrl}/page/before-build-and-deploy`)
         const res = await fetch(`${apiUrl}/page/online`)
         if (!res.ok) throw new Error(`API responded with ${res.status}`)
         const { onlinePages } = await res.json()
