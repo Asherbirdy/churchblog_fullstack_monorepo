@@ -23,12 +23,6 @@ useSeoMeta({
   ogTitle: title,
   ogDescription: description
 })
-
-const navLinks = [
-  // { label: '關於我們', to: '/about' },
-  // { label: '聚會時間', to: '/services' },
-  // { label: '最新消息', to: '/news' }
-]
 </script>
 
 <template>
