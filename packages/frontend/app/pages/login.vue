@@ -3,7 +3,8 @@ import { PrivateRoutes, CookieEnums } from '~/enum'
 import { useAuthApi } from '~/api'
 
 definePageMeta({
-  layout: false
+  layout: false,
+  middleware: ['guest']
 })
 
 useHead({
