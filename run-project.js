@@ -6,8 +6,8 @@ const path = require('path')
 const fs = require('fs')
 
 const projects = [
-  { name: 'backend', commands: ['dev', 'build', 'prisma-generate'] },
-  { name: 'frontend', commands: ['dev', 'build', 'typecheck'] }
+  { name: 'backend', commands: ['dev', 'build', 'prisma-generate', 'pm2-deploy', 'pm2-stop', 'pm2-delete'] },
+  { name: 'frontend', commands: ['dev', 'build', 'typecheck'] },
 ]
 
 const rl = readline.createInterface({
