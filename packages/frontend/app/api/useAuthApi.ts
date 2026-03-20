@@ -14,7 +14,17 @@ interface LoginResponse {
 }
 
 export const useAuthApi = {
-  login: async (body: { email: string, password: string }) => {
+  loginSendOtp: async (body: { email: string, password: string }) => {
+    return await useRequestApi<{ msg: string }, null>(PublicRequestUrl.AuthLoginSendOtp, {
+      method: 'POST',
+      body,
+      server: false,
+      lazy: true,
+      immediate: false,
+      watch: false
+    })
+  },
+  login: async (body: { email: string, password: string, otp: string }) => {
     return await useRequestApi<LoginResponse, null>(PublicRequestUrl.AuthLogin, {
       method: 'POST',
       body,
