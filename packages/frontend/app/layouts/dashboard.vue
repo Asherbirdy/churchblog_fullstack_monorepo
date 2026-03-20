@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useMenuStore } from '@/stores'
+import { LogoutButton } from '~/components'
 
 const state = ref({
   feature: {
@@ -82,6 +83,11 @@ watch(() => route.path, () => {
           </span>
         </NuxtLink>
       </nav>
+
+      <!-- Logout -->
+      <div class="px-3 pb-2">
+        <LogoutButton :collapsed="state.feature.sidebarCollapsed && !state.feature.mobileOpen" />
+      </div>
 
       <!-- Collapse Toggle (desktop only) -->
       <div class="hidden lg:block p-3 border-t border-sand-200">
