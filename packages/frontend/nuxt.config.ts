@@ -47,16 +47,14 @@ export default defineNuxtConfig({
         console.warn('[prerender] NUXT_PUBLIC_API_URL is not set, skipping dynamic routes')
         return
       }
-      try {
-        await fetch(`${apiUrl}/page/before-build-and-deploy`)
-        const res = await fetch(`${apiUrl}/page/online`)
-        if (!res.ok) throw new Error(`API responded with ${res.status}`)
-        const { onlinePages } = await res.json()
-        for (const p of onlinePages) {
-          ctx.routes.add(`/C/${p.routeName}`)
-        }
-      } catch (e) {
-        console.warn('[prerender] Failed to fetch online pages:', e)
+      const preRes = await fetch(`${apiUrl}/page/before-build-and-deploy`)
+      if (!preRes.ok) throw new Error(`[prerender] before-build-and-deploy failed with ${preRes.status}`)
+
+      const res = await fetch(`${apiUrl}/page/online`)
+      if (!res.ok) throw new Error(`[prerender] API responded with ${res.status}`)
+      const { onlinePages } = await res.json()
+      for (const p of onlinePages) {
+        ctx.routes.add(`/C/${p.routeName}`)
       }
     }
   },
