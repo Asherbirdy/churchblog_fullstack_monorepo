@@ -15,5 +15,4 @@ export default defineNuxtRouteMiddleware(async (to) => {
   if (!error.value) {
     return navigateTo(PrivateRoutes.ADMIN_HOME)
   }
-  return navigateTo(PrivateRoutes.ADMIN_HOME)
 })
