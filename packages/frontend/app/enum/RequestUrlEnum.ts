@@ -2,6 +2,7 @@ export enum PublicRequestUrl {
   DevCheckIp = '/dev/check-ip',
   AccountAdminInit = '/account/adminInit',
   AuthLogin = '/auth/login',
+  AuthLoginSendOtp = '/auth/loginSendOtp',
   PageRoute = '/page/route'
 }
 

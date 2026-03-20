@@ -5,6 +5,7 @@ import { Role } from '../enum'
 
 const router = Router()
 
+router.post('/loginSendOtp', AuthController.loginSendOtp)
 router.post('/login', AuthController.login)
 router.delete('/logout', authenticateUser, AuthController.logout)
 router.get('/refreshToken', AuthController.refreshToken)

@@ -16,13 +16,21 @@ const state = ref({
   data: {
     form: {
       email: config.public.USERNAME || '',
-      password: config.public.PASSWORD || ''
+      password: config.public.PASSWORD || '',
+      otp: ''
     }
   },
   feature: {
-    showPassword: false
+    showPassword: false,
+    step: 'credentials' as 'credentials' | 'otp'
   }
 })
+
+const {
+  execute: SendOtpRequest,
+  error: SendOtpError,
+  status: SendOtpStatus
+} = await useAuthApi.loginSendOtp(state.value.data.form)
 
 const {
   data: LoginResponse,
@@ -31,16 +39,36 @@ const {
   status: LoginStatus
 } = await useAuthApi.login(state.value.data.form)
 
+const handleSendOtp = async () => {
+  await SendOtpRequest()
+
+  if (SendOtpError.value) {
+    toast.add({
+      title: '錯誤帳號或密碼',
+      color: 'error'
+    })
+    console.error(SendOtpError.value)
+    state.value.data.form.password = ''
+    return
+  }
+
+  state.value.feature.step = 'otp'
+  toast.add({
+    title: '驗證碼已寄出，請查看信箱',
+    color: 'success'
+  })
+}
+
 const handleLogin = async () => {
   await LoginRequest()
 
   if (LoginError.value) {
     toast.add({
-      title: '錯誤帳號或密碼',
+      title: 'OTP 驗證失敗',
       color: 'error'
     })
     console.error(LoginError.value)
-    state.value.data.form.password = ''
+    state.value.data.form.otp = ''
     return
   }
 
@@ -50,6 +78,11 @@ const handleLogin = async () => {
   refreshToken.value = LoginResponse.value?.token.refreshTokenJWT || ''
 
   navigateTo(PrivateRoutes.ADMIN_HOME)
+}
+
+const handleBackToCredentials = () => {
+  state.value.feature.step = 'credentials'
+  state.value.data.form.otp = ''
 }
 </script>
 
@@ -109,78 +142,144 @@ const handleLogin = async () => {
           <span class="font-display text-xl font-semibold text-sand-950 tracking-tight">小羊天地</span>
         </div>
 
-        <!-- Heading -->
-        <div class="mb-8">
-          <h1 class="font-display text-3xl font-bold text-sand-950 mb-2">
-            歡迎回來
-          </h1>
-          <p class="text-sand-500 text-sm">
-            登入你的帳號以繼續
-          </p>
-        </div>
-
-        <!-- Form -->
-        <form
-          class="space-y-5"
-          @submit.prevent="handleLogin"
-        >
-          <!-- Email -->
-          <div class="flex flex-col space-y-1.5">
-            <label class="text-sm font-medium text-sand-700">
-              電子信箱
-            </label>
-            <UInput
-              v-model="state.data.form.email"
-              type="email"
-              placeholder="you@example.com"
-              icon="i-lucide-mail"
-              size="lg"
-              required
-              :ui="{ base: 'rounded-xl' }"
-            />
+        <!-- Step 1: Credentials -->
+        <template v-if="state.feature.step === 'credentials'">
+          <!-- Heading -->
+          <div class="mb-8">
+            <h1 class="font-display text-3xl font-bold text-sand-950 mb-2">
+              歡迎回來
+            </h1>
+            <p class="text-sand-500 text-sm">
+              登入你的帳號以繼續
+            </p>
           </div>
 
-          <!-- Password -->
-          <div class="flex flex-col space-y-1.5">
-            <div class="flex items-center justify-between">
+          <!-- Form -->
+          <form
+            class="space-y-5"
+            @submit.prevent="handleSendOtp"
+          >
+            <!-- Email -->
+            <div class="flex flex-col space-y-1.5">
               <label class="text-sm font-medium text-sand-700">
-                密碼
+                電子信箱
               </label>
-              <NuxtLink
-                class="text-xs text-sage-600 hover:text-sage-700 transition-colors"
-              >
-                忘記密碼？
-              </NuxtLink>
+              <UInput
+                v-model="state.data.form.email"
+                type="email"
+                placeholder="you@example.com"
+                icon="i-lucide-mail"
+                size="lg"
+                required
+                :ui="{ base: 'rounded-xl' }"
+              />
             </div>
-            <UInput
-              v-model="state.data.form.password"
-              :type="state.feature.showPassword ? 'text' : 'password'"
-              placeholder="請輸入密碼"
-              icon="i-lucide-lock"
+
+            <!-- Password -->
+            <div class="flex flex-col space-y-1.5">
+              <div class="flex items-center justify-between">
+                <label class="text-sm font-medium text-sand-700">
+                  密碼
+                </label>
+                <NuxtLink
+                  class="text-xs text-sage-600 hover:text-sage-700 transition-colors"
+                >
+                  忘記密碼？
+                </NuxtLink>
+              </div>
+              <UInput
+                v-model="state.data.form.password"
+                :type="state.feature.showPassword ? 'text' : 'password'"
+                placeholder="請輸入密碼"
+                icon="i-lucide-lock"
+                size="lg"
+                required
+                :ui="{ base: 'rounded-xl' }"
+              >
+                <template #trailing>
+                  <UIcon
+                    :name="state.feature.showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+                    class="text-sand-400 cursor-pointer hover:text-sand-600 transition-colors"
+                    @click="state.feature.showPassword = !state.feature.showPassword"
+                  />
+                </template>
+              </UInput>
+            </div>
+
+            <!-- Submit -->
+            <UButton
+              type="submit"
+              label="取得驗證碼"
               size="lg"
-              required
-              :ui="{ base: 'rounded-xl' }"
-            >
-              <template #trailing>
-                <UIcon
-                  :name="state.feature.showPassword ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-                  class="text-sand-400 cursor-pointer hover:text-sand-600 transition-colors"
-                  @click="state.feature.showPassword = !state.feature.showPassword"
-                />
-              </template>
-            </UInput>
+              block
+              :loading="SendOtpStatus === 'pending'"
+              class="rounded-xl bg-sand-950 text-white hover:bg-sand-800 mt-2"
+            />
+          </form>
+        </template>
+
+        <!-- Step 2: OTP -->
+        <template v-if="state.feature.step === 'otp'">
+          <!-- Heading -->
+          <div class="mb-8">
+            <h1 class="font-display text-3xl font-bold text-sand-950 mb-2">
+              輸入驗證碼
+            </h1>
+            <p class="text-sand-500 text-sm">
+              驗證碼已寄送至 {{ state.data.form.email }}
+            </p>
           </div>
 
-          <!-- Submit -->
-          <UButton
-            type="submit"
-            label="登入"
-            size="lg"
-            block
-            :loading="LoginStatus === 'pending'"
-            class="rounded-xl bg-sand-950 text-white hover:bg-sand-800 mt-2"
-          />
-        </form>
+          <!-- Form -->
+          <form
+            class="space-y-5"
+            @submit.prevent="handleLogin"
+          >
+            <!-- OTP -->
+            <div class="flex flex-col space-y-1.5">
+              <label class="text-sm font-medium text-sand-700">
+                驗證碼 (OTP)
+              </label>
+              <UInput
+                v-model="state.data.form.otp"
+                type="text"
+                placeholder="請輸入驗證碼"
+                icon="i-lucide-shield-check"
+                size="lg"
+                required
+                :ui="{ base: 'rounded-xl' }"
+              />
+            </div>
+
+            <!-- Submit -->
+            <UButton
+              type="submit"
+              label="登入"
+              size="lg"
+              block
+              :loading="LoginStatus === 'pending'"
+              class="rounded-xl bg-sand-950 text-white hover:bg-sand-800 mt-2"
+            />
+
+            <!-- Back -->
+            <button
+              type="button"
+              class="w-full text-center text-sm text-sand-500 hover:text-sand-700 transition-colors"
+              @click="handleBackToCredentials"
+            >
+              返回重新輸入帳號密碼
+            </button>
+
+            <!-- Resend -->
+            <button
+              type="button"
+              class="w-full text-center text-sm text-sage-600 hover:text-sage-700 transition-colors"
+              @click="handleSendOtp"
+            >
+              重新寄送驗證碼
+            </button>
+          </form>
+        </template>
 
         <!-- Divider -->
         <div class="flex items-center gap-3 my-6">

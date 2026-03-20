@@ -8,5 +8,4 @@
 先註冊admin帳號
 登入admin帳號
 幫user註冊user帳號
-user登入
 admin刪掉user帳號
