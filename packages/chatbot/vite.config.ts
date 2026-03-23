@@ -12,6 +12,9 @@ export default defineConfig(({ mode }) => {
       port: parseInt(env.VITE_PORT || '3000', 10),
       // allowedHosts: ['']
     },
+    define: {
+      'process.env.NODE_ENV': JSON.stringify(mode)
+    },
     build: {
       lib: {
         entry: resolve(__dirname, 'src/main.tsx'),
