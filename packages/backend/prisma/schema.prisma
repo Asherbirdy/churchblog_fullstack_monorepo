@@ -67,6 +67,7 @@ model ChatCard {
   id           String     @id @default(uuid())
   name         String
   url          String
+  description  String
   chatTopic    ChatTopic  @relation(fields: [chatTopicId], references: [id])
   chatTopicId  String
   createdAt    DateTime   @default(now())
