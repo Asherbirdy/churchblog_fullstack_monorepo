@@ -199,6 +199,14 @@ const toggleExpand = (id: string) => {
             <UButton
               variant="soft"
               size="xs"
+              icon="i-lucide-credit-card"
+              :to="`/admin/chatbot/${topic.id}`"
+            >
+              卡片
+            </UButton>
+            <UButton
+              variant="soft"
+              size="xs"
               icon="i-lucide-pencil"
               @click="openEditModal(topic)"
             >

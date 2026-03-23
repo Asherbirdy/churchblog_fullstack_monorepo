@@ -156,6 +156,25 @@ packages/[project-name]/src/
 - Enum key naming: `[RouteGroup][Action]` in PascalCase (e.g. `AuthLogin`, `AuthLogout`, `AuthRefreshToken`, `DevCheckIp`, `UserShowMe`, `Page`)
 - All API functions use `useRequestApi` composable from `~/composables`
 - Always import API from the barrel: `import { useAuthApi } from '~/api'`
+- **Hoist API calls to outer scope**: For API calls with fixed URLs (e.g. `create`), define `computed` body and call the API at the top level of `<script setup>`, then only call `execute()` inside event handlers. For API calls with dynamic URLs containing IDs (e.g. `update/:id`, `delete/:id`), keep them inside event handlers since the URL changes per invocation.
+```typescript
+// Good — hoisted create (fixed URL), body is reactive
+const createBody = computed(() => ({
+  name: state.value.feature.createName.trim(),
+  chatTopicId: topicId
+}))
+const { execute: executeCreate } = await useApi.create(toRef(() => createBody.value))
+
+const confirmCreate = async () => {
+  await executeCreate()
+}
+
+// OK — dynamic URL with ID, kept inside handler
+const confirmDelete = async () => {
+  const { execute } = await useApi.delete(feature.deleteTargetId)
+  await execute()
+}
+```
 
 ### Frontend Environment Variables
 - `.env.development` / `.env.production`

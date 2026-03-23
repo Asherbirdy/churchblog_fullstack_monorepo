@@ -53,7 +53,8 @@ export const useChatTopicApi = {
       `${UserRequestUrl.ChatTopic}/${id}`, {
         method: 'GET',
         server: false,
-        lazy: false
+        lazy: false,
+        key: `${UserRequestUrl.ChatTopic}-${id}`
       })
   },
   create: async (payload: { name: string, keywords: string[] }) => {
