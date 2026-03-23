@@ -1,11 +1,27 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
 import App from './App.tsx'
-import './assets/scss/style.scss'
+import './App.css'
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const CONTAINER_ID = 'chatbot-oqa-root'
+
+function mount() {
+  let container = document.getElementById(CONTAINER_ID)
+  if (!container) {
+    container = document.createElement('div')
+    container.id = CONTAINER_ID
+    document.body.appendChild(container)
+  }
+
+  createRoot(container).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  )
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', mount)
+} else {
+  mount()
+}
