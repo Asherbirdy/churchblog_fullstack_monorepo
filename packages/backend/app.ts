@@ -9,6 +9,7 @@ import PageRoutes from './routes/PageRoutes'
 import DevRoutes from './routes/DevRoutes'
 import AccountRoutes from './routes/AccountRoutes'
 import ChatRoutes from './routes/ChatRoutes'
+import ChatTopicRoutes from './routes/ChatTopicRoutes'
 
 import cors from 'cors'
 import morgan from 'morgan'
@@ -68,6 +69,7 @@ class Server {
     this.app.use('/api/v1/dev', DevRoutes)
     this.app.use('/api/v1/account', AccountRoutes)
     this.app.use('/api/v1/chat', ChatRoutes)
+    this.app.use('/api/v1/chat-topic', ChatTopicRoutes)
   }
 
   handleErrorAndSafety () {
