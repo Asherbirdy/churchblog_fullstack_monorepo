@@ -22,5 +22,5 @@ function init() {
 
 export { init }
 
-type ChatbotOQA = Record<string, unknown>
-;(window as unknown as ChatbotOQA).ChatbotOQA = { init }
+type Chatbot = Record<string, unknown>
+;(window as unknown as Chatbot).Chatbot = { init }
