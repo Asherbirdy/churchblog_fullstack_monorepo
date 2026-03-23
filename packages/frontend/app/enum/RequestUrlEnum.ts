@@ -26,5 +26,7 @@ export enum UserRequestUrl {
   AccountAdminRegisterUser = '/account/adminRegisterUser',
   AccountDeleteUser = '/account/deleteUser',
   AccountGetAllUser = '/account/getAllUser',
-  AccountEditAccess = '/account/editAccess'
+  AccountEditAccess = '/account/editAccess',
+  ChatTopic = '/chat-topic',
+  ChatCard = '/chat-card'
 }

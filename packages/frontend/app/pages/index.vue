@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Chatroom } from '~/components'
 import { PublicRoutes } from '~/enum'
 
 const toolCards = [
@@ -57,7 +56,7 @@ const toolCards = [
       </div>
 
       <div class="w-full lg:w-[380px] shrink-0 animate-fade-up stagger-3 lg:sticky lg:top-6 lg:self-start">
-        <Chatroom />
+        <!-- <Chatroom /> -->
       </div>
     </div>
   </div>
