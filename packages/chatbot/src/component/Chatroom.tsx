@@ -1,17 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
-
-interface Message {
-  id: string
-  text: string
-  sender: 'user' | 'bot'
-}
+import { useMessageStore } from '../store/useMessageStore'
 
 interface ChatroomProps {
   onClose: () => void
 }
 
 function Chatroom({ onClose }: ChatroomProps) {
-  const [messages, setMessages] = useState<Message[]>([])
+  const { messages, addMessage } = useMessageStore()
   const [input, setInput] = useState('')
   const bodyRef = useRef<HTMLDivElement>(null)
 
@@ -29,13 +24,7 @@ function Chatroom({ onClose }: ChatroomProps) {
     const text = input.trim()
     if (!text) return
 
-    const userMessage: Message = {
-      id: `${ Date.now() }`,
-      text,
-      sender: 'user',
-    }
-
-    setMessages((prev) => [... prev, userMessage])
+    addMessage(text, 'user')
     setInput('')
   }
 
