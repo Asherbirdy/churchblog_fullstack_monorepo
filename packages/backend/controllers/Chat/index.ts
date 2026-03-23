@@ -1,5 +1,5 @@
 import { SendMessageController } from './SendMessageController'
 
-export const BotController = {
+export const ChatController = {
   sendMessage: SendMessageController,
 }
