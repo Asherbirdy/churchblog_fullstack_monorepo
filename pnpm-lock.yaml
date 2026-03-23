@@ -134,6 +134,8 @@ importers:
         specifier: ~5.4.0
         version: 5.4.5
 
+  packages/chatbot: {}
+
   packages/frontend:
     dependencies:
       '@iconify-json/lucide':
