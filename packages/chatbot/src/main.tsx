@@ -21,3 +21,6 @@ function init() {
 }
 
 export { init }
+
+type ChatbotOQA = Record<string, unknown>
+;(window as unknown as ChatbotOQA).ChatbotOQA = { init }
