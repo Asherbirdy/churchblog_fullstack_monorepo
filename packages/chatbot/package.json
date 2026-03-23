@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "deploy": "tsc -b && vite build && rm -rf ../frontend/public/chatbot && cp -r dist ../frontend/public/chatbot",
     "lint": "eslint .",
     "preview": "vite preview"
   },

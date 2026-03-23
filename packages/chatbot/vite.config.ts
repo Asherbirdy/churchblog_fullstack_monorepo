@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
     build: {
       lib: {
         entry: resolve(__dirname, 'src/main.tsx'),
-        name: 'ChatbotOQA',
+        name: 'Chatbot',
         fileName: (format) => `index.min.${format === 'iife' ? 'mjs' : 'js'}`
       },
       rollupOptions: {

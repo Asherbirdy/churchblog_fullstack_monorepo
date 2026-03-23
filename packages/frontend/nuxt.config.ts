@@ -47,8 +47,13 @@ export default defineNuxtConfig({
         console.warn('[prerender] NUXT_PUBLIC_API_URL is not set, skipping dynamic routes')
         return
       }
-      const preRes = await fetch(`${apiUrl}/page/before-build-and-deploy`)
-      if (!preRes.ok) throw new Error(`[prerender] before-build-and-deploy failed with ${preRes.status}`)
+      try {
+        await fetch(`${apiUrl}/page/before-build-and-deploy`)
+      } catch (error) {
+        console.log('[請確認SERVER是否啟動]')
+        console.error('[prerender] before-build-and-deploy failed', error)
+        throw error
+      }
 
       const res = await fetch(`${apiUrl}/page/online`)
       if (!res.ok) throw new Error(`[prerender] API responded with ${res.status}`)

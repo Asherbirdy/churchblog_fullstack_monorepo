@@ -5,7 +5,7 @@ import './App.css'
 
 const CONTAINER_ID = 'chatbot-oqa-root'
 
-function mount() {
+function init() {
   let container = document.getElementById(CONTAINER_ID)
   if (!container) {
     container = document.createElement('div')
@@ -20,8 +20,7 @@ function mount() {
   )
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', mount)
-} else {
-  mount()
-}
+export { init }
+
+type Chatbot = Record<string, unknown>
+;(window as unknown as Chatbot).Chatbot = { init }
