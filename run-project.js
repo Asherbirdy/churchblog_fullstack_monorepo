@@ -8,7 +8,7 @@ const fs = require('fs')
 const projects = [
   { name: 'frontend', commands: ['dev', 'build', 'typecheck'] },
   { name: 'backend', commands: ['dev', 'build', 'prisma-generate', 'pm2-deploy', 'pm2-stop', 'pm2-delete'] },
-  { name: 'chatbot', commands: ['dev', 'build','deploy'] }
+  { name: 'chatbot', commands: ['dev', 'build','build-to-frontend'] }
 ]
 
 const rl = readline.createInterface({

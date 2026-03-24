@@ -12,3 +12,4 @@ router.patch('/:id', authenticateUser, authAccess(AccessEnum.PAGE), ChatTopicCon
 router.delete('/:id', authenticateUser, authAccess(AccessEnum.PAGE), ChatTopicController.delete)
 
 export default router
+ 
