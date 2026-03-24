@@ -51,7 +51,7 @@ const {
   execute: executeEdit,
   pending: editPending
 } = await useChatTopicApi.update(
-  toRef(() => state.value.feature.edit.id),
+  computed(() => state.value.feature.edit.id),
   toRef(() => ({
     name: state.value.feature.edit.name.trim(),
     keywords: editKeywordsParsed.value
@@ -86,8 +86,10 @@ const createModal = {
 }
 
 const editModal = {
-  open: (topic: ChatTopic) => {
+  open: async (topic: ChatTopic) => {
     const { feature } = state.value
+    await nextTick()
+    console.log('editModal open', topic)
     feature.edit.id = topic.id
     feature.edit.name = topic.name
     feature.edit.keywords = topic.keywords.join(', ')

@@ -68,27 +68,25 @@ export const useChatTopicApi = {
         lazy: true
       })
   },
-  update: async (id: string | Ref<string>, payload: { name?: string, keywords?: string[] } | Ref<{ name?: string, keywords?: string[] }>) => {
-    const url = computed(() => `${ UserRequestUrl.ChatTopic }/${ unref(id) }`)
+  update: async (id: Ref<string>, payload: { name?: string, keywords?: string[] } | Ref<{ name?: string, keywords?: string[] }>) => {
     return await useRequestApi<GetChatTopicResponse, never>(
-      url, {
+      computed(() => `${UserRequestUrl.ChatTopic}/${id.value}`), {
         method: 'PATCH',
         body: payload,
         immediate: false,
         server: false,
         watch: false,
-        lazy: true
+        lazy: false
       })
   },
-  delete: async (id: string | Ref<string>) => {
-    const url = computed(() => `${ UserRequestUrl.ChatTopic }/${ unref(id) }`)
+  delete: async (id: Ref<string>) => {
     return await useRequestApi(
-      url, {
+      computed(() => `${UserRequestUrl.ChatTopic}/${id.value}`), {
         method: 'DELETE',
         immediate: false,
         server: false,
         watch: false,
-        lazy: true
+        lazy: false
       })
   }
 }
