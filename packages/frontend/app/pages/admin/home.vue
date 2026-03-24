@@ -81,7 +81,9 @@ const state = ref({
               <span
                 v-else
                 class="text-sm"
-              >{{ userInfo.name || '—' }}</span>
+              >
+                {{ userInfo.name || '—' }}
+              </span>
               <template #fallback>
                 <div class="h-4 w-20 bg-sand-200 rounded animate-pulse" />
               </template>
