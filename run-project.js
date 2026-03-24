@@ -6,8 +6,8 @@ const path = require('path')
 const fs = require('fs')
 
 const projects = [
-  { name: 'frontend', commands: ['dev', 'build', 'typecheck','deploy'] },
-  { name: 'backend', commands: ['dev', 'build', 'prisma-generate', 'pm2-deploy', 'pm2-stop', 'pm2-delete'] },
+  { name: 'frontend', commands: ['dev', 'build', 'typecheck'] },
+  { name: 'backend', commands: ['dev', 'build', 'deploy', 'prisma-generate', 'pm2-deploy', 'pm2-stop', 'pm2-delete'] },
   { name: 'chatbot', commands: ['dev', 'build','build-to-frontend'] }
 ]
 

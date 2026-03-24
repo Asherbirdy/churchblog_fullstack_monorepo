@@ -10,13 +10,24 @@ const accessOptions = [
 const state = ref({
   data: {},
   feature: {
-    deleteModal: false,
-    deleteTargetId: '',
-    accessModal: false,
-    accessTargetId: '',
-    accessTargetName: '',
-    accessSelected: [] as string[],
-    accessLoading: false
+    register: {
+      modal: false,
+      name: '',
+      email: '',
+      password: '',
+      loading: false
+    },
+    delete: {
+      modal: false,
+      targetId: ''
+    },
+    access: {
+      modal: false,
+      targetId: '',
+      targetName: '',
+      selected: [] as string[],
+      loading: false
+    }
   }
 })
 
@@ -24,10 +35,35 @@ const { data, execute } = await useAccountApi.getAllUser()
 const users = computed(() => data.value?.users ?? [])
 
 const editAccessBody = computed(() => ({
-  userId: state.value.feature.accessTargetId,
-  access: state.value.feature.accessSelected
+  userId: state.value.feature.access.targetId,
+  access: state.value.feature.access.selected
 }))
 const { execute: executeEditAccess } = await useAccountApi.editAccess(toRef(() => editAccessBody.value))
+
+const registerBody = computed(() => ({
+  name: state.value.feature.register.name.trim(),
+  email: state.value.feature.register.email.trim(),
+  password: state.value.feature.register.password
+}))
+const { execute: executeRegister } = await useAccountApi.adminRegisterUser(registerBody.value)
+
+const openRegisterModal = () => {
+  const { register } = state.value.feature
+  register.name = ''
+  register.email = ''
+  register.password = ''
+  register.modal = true
+}
+
+const confirmRegister = async () => {
+  const { register } = state.value.feature
+  register.loading = true
+  await executeRegister()
+  clearNuxtData(UserRequestUrl.AccountGetAllUser)
+  await execute()
+  register.loading = false
+  register.modal = false
+}
 
 const roleLabel = (role: string) => role === 'admin' ? '管理員' : '一般用戶'
 
@@ -36,45 +72,46 @@ const accessLabel = (value: string) => {
 }
 
 const openDeleteModal = (id: string) => {
-  const { feature } = state.value
-  feature.deleteTargetId = id
-  feature.deleteModal = true
+  const { delete: del } = state.value.feature
+  del.targetId = id
+  del.modal = true
 }
 
 const confirmDelete = async () => {
-  const { feature } = state.value
-  await useAccountApi.deleteUser(feature.deleteTargetId)
+  const { delete: del } = state.value.feature
+  const { execute: executeDelete } = await useAccountApi.deleteUser(del.targetId)
+  await executeDelete()
   await execute()
-  feature.deleteModal = false
-  feature.deleteTargetId = ''
+  del.modal = false
+  del.targetId = ''
 }
 
 const openAccessModal = (user: { id: string, name: string, access: string[] }) => {
-  const { feature } = state.value
-  feature.accessTargetId = user.id
-  feature.accessTargetName = user.name
-  feature.accessSelected = [...user.access]
-  feature.accessModal = true
+  const { access } = state.value.feature
+  access.targetId = user.id
+  access.targetName = user.name
+  access.selected = [...user.access]
+  access.modal = true
 }
 
 const toggleAccess = (value: string) => {
-  const { feature } = state.value
-  const idx = feature.accessSelected.indexOf(value)
+  const { access } = state.value.feature
+  const idx = access.selected.indexOf(value)
   if (idx === -1) {
-    feature.accessSelected.push(value)
+    access.selected.push(value)
   } else {
-    feature.accessSelected.splice(idx, 1)
+    access.selected.splice(idx, 1)
   }
 }
 
 const confirmEditAccess = async () => {
-  const { feature } = state.value
-  feature.accessLoading = true
+  const { access } = state.value.feature
+  access.loading = true
   await executeEditAccess()
   clearNuxtData(UserRequestUrl.AccountGetAllUser)
   await execute()
-  feature.accessLoading = false
-  feature.accessModal = false
+  access.loading = false
+  access.modal = false
 }
 </script>
 
@@ -88,6 +125,16 @@ const confirmEditAccess = async () => {
       <p class="text-sm text-sand-500">
         管理系統使用者帳號
       </p>
+    </div>
+
+    <!-- Add Account Button -->
+    <div class="mb-6">
+      <UButton
+        icon="i-lucide-user-plus"
+        @click="openRegisterModal"
+      >
+        新增帳號
+      </UButton>
     </div>
 
     <!-- User Table (Desktop) -->
@@ -263,8 +310,63 @@ const confirmEditAccess = async () => {
       </div>
     </div>
 
+    <!-- Register Modal -->
+    <UModal v-model:open="state.feature.register.modal">
+      <template #content>
+        <div class="p-6">
+          <h3 class="text-lg font-semibold text-sand-950 mb-1">
+            新增帳號
+          </h3>
+          <p class="text-sm text-sand-500 mb-5">
+            建立新的系統使用者帳號
+          </p>
+          <div class="space-y-4 mb-6">
+            <div>
+              <label class="block text-sm font-medium text-sand-700 mb-1">姓名</label>
+              <UInput
+                v-model="state.feature.register.name"
+                placeholder="請輸入姓名"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-sand-700 mb-1">電子信箱</label>
+              <UInput
+                v-model="state.feature.register.email"
+                type="email"
+                placeholder="請輸入電子信箱"
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-sand-700 mb-1">密碼</label>
+              <UInput
+                v-model="state.feature.register.password"
+                type="password"
+                placeholder="請輸入密碼"
+              />
+            </div>
+          </div>
+          <div class="flex justify-end gap-3">
+            <UButton
+              variant="outline"
+              color="neutral"
+              @click="state.feature.register.modal = false"
+            >
+              取消
+            </UButton>
+            <UButton
+              color="primary"
+              :loading="state.feature.register.loading"
+              @click="confirmRegister"
+            >
+              建立
+            </UButton>
+          </div>
+        </div>
+      </template>
+    </UModal>
+
     <!-- Delete Confirm Modal -->
-    <UModal v-model:open="state.feature.deleteModal">
+    <UModal v-model:open="state.feature.delete.modal">
       <template #content>
         <div class="p-6 text-center">
           <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
@@ -283,7 +385,7 @@ const confirmEditAccess = async () => {
             <UButton
               variant="outline"
               color="neutral"
-              @click="state.feature.deleteModal = false"
+              @click="state.feature.delete.modal = false"
             >
               取消
             </UButton>
@@ -299,21 +401,21 @@ const confirmEditAccess = async () => {
     </UModal>
 
     <!-- Access Edit Modal -->
-    <UModal v-model:open="state.feature.accessModal">
+    <UModal v-model:open="state.feature.access.modal">
       <template #content>
         <div class="p-6">
           <h3 class="text-lg font-semibold text-sand-950 mb-1">
             編輯權限
           </h3>
           <p class="text-sm text-sand-500 mb-5">
-            {{ state.feature.accessTargetName }}
+            {{ state.feature.access.targetName }}
           </p>
           <div class="space-y-3 mb-6">
             <button
               v-for="option in accessOptions"
               :key="option.value"
               class="w-full flex items-center justify-between px-4 py-3 rounded-xl border transition-all"
-              :class="state.feature.accessSelected.includes(option.value)
+              :class="state.feature.access.selected.includes(option.value)
                 ? 'border-sage-300 bg-sage-50'
                 : 'border-sand-200 bg-white hover:border-sand-300'"
               @click="toggleAccess(option.value)"
@@ -322,8 +424,8 @@ const confirmEditAccess = async () => {
                 {{ option.label }}
               </span>
               <UIcon
-                :name="state.feature.accessSelected.includes(option.value) ? 'i-lucide-check-circle' : 'i-lucide-circle'"
-                :class="state.feature.accessSelected.includes(option.value) ? 'text-sage-600' : 'text-sand-300'"
+                :name="state.feature.access.selected.includes(option.value) ? 'i-lucide-check-circle' : 'i-lucide-circle'"
+                :class="state.feature.access.selected.includes(option.value) ? 'text-sage-600' : 'text-sand-300'"
                 class="text-lg"
               />
             </button>
@@ -332,13 +434,13 @@ const confirmEditAccess = async () => {
             <UButton
               variant="outline"
               color="neutral"
-              @click="state.feature.accessModal = false"
+              @click="state.feature.access.modal = false"
             >
               取消
             </UButton>
             <UButton
               color="primary"
-              :loading="state.feature.accessLoading"
+              :loading="state.feature.access.loading"
               @click="confirmEditAccess"
             >
               儲存
