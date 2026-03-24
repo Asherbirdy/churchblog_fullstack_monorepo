@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 import { useMessageStore } from '../store/useMessageStore'
 import { useMessageApi } from '../api'
-import type { SendMessageResponse } from '../api'
 
 interface ChatroomProps {
   onClose: () => void
@@ -32,8 +31,7 @@ function Chatroom({ onClose }: ChatroomProps) {
     setLoading(true)
 
     try {
-      const res = await useMessageApi.sendMessage({ message: text }) as unknown as { data: SendMessageResponse }
-      const { found, chatTopics } = res.data
+      const { found, chatTopics } = await useMessageApi.sendMessage({ message: text })
 
       const cards = chatTopics
         .flatMap((topic) => topic.cards.filter((card) => card.online))
@@ -63,7 +61,7 @@ function Chatroom({ onClose }: ChatroomProps) {
     <>
       <div className="chatbot-header">
         <div className="chatbot-header-dots" />
-        <span className="chatbot-title">💬 聊天室</span>
+        <span className="chatbot-title">💬 找找網站</span>
         <button
           className="chatbot-close"
           onClick={onClose}

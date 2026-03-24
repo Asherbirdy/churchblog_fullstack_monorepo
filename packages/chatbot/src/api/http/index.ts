@@ -4,7 +4,7 @@ import { url } from './config'
 
 
 const useApiRequest = new Axios({
-  directlyGetData: false,
+  directlyGetData: true,
   baseURL: url,
   timeout: 1000 * 60 * 5,
   interceptors: _RequstInterceptors,
