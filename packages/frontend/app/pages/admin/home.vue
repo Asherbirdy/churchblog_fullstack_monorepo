@@ -6,20 +6,13 @@ const { userInfo, isLoading } = storeToRefs(useUserStore())
 const state = ref({
   data: {},
   feature: {
-    isEditing: false
+    isEditing: false,
+    form: {
+      name: '',
+      email: ''
+    }
   }
 })
-
-const editForm = ref({
-  name: '',
-  email: ''
-})
-
-const startEditing = () => {
-  editForm.value.name = userInfo.value.name
-  editForm.value.email = userInfo.value.email
-  state.value.feature.isEditing = true
-}
 
 const handleCancel = () => {
   state.value.feature.isEditing = false
@@ -100,7 +93,7 @@ const handleCancel = () => {
           </div>
           <UInput
             v-else
-            v-model="editForm.name"
+            v-model="state.feature.form.name"
             icon="i-lucide-user"
             size="lg"
             :ui="{ base: 'rounded-xl' }"
@@ -135,7 +128,7 @@ const handleCancel = () => {
           </div>
           <UInput
             v-else
-            v-model="editForm.email"
+            v-model="state.feature.form.email"
             type="email"
             icon="i-lucide-mail"
             size="lg"
@@ -159,13 +152,6 @@ const handleCancel = () => {
             class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
           />
         </template>
-        <UButton
-          v-else
-          label="編輯資料"
-          icon="i-lucide-pencil"
-          class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
-          @click="startEditing"
-        />
       </div>
     </div>
   </div>
