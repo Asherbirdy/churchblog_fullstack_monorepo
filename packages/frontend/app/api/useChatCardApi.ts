@@ -52,7 +52,7 @@ export const useChatCardApi = {
         lazy: true
       })
   },
-  update: async (id: string | ComputedRef<string>, payload: UpdateChatCardPayload | Ref<UpdateChatCardPayload>) => {
+  update: async (id: string | Ref<string>, payload: UpdateChatCardPayload | Ref<UpdateChatCardPayload>) => {
     const url = computed(() => `${UserRequestUrl.ChatCard}/${unref(id)}`)
     return await useRequestApi<GetChatCardResponse, never>(
       url, {
@@ -64,7 +64,7 @@ export const useChatCardApi = {
         lazy: true
       })
   },
-  delete: async (id: string | ComputedRef<string>) => {
+  delete: async (id: string | Ref<string>) => {
     const url = computed(() => `${UserRequestUrl.ChatCard}/${unref(id)}`)
     return await useRequestApi(
       url, {
