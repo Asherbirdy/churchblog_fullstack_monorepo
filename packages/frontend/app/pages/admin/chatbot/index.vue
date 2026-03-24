@@ -27,7 +27,35 @@ const state = ref({
 })
 
 const { data, execute } = await useChatTopicApi.getAll()
-const chatTopics = computed(() => data.value?.chatTopics ?? [])
+
+const createKeywordsParsed = computed(() =>
+  state.value.feature.create.keywords.split(',').map(k => k.trim()).filter(Boolean)
+)
+const {
+  execute: executeCreate,
+  error: createError,
+  pending: createPending
+} = await useChatTopicApi.create(
+  toRef(() => ({
+    name: state.value.feature.create.name.trim(),
+    keywords: createKeywordsParsed.value
+  }))
+)
+
+const editKeywordsParsed = computed(() =>
+  state.value.feature.edit.keywords.split(',').map(k => k.trim()).filter(Boolean)
+)
+const { execute: executeEdit, pending: editPending } = await useChatTopicApi.update(
+  toRef(() => state.value.feature.edit.id),
+  toRef(() => ({
+    name: state.value.feature.edit.name.trim(),
+    keywords: editKeywordsParsed.value
+  }))
+)
+
+const { execute: executeDelete } = await useChatTopicApi.delete(
+  toRef(() => state.value.feature.delete.id)
+)
 
 const createModal = {
   open: () => {
@@ -42,19 +70,9 @@ const createModal = {
     if (!feature.create.name.trim()) return
 
     feature.create.error = ''
+    await executeCreate()
 
-    const keywords = feature.create.keywords
-      .split(',')
-      .map(k => k.trim())
-      .filter(Boolean)
-
-    const { execute: exec, error } = await useChatTopicApi.create({
-      name: feature.create.name.trim(),
-      keywords
-    })
-    await exec()
-
-    if (error.value?.data?.error === 'CHAT_TOPIC_NAME_ALREADY_EXISTS') {
+    if (createError.value?.data?.error === 'CHAT_TOPIC_NAME_ALREADY_EXISTS') {
       feature.create.error = '主題名稱已存在'
       return
     }
@@ -77,17 +95,7 @@ const editModal = {
     const { feature } = state.value
     if (!feature.edit.name.trim()) return
 
-    const keywords = feature.edit.keywords
-      .split(',')
-      .map(k => k.trim())
-      .filter(Boolean)
-
-    const { execute: exec } = await useChatTopicApi.update(feature.edit.id, {
-      name: feature.edit.name.trim(),
-      keywords
-    })
-    await exec()
-
+    await executeEdit()
     clearNuxtData(UserRequestUrl.ChatTopic)
     await execute()
     feature.edit.modal = false
@@ -102,9 +110,7 @@ const deleteModal = {
   },
   confirm: async () => {
     const { feature } = state.value
-    const { execute: exec } = await useChatTopicApi.delete(feature.delete.id)
-    await exec()
-
+    await executeDelete()
     clearNuxtData(UserRequestUrl.ChatTopic)
     await execute()
     feature.delete.modal = false
@@ -140,7 +146,7 @@ const toggleExpand = (id: string) => {
 
     <!-- Empty State -->
     <div
-      v-if="!chatTopics.length"
+      v-if="!data?.chatTopics?.length"
       class="bg-white rounded-2xl border border-sand-200 shadow-sm p-12 text-center"
     >
       <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-sand-100">
@@ -157,7 +163,7 @@ const toggleExpand = (id: string) => {
     <!-- Topic List -->
     <div class="space-y-3">
       <div
-        v-for="topic in chatTopics"
+        v-for="topic in data?.chatTopics"
         :key="topic.id"
         class="bg-white rounded-2xl border border-sand-200 shadow-sm overflow-hidden"
       >
@@ -314,6 +320,7 @@ const toggleExpand = (id: string) => {
               取消
             </UButton>
             <UButton
+              :loading="createPending"
               :disabled="!state.feature.create.name.trim()"
               @click="createModal.confirm"
             >
@@ -364,6 +371,7 @@ const toggleExpand = (id: string) => {
               取消
             </UButton>
             <UButton
+              :loading="editPending"
               :disabled="!state.feature.edit.name.trim()"
               @click="editModal.confirm"
             >

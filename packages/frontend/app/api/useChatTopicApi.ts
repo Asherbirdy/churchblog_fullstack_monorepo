@@ -57,7 +57,7 @@ export const useChatTopicApi = {
         key: `${UserRequestUrl.ChatTopic}-${id}`
       })
   },
-  create: async (payload: { name: string, keywords: string[] }) => {
+  create: async (payload: { name: string, keywords: string[] } | Ref<{ name: string, keywords: string[] }>) => {
     return await useRequestApi<GetChatTopicResponse, CreateChatTopicError>(
       UserRequestUrl.ChatTopic, {
         method: 'POST',
@@ -68,9 +68,10 @@ export const useChatTopicApi = {
         lazy: true
       })
   },
-  update: async (id: string, payload: { name?: string, keywords?: string[] }) => {
+  update: async (id: string | Ref<string>, payload: { name?: string, keywords?: string[] } | Ref<{ name?: string, keywords?: string[] }>) => {
+    const url = computed(() => `${ UserRequestUrl.ChatTopic }/${ unref(id) }`)
     return await useRequestApi<GetChatTopicResponse, never>(
-      `${UserRequestUrl.ChatTopic}/${id}`, {
+      url, {
         method: 'PATCH',
         body: payload,
         immediate: false,
@@ -79,9 +80,10 @@ export const useChatTopicApi = {
         lazy: true
       })
   },
-  delete: async (id: string) => {
+  delete: async (id: string | Ref<string>) => {
+    const url = computed(() => `${ UserRequestUrl.ChatTopic }/${ unref(id) }`)
     return await useRequestApi(
-      `${UserRequestUrl.ChatTopic}/${id}`, {
+      url, {
         method: 'DELETE',
         immediate: false,
         server: false,
