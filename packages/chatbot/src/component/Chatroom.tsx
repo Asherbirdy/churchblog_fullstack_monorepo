@@ -1,13 +1,15 @@
 import { useState, useRef, useEffect } from 'react'
 import { useMessageStore } from '../store/useMessageStore'
+import { useMessageApi } from '../api'
 
 interface ChatroomProps {
   onClose: () => void
 }
 
 function Chatroom({ onClose }: ChatroomProps) {
-  const { messages, addMessage } = useMessageStore()
+  const { messages, addMessage, addCardsMessage } = useMessageStore()
   const [input, setInput] = useState('')
+  const [loading, setLoading] = useState(false)
   const bodyRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
@@ -20,12 +22,32 @@ function Chatroom({ onClose }: ChatroomProps) {
     scrollToBottom()
   }, [messages])
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const text = input.trim()
-    if (!text) return
+    if (!text || loading) return
 
     addMessage(text, 'user')
     setInput('')
+    setLoading(true)
+
+    try {
+      const { found, chatTopics } = await useMessageApi.sendMessage({ message: text })
+
+      const cards = chatTopics
+        .flatMap((topic) => topic.cards.filter((card) => card.online))
+        .map(({ name, url, description }) => ({ name, url, description }))
+
+      if (!found || cards.length === 0) {
+        addMessage('抱歉，找不到相關的內容。', 'bot')
+        return
+      }
+
+      addCardsMessage(cards)
+    } catch {
+      addMessage('發送失敗，請稍後再試。', 'bot')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -39,7 +61,7 @@ function Chatroom({ onClose }: ChatroomProps) {
     <>
       <div className="chatbot-header">
         <div className="chatbot-header-dots" />
-        <span className="chatbot-title">💬 聊天室</span>
+        <span className="chatbot-title">💬 找找網站</span>
         <button
           className="chatbot-close"
           onClick={onClose}
@@ -60,7 +82,27 @@ function Chatroom({ onClose }: ChatroomProps) {
           <div className="chatbot-messages">
             {messages.map((msg) => (
               <div key={msg.id} className={`chatbot-msg chatbot-msg-${ msg.sender }`}>
-                <div className="chatbot-msg-bubble">{msg.text}</div>
+                {msg.type === 'cards' ? (
+                  <div className="chatbot-cards">
+                    {msg.cards.map((card, i) => (
+                      <a
+                        key={i}
+                        className="chatbot-card"
+                        href={card.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <span className="chatbot-card-name">{card.name}</span>
+                        {card.description && (
+                          <span className="chatbot-card-desc">{card.description}</span>
+                        )}
+                        <span className="chatbot-card-url">{card.url}</span>
+                      </a>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="chatbot-msg-bubble">{msg.text}</div>
+                )}
               </div>
             ))}
           </div>
@@ -70,12 +112,13 @@ function Chatroom({ onClose }: ChatroomProps) {
         <input
           className="chatbot-input"
           type="text"
-          placeholder="輸入訊息..."
+          placeholder={loading ? '等待回覆中...' : '輸入訊息...'}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
+          disabled={loading}
         />
-        <button className="chatbot-send" onClick={handleSend}>
+        <button className="chatbot-send" onClick={handleSend} disabled={loading}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="22" y1="2" x2="11" y2="13" />
             <polygon points="22 2 15 22 11 13 2 9 22 2" />
