@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { ChatCardController } from '../controllers'
 import { authAccess, authenticateUser } from '../middleware'
-import { AccessEnum, Role } from '../enum'
+import { AccessEnum } from '../enum'
 const router = Router()
 
 router.post('/',authenticateUser, authAccess(AccessEnum.PAGE), ChatCardController.create)
