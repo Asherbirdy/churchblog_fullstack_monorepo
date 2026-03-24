@@ -58,27 +58,9 @@ const register = {
   }
 }
 
-// const openRegisterModal = () => {
-//   const { register } = state.value.feature
-//   register.name = ''
-//   register.email = ''
-//   register.password = ''
-//   register.modal = true
-// }
-
-// const confirmRegister = async () => {
-//   const { register } = state.value.feature
-//   await executeRegister()
-//   clearNuxtData(UserRequestUrl.AccountGetAllUser)
-//   await execute()
-//   register.modal = false
-// }
-
 const deleteModal = {
   open: (id: string) => {
     const { delete: del } = state.value.feature
-    console.log(id)
-
     del.targetId = id
     del.modal = true
   },
@@ -92,20 +74,6 @@ const deleteModal = {
     del.targetId = ''
   }
 }
-
-// const openDeleteModal = (id: string) => {
-//   const { delete: del } = state.value.feature
-//   del.targetId = id
-//   del.modal = true
-// }
-
-// const confirmDelete = async () => {
-//   const { delete: del } = state.value.feature
-//   await executeDelete()
-//   await execute()
-//   del.modal = false
-//   del.targetId = ''
-// }
 
 const accessOptions = [
   { label: '頁面管理', value: 'page' },
@@ -135,34 +103,17 @@ const accessModal = {
     access.targetId = ''
     access.targetName = ''
     access.selected = []
+  },
+  toggleAccess: (value: string) => {
+    const { access } = state.value.feature
+    const idx = access.selected.indexOf(value)
+    if (idx === -1) {
+      access.selected.push(value)
+    } else {
+      access.selected.splice(idx, 1)
+    }
   }
 }
-
-// const openAccessModal = (user: { id: string, name: string, access: string[] }) => {
-//   const { access } = state.value.feature
-//   access.targetId = user.id
-//   access.targetName = user.name
-//   access.selected = [...user.access]
-//   access.modal = true
-// }
-
-const toggleAccess = (value: string) => {
-  const { access } = state.value.feature
-  const idx = access.selected.indexOf(value)
-  if (idx === -1) {
-    access.selected.push(value)
-  } else {
-    access.selected.splice(idx, 1)
-  }
-}
-
-// const confirmEditAccess = async () => {
-//   const { access } = state.value.feature
-//   await executeEditAccess()
-//   clearNuxtData(UserRequestUrl.AccountGetAllUser)
-//   await execute()
-//   access.modal = false
-// }
 </script>
 
 <template>
@@ -468,7 +419,7 @@ const toggleAccess = (value: string) => {
               :class="state.feature.access.selected.includes(option.value)
                 ? 'border-sage-300 bg-sage-50'
                 : 'border-sand-200 bg-white hover:border-sand-300'"
-              @click="toggleAccess(option.value)"
+              @click="accessModal.toggleAccess(option.value)"
             >
               <span class="text-sm font-medium text-sand-950">
                 {{ option.label }}
