@@ -2,11 +2,6 @@
 import { useAccountApi } from '~/api'
 import { UserRequestUrl } from '~/enum'
 
-const accessOptions = [
-  { label: '頁面管理', value: 'page' },
-  { label: '聊天機器人', value: 'chatbot' }
-]
-
 const state = ref({
   data: {},
   feature: {
@@ -50,21 +45,72 @@ const { execute: executeDelete } = await useAccountApi.deleteUser(
   toRef(() => state.value.feature.delete.targetId)
 )
 
-const openRegisterModal = () => {
-  const { register } = state.value.feature
-  register.name = ''
-  register.email = ''
-  register.password = ''
-  register.modal = true
+const register = {
+  openModal: () => {
+    const { register } = state.value.feature
+    register.name = ''
+    register.email = ''
+    register.password = ''
+    register.modal = true
+  },
+  confirm: async () => {
+    const { register } = state.value.feature
+    await executeRegister()
+    clearNuxtData(UserRequestUrl.AccountGetAllUser)
+    await execute()
+    register.modal = false
+  }
 }
 
-const confirmRegister = async () => {
-  const { register } = state.value.feature
-  await executeRegister()
-  clearNuxtData(UserRequestUrl.AccountGetAllUser)
-  await execute()
-  register.modal = false
+// const openRegisterModal = () => {
+//   const { register } = state.value.feature
+//   register.name = ''
+//   register.email = ''
+//   register.password = ''
+//   register.modal = true
+// }
+
+// const confirmRegister = async () => {
+//   const { register } = state.value.feature
+//   await executeRegister()
+//   clearNuxtData(UserRequestUrl.AccountGetAllUser)
+//   await execute()
+//   register.modal = false
+// }
+
+const deleteModal = {
+  open: (id: string) => {
+    const { delete: del } = state.value.feature
+    del.targetId = id
+    del.modal = true
+  },
+  confirm: async () => {
+    const { delete: del } = state.value.feature
+    await executeDelete()
+    await execute()
+    del.modal = false
+    del.targetId = ''
+  }
 }
+
+// const openDeleteModal = (id: string) => {
+//   const { delete: del } = state.value.feature
+//   del.targetId = id
+//   del.modal = true
+// }
+
+// const confirmDelete = async () => {
+//   const { delete: del } = state.value.feature
+//   await executeDelete()
+//   await execute()
+//   del.modal = false
+//   del.targetId = ''
+// }
+
+const accessOptions = [
+  { label: '頁面管理', value: 'page' },
+  { label: '聊天機器人', value: 'chatbot' }
+]
 
 const roleLabel = (role: string) => role === 'admin' ? '管理員' : '一般用戶'
 
@@ -72,27 +118,33 @@ const accessLabel = (value: string) => {
   return accessOptions.find(o => o.value === value)?.label ?? value
 }
 
-const openDeleteModal = (id: string) => {
-  const { delete: del } = state.value.feature
-  del.targetId = id
-  del.modal = true
+const accessModal = {
+  open: (user: { id: string, name: string, access: string[] }) => {
+    const { access } = state.value.feature
+    access.targetId = user.id
+    access.targetName = user.name
+    access.selected = [...user.access]
+    access.modal = true
+  },
+  confirm: async () => {
+    const { access } = state.value.feature
+    await executeEditAccess()
+    clearNuxtData(UserRequestUrl.AccountGetAllUser)
+    await execute()
+    access.modal = false
+    access.targetId = ''
+    access.targetName = ''
+    access.selected = []
+  }
 }
 
-const confirmDelete = async () => {
-  const { delete: del } = state.value.feature
-  await executeDelete()
-  await execute()
-  del.modal = false
-  del.targetId = ''
-}
-
-const openAccessModal = (user: { id: string, name: string, access: string[] }) => {
-  const { access } = state.value.feature
-  access.targetId = user.id
-  access.targetName = user.name
-  access.selected = [...user.access]
-  access.modal = true
-}
+// const openAccessModal = (user: { id: string, name: string, access: string[] }) => {
+//   const { access } = state.value.feature
+//   access.targetId = user.id
+//   access.targetName = user.name
+//   access.selected = [...user.access]
+//   access.modal = true
+// }
 
 const toggleAccess = (value: string) => {
   const { access } = state.value.feature
@@ -104,13 +156,13 @@ const toggleAccess = (value: string) => {
   }
 }
 
-const confirmEditAccess = async () => {
-  const { access } = state.value.feature
-  await executeEditAccess()
-  clearNuxtData(UserRequestUrl.AccountGetAllUser)
-  await execute()
-  access.modal = false
-}
+// const confirmEditAccess = async () => {
+//   const { access } = state.value.feature
+//   await executeEditAccess()
+//   clearNuxtData(UserRequestUrl.AccountGetAllUser)
+//   await execute()
+//   access.modal = false
+// }
 </script>
 
 <template>
@@ -129,7 +181,7 @@ const confirmEditAccess = async () => {
     <div class="mb-6">
       <UButton
         ico="i-lucide-user-plus"
-        @click="openRegisterModal"
+        @click="register.openModal"
       >
         新增帳號
       </UButton>
@@ -217,7 +269,7 @@ const confirmEditAccess = async () => {
                   variant="soft"
                   size="xs"
                   icon="i-lucide-shield"
-                  @click="openAccessModal(user)"
+                  @click="accessModal.open(user)"
                 >
                   權限
                 </UButton>
@@ -226,7 +278,7 @@ const confirmEditAccess = async () => {
                   variant="soft"
                   size="xs"
                   icon="i-lucide-trash-2"
-                  @click="openDeleteModal(user.id)"
+                  @click="deleteModal.open(user.id)"
                 >
                   刪除
                 </UButton>
@@ -290,7 +342,7 @@ const confirmEditAccess = async () => {
               variant="soft"
               size="xs"
               icon="i-lucide-shield"
-              @click="openAccessModal(user)"
+              @click="accessModal.open(user)"
             >
               權限
             </UButton>
@@ -299,7 +351,7 @@ const confirmEditAccess = async () => {
               variant="soft"
               size="xs"
               icon="i-lucide-trash-2"
-              @click="openDeleteModal(user.id)"
+              @click="deleteModal.open(user.id)"
             >
               刪除
             </UButton>
@@ -354,7 +406,7 @@ const confirmEditAccess = async () => {
             <UButton
               color="primary"
               :loading="registerPending"
-              @click="confirmRegister"
+              @click="register.confirm"
             >
               建立
             </UButton>
@@ -389,7 +441,7 @@ const confirmEditAccess = async () => {
             </UButton>
             <UButton
               color="error"
-              @click="confirmDelete"
+              @click="deleteModal.confirm"
             >
               確認刪除
             </UButton>
@@ -439,7 +491,7 @@ const confirmEditAccess = async () => {
             <UButton
               color="primary"
               :loading="editAccessPending"
-              @click="confirmEditAccess"
+              @click="accessModal.confirm"
             >
               儲存
             </UButton>
