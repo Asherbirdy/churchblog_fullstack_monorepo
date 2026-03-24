@@ -41,10 +41,6 @@ const { execute: executeEditAccess, pending: editAccessPending } = await useAcco
   }))
 )
 
-const { execute: executeDelete } = await useAccountApi.deleteUser(
-  toRef(() => state.value.feature.delete.targetId)
-)
-
 const register = {
   openModal: () => {
     const { register } = state.value.feature
@@ -81,12 +77,16 @@ const register = {
 const deleteModal = {
   open: (id: string) => {
     const { delete: del } = state.value.feature
+    console.log(id)
+
     del.targetId = id
     del.modal = true
   },
   confirm: async () => {
     const { delete: del } = state.value.feature
+    const { execute: executeDelete } = await useAccountApi.deleteUser(toRef(() => del.targetId))
     await executeDelete()
+    clearNuxtData(UserRequestUrl.AccountGetAllUser)
     await execute()
     del.modal = false
     del.targetId = ''
