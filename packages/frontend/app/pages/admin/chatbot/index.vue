@@ -6,109 +6,117 @@ import { UserRequestUrl } from '~/enum'
 const state = ref({
   data: {},
   feature: {
-    createModal: false,
-    createName: '',
-    createKeywords: '',
-    createLoading: false,
-    createError: '',
-    editModal: false,
-    editId: '',
-    editName: '',
-    editKeywords: '',
-    editLoading: false,
-    deleteModal: false,
-    deleteTargetId: '',
+    create: {
+      modal: false,
+      name: '',
+      keywords: '',
+      error: ''
+    },
+    edit: {
+      modal: false,
+      id: '',
+      name: '',
+      keywords: ''
+    },
+    delete: {
+      modal: false,
+      id: ''
+    },
     expandedId: ''
   }
 })
 
 const { data, execute } = await useChatTopicApi.getAll()
-const chatTopics = computed(() => data.value?.chatTopics ?? [])
 
-const openCreateModal = () => {
-  const { feature } = state.value
-  feature.createName = ''
-  feature.createKeywords = ''
-  feature.createError = ''
-  feature.createModal = true
-}
+const createKeywordsParsed = computed(() =>
+  state.value.feature.create.keywords.split(',').map(k => k.trim()).filter(Boolean)
+)
 
-const confirmCreate = async () => {
-  const { feature } = state.value
-  if (!feature.createName.trim()) return
+const {
+  execute: executeCreate,
+  error: createError,
+  pending: createPending
+} = await useChatTopicApi.create(
+  toRef(() => ({
+    name: state.value.feature.create.name.trim(),
+    keywords: createKeywordsParsed.value
+  }))
+)
 
-  feature.createLoading = true
-  feature.createError = ''
+const editKeywordsParsed = computed(() =>
+  state.value.feature.edit.keywords.split(',').map(k => k.trim()).filter(Boolean)
+)
 
-  const keywords = feature.createKeywords
-    .split(',')
-    .map(k => k.trim())
-    .filter(Boolean)
+const {
+  execute: executeEdit,
+  pending: editPending
+} = await useChatTopicApi.update(
+  toRef(() => state.value.feature.edit.id),
+  toRef(() => ({
+    name: state.value.feature.edit.name.trim(),
+    keywords: editKeywordsParsed.value
+  }))
+)
 
-  const { execute: exec, error } = await useChatTopicApi.create({
-    name: feature.createName.trim(),
-    keywords
-  })
-  await exec()
+const { execute: executeDelete } = await useChatTopicApi.delete(
+  toRef(() => state.value.feature.delete.id)
+)
 
-  if (error.value?.data?.error === 'CHAT_TOPIC_NAME_ALREADY_EXISTS') {
-    feature.createError = '主題名稱已存在'
-    feature.createLoading = false
-    return
+const createModal = {
+  open: () => {
+    const { feature } = state.value
+    feature.create.name = ''
+    feature.create.keywords = ''
+    feature.create.error = ''
+    feature.create.modal = true
+  },
+  confirm: async () => {
+    const { feature } = state.value
+    if (!feature.create.name.trim()) return
+    feature.create.error = ''
+    await executeCreate()
+    if (createError.value?.data?.error === 'CHAT_TOPIC_NAME_ALREADY_EXISTS') {
+      feature.create.error = '主題名稱已存在'
+      return
+    }
+    clearNuxtData(UserRequestUrl.ChatTopic)
+    await execute()
+    feature.create.modal = false
   }
-
-  clearNuxtData(UserRequestUrl.ChatTopic)
-  await execute()
-  feature.createLoading = false
-  feature.createModal = false
 }
 
-const openEditModal = (topic: ChatTopic) => {
-  const { feature } = state.value
-  feature.editId = topic.id
-  feature.editName = topic.name
-  feature.editKeywords = topic.keywords.join(', ')
-  feature.editModal = true
+const editModal = {
+  open: (topic: ChatTopic) => {
+    const { feature } = state.value
+    feature.edit.id = topic.id
+    feature.edit.name = topic.name
+    feature.edit.keywords = topic.keywords.join(', ')
+    feature.edit.modal = true
+  },
+  confirm: async () => {
+    const { feature } = state.value
+    if (!feature.edit.name.trim()) return
+    await executeEdit()
+    clearNuxtData(UserRequestUrl.ChatTopic)
+    await execute()
+    feature.edit.modal = false
+  }
 }
 
-const confirmEdit = async () => {
-  const { feature } = state.value
-  if (!feature.editName.trim()) return
-
-  feature.editLoading = true
-
-  const keywords = feature.editKeywords
-    .split(',')
-    .map(k => k.trim())
-    .filter(Boolean)
-
-  const { execute: exec } = await useChatTopicApi.update(feature.editId, {
-    name: feature.editName.trim(),
-    keywords
-  })
-  await exec()
-
-  clearNuxtData(UserRequestUrl.ChatTopic)
-  await execute()
-  feature.editLoading = false
-  feature.editModal = false
-}
-
-const openDeleteModal = (id: string) => {
-  const { feature } = state.value
-  feature.deleteTargetId = id
-  feature.deleteModal = true
-}
-
-const confirmDelete = async () => {
-  const { feature } = state.value
-  const { execute: exec } = await useChatTopicApi.delete(feature.deleteTargetId)
-  await exec()
-
-  clearNuxtData(UserRequestUrl.ChatTopic)
-  await execute()
-  feature.deleteModal = false
-  feature.deleteTargetId = ''
+const deleteModal = {
+  open: (id: string) => {
+    const { feature } = state.value
+    feature.delete.id = id
+    feature.delete.modal = true
+  },
+  confirm: async () => {
+    const { feature } = state.value
+    await executeDelete()
+    clearNuxtData(UserRequestUrl.ChatTopic)
+    await execute()
+    feature.delete.modal = false
+    feature.delete.id = ''
+  }
 }
 
 const toggleExpand = (id: string) => {
@@ -131,7 +139,7 @@ const toggleExpand = (id: string) => {
       </div>
       <UButton
         icon="i-lucide-plus"
-        @click="openCreateModal"
+        @click="createModal.open"
       >
         新增主題
       </UButton>
@@ -139,7 +147,7 @@ const toggleExpand = (id: string) => {
 
     <!-- Empty State -->
     <div
-      v-if="!chatTopics.length"
+      v-if="!data?.chatTopics?.length"
       class="bg-white rounded-2xl border border-sand-200 shadow-sm p-12 text-center"
     >
       <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-sand-100">
@@ -156,7 +164,7 @@ const toggleExpand = (id: string) => {
     <!-- Topic List -->
     <div class="space-y-3">
       <div
-        v-for="topic in chatTopics"
+        v-for="topic in data?.chatTopics"
         :key="topic.id"
         class="bg-white rounded-2xl border border-sand-200 shadow-sm overflow-hidden"
       >
@@ -208,7 +216,7 @@ const toggleExpand = (id: string) => {
               variant="soft"
               size="xs"
               icon="i-lucide-pencil"
-              @click="openEditModal(topic)"
+              @click="editModal.open(topic)"
             >
               編輯
             </UButton>
@@ -217,7 +225,7 @@ const toggleExpand = (id: string) => {
               variant="soft"
               size="xs"
               icon="i-lucide-trash-2"
-              @click="openDeleteModal(topic.id)"
+              @click="deleteModal.open(topic.id)"
             >
               刪除
             </UButton>
@@ -268,7 +276,7 @@ const toggleExpand = (id: string) => {
     </div>
 
     <!-- Create Modal -->
-    <UModal v-model:open="state.feature.createModal">
+    <UModal v-model:open="state.feature.create.modal">
       <template #content>
         <div class="p-6">
           <h3 class="text-lg font-semibold text-sand-950 mb-1">
@@ -281,7 +289,7 @@ const toggleExpand = (id: string) => {
             <div>
               <label class="block text-sm font-medium text-sand-700 mb-1">主題名稱</label>
               <UInput
-                v-model="state.feature.createName"
+                v-model="state.feature.create.name"
                 placeholder="輸入主題名稱"
                 class="w-full"
               />
@@ -289,7 +297,7 @@ const toggleExpand = (id: string) => {
             <div>
               <label class="block text-sm font-medium text-sand-700 mb-1">關鍵字</label>
               <UInput
-                v-model="state.feature.createKeywords"
+                v-model="state.feature.create.keywords"
                 placeholder="以逗號分隔，例如：聚會, 禮拜, 時間"
                 class="w-full"
               />
@@ -298,24 +306,24 @@ const toggleExpand = (id: string) => {
               </p>
             </div>
             <p
-              v-if="state.feature.createError"
+              v-if="state.feature.create.error"
               class="text-sm text-red-500"
             >
-              {{ state.feature.createError }}
+              {{ state.feature.create.error }}
             </p>
           </div>
           <div class="flex justify-end gap-3">
             <UButton
               variant="outline"
               color="neutral"
-              @click="state.feature.createModal = false"
+              @click="state.feature.create.modal = false"
             >
               取消
             </UButton>
             <UButton
-              :loading="state.feature.createLoading"
-              :disabled="!state.feature.createName.trim()"
-              @click="confirmCreate"
+              :loading="createPending"
+              :disabled="!state.feature.create.name.trim()"
+              @click="createModal.confirm"
             >
               建立
             </UButton>
@@ -325,7 +333,7 @@ const toggleExpand = (id: string) => {
     </UModal>
 
     <!-- Edit Modal -->
-    <UModal v-model:open="state.feature.editModal">
+    <UModal v-model:open="state.feature.edit.modal">
       <template #content>
         <div class="p-6">
           <h3 class="text-lg font-semibold text-sand-950 mb-1">
@@ -338,7 +346,7 @@ const toggleExpand = (id: string) => {
             <div>
               <label class="block text-sm font-medium text-sand-700 mb-1">主題名稱</label>
               <UInput
-                v-model="state.feature.editName"
+                v-model="state.feature.edit.name"
                 placeholder="輸入主題名稱"
                 class="w-full"
               />
@@ -346,7 +354,7 @@ const toggleExpand = (id: string) => {
             <div>
               <label class="block text-sm font-medium text-sand-700 mb-1">關鍵字</label>
               <UInput
-                v-model="state.feature.editKeywords"
+                v-model="state.feature.edit.keywords"
                 placeholder="以逗號分隔，例如：聚會, 禮拜, 時間"
                 class="w-full"
               />
@@ -359,14 +367,14 @@ const toggleExpand = (id: string) => {
             <UButton
               variant="outline"
               color="neutral"
-              @click="state.feature.editModal = false"
+              @click="state.feature.edit.modal = false"
             >
               取消
             </UButton>
             <UButton
-              :loading="state.feature.editLoading"
-              :disabled="!state.feature.editName.trim()"
-              @click="confirmEdit"
+              :loading="editPending"
+              :disabled="!state.feature.edit.name.trim()"
+              @click="editModal.confirm"
             >
               儲存
             </UButton>
@@ -376,7 +384,7 @@ const toggleExpand = (id: string) => {
     </UModal>
 
     <!-- Delete Confirm Modal -->
-    <UModal v-model:open="state.feature.deleteModal">
+    <UModal v-model:open="state.feature.delete.modal">
       <template #content>
         <div class="p-6 text-center">
           <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
@@ -395,13 +403,13 @@ const toggleExpand = (id: string) => {
             <UButton
               variant="outline"
               color="neutral"
-              @click="state.feature.deleteModal = false"
+              @click="state.feature.delete.modal = false"
             >
               取消
             </UButton>
             <UButton
               color="error"
-              @click="confirmDelete"
+              @click="deleteModal.confirm"
             >
               確認刪除
             </UButton>

@@ -210,22 +210,26 @@ packages/[project-name]/src/
 - Enum key naming: `[RouteGroup][Action]` in PascalCase (e.g. `AuthLogin`, `AuthLogout`, `AuthRefreshToken`, `DevCheckIp`, `UserShowMe`, `Page`)
 - All API functions use `useRequestApi` composable from `~/composables`
 - Always import API from the barrel: `import { useAuthApi } from '~/api'`
-- **Hoist API calls to outer scope**: For API calls with fixed URLs (e.g. `create`), define `computed` body and call the API at the top level of `<script setup>`, then only call `execute()` inside event handlers. For API calls with dynamic URLs containing IDs (e.g. `update/:id`, `delete/:id`), keep them inside event handlers since the URL changes per invocation.
+- **Hoist API calls to outer scope**: For API calls with fixed URLs (e.g. `create`), pass reactive `toRef`/`computed` body and call the API at the top level of `<script setup>`, then only call `execute()` inside event handlers. For dynamic URL APIs that accept `ComputedRef` (e.g. `useChatCardApi.update`, `useChatCardApi.delete`), also hoist with `computed`. For dynamic URL APIs that only accept plain `string`, keep them inside event handlers.
+- **Use `pending` for loading state**: Destructure `pending` from the API composable and bind it to `:loading` in templates. **NEVER** create manual loading state variables (e.g. `feature.create.loading`) — use `pending` from the hoisted API call instead.
 ```typescript
-// Good — hoisted create (fixed URL), body is reactive
-const createBody = computed(() => ({
-  name: state.value.feature.createName.trim(),
-  chatTopicId: topicId
-}))
-const { execute: executeCreate } = await useApi.create(toRef(() => createBody.value))
+// Good — hoisted create, use pending for loading
+const { execute: executeCreate, pending: createPending } = await useApi.create(
+  toRef(() => ({
+    name: state.value.feature.create.name.trim(),
+    chatTopicId: topicId
+  }))
+)
+// Template: :loading="createPending"
 
-const confirmCreate = async () => {
-  await executeCreate()
-}
+// Good — hoisted with ComputedRef (API accepts ComputedRef<string>)
+const { execute: executeDelete } = await useApi.delete(
+  computed(() => state.value.feature.delete.id)
+)
 
-// OK — dynamic URL with ID, kept inside handler
+// OK — dynamic URL with plain string, kept inside handler
 const confirmDelete = async () => {
-  const { execute } = await useApi.delete(feature.deleteTargetId)
+  const { execute } = await useApi.delete(del.id)
   await execute()
 }
 ```
@@ -263,29 +267,73 @@ const confirmDelete = async () => {
 - Animations: `animate-fade-up` with `stagger-1` ~ `stagger-6` delay classes
 
 ### Vue Page State Convention
-Every `.vue` page file must define a `state` ref with two keys:
+Every `.vue` page file must define a `state` ref with two keys. Feature state for modals (create, edit, delete, access, etc.) must use **nested objects** grouped by action:
 ```typescript
 const state = ref({
   data: {},    // view data (API responses, card content, display values)
-  feature: {}  // feature flags (modal open/close, loading states, toggles)
+  feature: {   // feature flags grouped by action
+    create: {
+      modal: false,
+      name: '',
+      url: ''
+    },
+    edit: {
+      modal: false,
+      id: '',
+      name: '',
+      url: ''
+    },
+    delete: {
+      modal: false,
+      id: ''
+    }
+  }
 })
 ```
+**NEVER** use flat naming like `deleteModal`, `deleteTargetId`, `editLoading` — always nest under the action key.
 
 ### State Destructuring Convention
-When a function accesses multiple properties on `state.value.data` or `state.value.feature`, destructure first to avoid repeating the full path:
+Always destructure `state.value` into `feature` and/or `data` first — **never** destructure deeper (e.g. `state.value.feature`):
 ```typescript
-// Good — destructure then use
+// Good — destructure state.value, then access nested group
 const openDeleteModal = (id: string) => {
   const { feature } = state.value
-  feature.deleteTargetId = id
-  feature.deleteModal = true
+  feature.delete.id = id
+  feature.delete.modal = true
+}
+
+// Bad — destructuring deeper than feature/data
+const openDeleteModal = (id: string) => {
+  const { delete: del } = state.value.feature  // ✗ don't do this
+  del.id = id
+  del.modal = true
 }
 
 // Bad — repeating full path
 const openDeleteModal = (id: string) => {
-  state.value.feature.deleteTargetId = id
-  state.value.feature.deleteModal = true
+  state.value.feature.delete.id = id
+  state.value.feature.delete.modal = true
 }
+```
+
+### Modal Action Object Convention
+Group modal open/confirm functions into a single object per action, rather than separate `openXxxModal` / `confirmXxx` functions:
+```typescript
+const deleteModal = {
+  open: (id: string) => {
+    const { feature } = state.value
+    feature.delete.id = id
+    feature.delete.modal = true
+  },
+  confirm: async () => {
+    const { feature } = state.value
+    const { execute: exec } = await useApi.delete(feature.delete.id)
+    await exec()
+    feature.delete.modal = false
+    feature.delete.id = ''
+  }
+}
+// Template: @click="deleteModal.open(item.id)" / @click="deleteModal.confirm"
 ```
 
 ### Reactivity Convention

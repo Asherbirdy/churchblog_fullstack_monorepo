@@ -10,112 +10,112 @@ const topicKey = `${UserRequestUrl.ChatTopic}-${topicId}`
 const state = ref({
   data: {},
   feature: {
-    createModal: false,
-    createName: '',
-    createUrl: '',
-    createDescription: '',
-    createLoading: false,
-    editModal: false,
-    editId: '',
-    editName: '',
-    editUrl: '',
-    editDescription: '',
-    editLoading: false,
-    deleteModal: false,
-    deleteTargetId: ''
+    create: {
+      modal: false,
+      name: '',
+      url: '',
+      description: ''
+    },
+    edit: {
+      modal: false,
+      id: '',
+      name: '',
+      url: '',
+      description: ''
+    },
+    delete: {
+      modal: false,
+      id: ''
+    }
   }
 })
 
 const { data: topicData } = await useChatTopicApi.getOne(topicId)
-const topic = computed(() => topicData.value?.chatTopic)
-const cards = computed(() => topic.value?.cards ?? [])
 
-// -- Hoisted API calls --
-
-const {
-  execute: executeCreate
-} = await useChatCardApi.create(
+const { execute: executeCreate, pending: createPending } = await useChatCardApi.create(
   toRef(() => ({
-    name: state.value.feature.createName.trim(),
-    url: state.value.feature.createUrl.trim(),
-    description: state.value.feature.createDescription.trim(),
+    name: state.value.feature.create.name.trim(),
+    url: state.value.feature.create.url.trim(),
+    description: state.value.feature.create.description.trim(),
     chatTopicId: topicId
-  })))
+  }))
+)
 
-const editId = computed(() => state.value.feature.editId)
+const { execute: executeEdit, pending: editPending } = await useChatCardApi.update(
+  toRef(() => state.value.feature.edit.id),
+  toRef(() => ({
+    name: state.value.feature.edit.name.trim(),
+    url: state.value.feature.edit.url.trim(),
+    description: state.value.feature.edit.description.trim()
+  }))
+)
 
-const {
-  execute: executeEdit
-} = await useChatCardApi.update(editId, toRef(() => ({
-  name: state.value.feature.editName.trim(),
-  url: state.value.feature.editUrl.trim(),
-  description: state.value.feature.editDescription.trim()
-})))
-
-const deleteId = computed(() => state.value.feature.deleteTargetId)
-const { execute: executeDelete } = await useChatCardApi.delete(deleteId)
+const { execute: executeDelete } = await useChatCardApi.delete(
+  toRef(() => state.value.feature.delete.id)
+)
 
 const toggleId = ref('')
 const toggleBody = ref<{ online?: boolean }>({})
-const { execute: executeToggle } = await useChatCardApi.update(computed(() => toggleId.value), toRef(() => toggleBody.value))
+const { execute: executeToggle } = await useChatCardApi.update(
+  toRef(() => toggleId.value),
+  toRef(() => toggleBody.value)
+)
 
-// -- Helpers --
 const refreshTopic = async () => {
   clearNuxtData(topicKey)
   await refreshNuxtData([topicKey])
 }
 
-const openCreateModal = () => {
-  const { feature } = state.value
-  feature.createName = ''
-  feature.createUrl = ''
-  feature.createDescription = ''
-  feature.createModal = true
+const createModal = {
+  open: () => {
+    const { feature } = state.value
+    feature.create.name = ''
+    feature.create.url = ''
+    feature.create.description = ''
+    feature.create.modal = true
+  },
+  confirm: async () => {
+    const { feature } = state.value
+    if (!feature.create.name.trim() || !feature.create.url.trim()) return
+
+    await executeCreate()
+    await refreshTopic()
+    feature.create.modal = false
+  }
 }
 
-const confirmCreate = async () => {
-  const { feature } = state.value
-  if (!feature.createName.trim() || !feature.createUrl.trim()) return
+const editModal = {
+  open: (card: ChatCard) => {
+    const { feature } = state.value
+    feature.edit.id = card.id
+    feature.edit.name = card.name
+    feature.edit.url = card.url
+    feature.edit.description = card.description
+    feature.edit.modal = true
+  },
+  confirm: async () => {
+    const { feature } = state.value
+    if (!feature.edit.name.trim() || !feature.edit.url.trim()) return
 
-  feature.createLoading = true
-  await executeCreate()
-  await refreshTopic()
-  feature.createLoading = false
-  feature.createModal = false
+    await executeEdit()
+    await refreshTopic()
+    feature.edit.modal = false
+  }
 }
 
-const openEditModal = (card: ChatCard) => {
-  const { feature } = state.value
-  feature.editId = card.id
-  feature.editName = card.name
-  feature.editUrl = card.url
-  feature.editDescription = card.description
-  feature.editModal = true
-}
-
-const confirmEdit = async () => {
-  const { feature } = state.value
-  if (!feature.editName.trim() || !feature.editUrl.trim()) return
-
-  feature.editLoading = true
-  await executeEdit()
-  await refreshTopic()
-  feature.editLoading = false
-  feature.editModal = false
-}
-
-const openDeleteModal = (id: string) => {
-  const { feature } = state.value
-  feature.deleteTargetId = id
-  feature.deleteModal = true
-}
-
-const confirmDelete = async () => {
-  const { feature } = state.value
-  await executeDelete()
-  await refreshTopic()
-  feature.deleteModal = false
-  feature.deleteTargetId = ''
+const deleteModal = {
+  open: (id: string) => {
+    const { feature } = state.value
+    feature.delete.id = id
+    feature.delete.modal = true
+  },
+  confirm: async () => {
+    const { feature } = state.value
+    await executeDelete()
+    await refreshTopic()
+    feature.delete.modal = false
+    feature.delete.id = ''
+  }
 }
 
 const toggleOnline = async (card: ChatCard) => {
@@ -138,11 +138,11 @@ const toggleOnline = async (card: ChatCard) => {
       />
       <div class="flex-1">
         <h2 class="font-display text-2xl font-bold text-sand-950 mb-1">
-          {{ topic?.name ?? '載入中...' }}
+          {{ topicData?.chatTopic?.name ?? '載入中...' }}
         </h2>
         <div class="flex flex-wrap gap-1">
           <span
-            v-for="keyword in topic?.keywords"
+            v-for="keyword in topicData?.chatTopic?.keywords"
             :key="keyword"
             class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-sage-100 text-sage-700"
           >
@@ -152,7 +152,7 @@ const toggleOnline = async (card: ChatCard) => {
       </div>
       <UButton
         icon="i-lucide-plus"
-        @click="openCreateModal"
+        @click="createModal.open"
       >
         新增卡片
       </UButton>
@@ -160,7 +160,7 @@ const toggleOnline = async (card: ChatCard) => {
 
     <!-- Empty State -->
     <div
-      v-if="!cards.length"
+      v-if="!topicData?.chatTopic?.cards?.length"
       class="bg-white rounded-2xl border border-sand-200 shadow-sm p-12 text-center"
     >
       <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-sand-100">
@@ -177,7 +177,7 @@ const toggleOnline = async (card: ChatCard) => {
     <!-- Card List -->
     <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
       <div
-        v-for="card in cards"
+        v-for="card in topicData?.chatTopic?.cards"
         :key="card.id"
         class="bg-white rounded-2xl border border-sand-200 shadow-sm p-5 flex flex-col"
       >
@@ -222,7 +222,7 @@ const toggleOnline = async (card: ChatCard) => {
             variant="soft"
             size="xs"
             icon="i-lucide-pencil"
-            @click="openEditModal(card)"
+            @click="editModal.open(card)"
           >
             編輯
           </UButton>
@@ -231,7 +231,7 @@ const toggleOnline = async (card: ChatCard) => {
             variant="soft"
             size="xs"
             icon="i-lucide-trash-2"
-            @click="openDeleteModal(card.id)"
+            @click="deleteModal.open(card.id)"
           >
             刪除
           </UButton>
@@ -240,7 +240,7 @@ const toggleOnline = async (card: ChatCard) => {
     </div>
 
     <!-- Create Modal -->
-    <UModal v-model:open="state.feature.createModal">
+    <UModal v-model:open="state.feature.create.modal">
       <template #content>
         <div class="p-6">
           <h3 class="text-lg font-semibold text-sand-950 mb-1">
@@ -253,7 +253,7 @@ const toggleOnline = async (card: ChatCard) => {
             <div>
               <label class="block text-sm font-medium text-sand-700 mb-1">名稱</label>
               <UInput
-                v-model="state.feature.createName"
+                v-model="state.feature.create.name"
                 placeholder="輸入卡片名稱"
                 class="w-full"
               />
@@ -261,7 +261,7 @@ const toggleOnline = async (card: ChatCard) => {
             <div>
               <label class="block text-sm font-medium text-sand-700 mb-1">網址</label>
               <UInput
-                v-model="state.feature.createUrl"
+                v-model="state.feature.create.url"
                 placeholder="https://..."
                 class="w-full"
               />
@@ -269,7 +269,7 @@ const toggleOnline = async (card: ChatCard) => {
             <div>
               <label class="block text-sm font-medium text-sand-700 mb-1">描述</label>
               <UInput
-                v-model="state.feature.createDescription"
+                v-model="state.feature.create.description"
                 placeholder="輸入卡片描述（選填）"
                 class="w-full"
               />
@@ -279,14 +279,14 @@ const toggleOnline = async (card: ChatCard) => {
             <UButton
               variant="outline"
               color="neutral"
-              @click="state.feature.createModal = false"
+              @click="state.feature.create.modal = false"
             >
               取消
             </UButton>
             <UButton
-              :loading="state.feature.createLoading"
-              :disabled="!state.feature.createName.trim() || !state.feature.createUrl.trim()"
-              @click="confirmCreate"
+              :loading="createPending"
+              :disabled="!state.feature.create.name.trim() || !state.feature.create.url.trim()"
+              @click="createModal.confirm"
             >
               建立
             </UButton>
@@ -296,7 +296,7 @@ const toggleOnline = async (card: ChatCard) => {
     </UModal>
 
     <!-- Edit Modal -->
-    <UModal v-model:open="state.feature.editModal">
+    <UModal v-model:open="state.feature.edit.modal">
       <template #content>
         <div class="p-6">
           <h3 class="text-lg font-semibold text-sand-950 mb-1">
@@ -309,7 +309,7 @@ const toggleOnline = async (card: ChatCard) => {
             <div>
               <label class="block text-sm font-medium text-sand-700 mb-1">名稱</label>
               <UInput
-                v-model="state.feature.editName"
+                v-model="state.feature.edit.name"
                 placeholder="輸入卡片名稱"
                 class="w-full"
               />
@@ -317,7 +317,7 @@ const toggleOnline = async (card: ChatCard) => {
             <div>
               <label class="block text-sm font-medium text-sand-700 mb-1">網址</label>
               <UInput
-                v-model="state.feature.editUrl"
+                v-model="state.feature.edit.url"
                 placeholder="https://..."
                 class="w-full"
               />
@@ -325,7 +325,7 @@ const toggleOnline = async (card: ChatCard) => {
             <div>
               <label class="block text-sm font-medium text-sand-700 mb-1">描述</label>
               <UInput
-                v-model="state.feature.editDescription"
+                v-model="state.feature.edit.description"
                 placeholder="輸入卡片描述（選填）"
                 class="w-full"
               />
@@ -335,14 +335,14 @@ const toggleOnline = async (card: ChatCard) => {
             <UButton
               variant="outline"
               color="neutral"
-              @click="state.feature.editModal = false"
+              @click="state.feature.edit.modal = false"
             >
               取消
             </UButton>
             <UButton
-              :loading="state.feature.editLoading"
-              :disabled="!state.feature.editName.trim() || !state.feature.editUrl.trim()"
-              @click="confirmEdit"
+              :loading="editPending"
+              :disabled="!state.feature.edit.name.trim() || !state.feature.edit.url.trim()"
+              @click="editModal.confirm"
             >
               儲存
             </UButton>
@@ -352,7 +352,7 @@ const toggleOnline = async (card: ChatCard) => {
     </UModal>
 
     <!-- Delete Confirm Modal -->
-    <UModal v-model:open="state.feature.deleteModal">
+    <UModal v-model:open="state.feature.delete.modal">
       <template #content>
         <div class="p-6 text-center">
           <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
@@ -371,13 +371,13 @@ const toggleOnline = async (card: ChatCard) => {
             <UButton
               variant="outline"
               color="neutral"
-              @click="state.feature.deleteModal = false"
+              @click="state.feature.delete.modal = false"
             >
               取消
             </UButton>
             <UButton
               color="error"
-              @click="confirmDelete"
+              @click="deleteModal.confirm"
             >
               確認刪除
             </UButton>

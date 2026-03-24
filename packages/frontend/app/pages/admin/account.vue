@@ -43,35 +43,35 @@ const { execute: executeEditAccess, pending: editAccessPending } = await useAcco
 
 const register = {
   openModal: () => {
-    const { register } = state.value.feature
-    register.name = ''
-    register.email = ''
-    register.password = ''
-    register.modal = true
+    const { feature } = state.value
+    feature.register.name = ''
+    feature.register.email = ''
+    feature.register.password = ''
+    feature.register.modal = true
   },
   confirm: async () => {
-    const { register } = state.value.feature
+    const { feature } = state.value
     await executeRegister()
     clearNuxtData(UserRequestUrl.AccountGetAllUser)
     await execute()
-    register.modal = false
+    feature.register.modal = false
   }
 }
 
 const deleteModal = {
   open: (id: string) => {
-    const { delete: del } = state.value.feature
-    del.targetId = id
-    del.modal = true
+    const { feature } = state.value
+    feature.delete.targetId = id
+    feature.delete.modal = true
   },
   confirm: async () => {
-    const { delete: del } = state.value.feature
-    const { execute: executeDelete } = await useAccountApi.deleteUser(toRef(() => del.targetId))
+    const { feature } = state.value
+    const { execute: executeDelete } = await useAccountApi.deleteUser(toRef(() => feature.delete.targetId))
     await executeDelete()
     clearNuxtData(UserRequestUrl.AccountGetAllUser)
     await execute()
-    del.modal = false
-    del.targetId = ''
+    feature.delete.modal = false
+    feature.delete.targetId = ''
   }
 }
 
@@ -88,29 +88,29 @@ const accessLabel = (value: string) => {
 
 const accessModal = {
   open: (user: { id: string, name: string, access: string[] }) => {
-    const { access } = state.value.feature
-    access.targetId = user.id
-    access.targetName = user.name
-    access.selected = [...user.access]
-    access.modal = true
+    const { feature } = state.value
+    feature.access.targetId = user.id
+    feature.access.targetName = user.name
+    feature.access.selected = [...user.access]
+    feature.access.modal = true
   },
   confirm: async () => {
-    const { access } = state.value.feature
+    const { feature } = state.value
     await executeEditAccess()
     clearNuxtData(UserRequestUrl.AccountGetAllUser)
     await execute()
-    access.modal = false
-    access.targetId = ''
-    access.targetName = ''
-    access.selected = []
+    feature.access.modal = false
+    feature.access.targetId = ''
+    feature.access.targetName = ''
+    feature.access.selected = []
   },
   toggleAccess: (value: string) => {
-    const { access } = state.value.feature
-    const idx = access.selected.indexOf(value)
+    const { feature } = state.value
+    const idx = feature.access.selected.indexOf(value)
     if (idx === -1) {
-      access.selected.push(value)
+      feature.access.selected.push(value)
     } else {
-      access.selected.splice(idx, 1)
+      feature.access.selected.splice(idx, 1)
     }
   }
 }
