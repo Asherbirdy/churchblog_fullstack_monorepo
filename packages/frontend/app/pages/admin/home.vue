@@ -6,24 +6,13 @@ const { userInfo, isLoading } = storeToRefs(useUserStore())
 const state = ref({
   data: {},
   feature: {
-    isEditing: false
+    isEditing: false,
+    form: {
+      name: '',
+      email: ''
+    }
   }
 })
-
-const editForm = ref({
-  name: '',
-  email: ''
-})
-
-const startEditing = () => {
-  editForm.value.name = userInfo.value.name
-  editForm.value.email = userInfo.value.email
-  state.value.feature.isEditing = true
-}
-
-const handleCancel = () => {
-  state.value.feature.isEditing = false
-}
 </script>
 
 <template>
@@ -92,7 +81,9 @@ const handleCancel = () => {
               <span
                 v-else
                 class="text-sm"
-              >{{ userInfo.name || '—' }}</span>
+              >
+                {{ userInfo.name || '—' }}
+              </span>
               <template #fallback>
                 <div class="h-4 w-20 bg-sand-200 rounded animate-pulse" />
               </template>
@@ -100,7 +91,7 @@ const handleCancel = () => {
           </div>
           <UInput
             v-else
-            v-model="editForm.name"
+            v-model="state.feature.form.name"
             icon="i-lucide-user"
             size="lg"
             :ui="{ base: 'rounded-xl' }"
@@ -135,7 +126,7 @@ const handleCancel = () => {
           </div>
           <UInput
             v-else
-            v-model="editForm.email"
+            v-model="state.feature.form.email"
             type="email"
             icon="i-lucide-mail"
             size="lg"
@@ -152,20 +143,13 @@ const handleCancel = () => {
             color="neutral"
             variant="outline"
             class="rounded-xl"
-            @click="handleCancel"
+            @click="state.feature.isEditing = false"
           />
           <UButton
             label="儲存"
             class="rounded-xl bg-sage-600 text-white hover:bg-sage-700"
           />
         </template>
-        <UButton
-          v-else
-          label="編輯資料"
-          icon="i-lucide-pencil"
-          class="rounded-xl bg-sand-950 text-white hover:bg-sand-800"
-          @click="startEditing"
-        />
       </div>
     </div>
   </div>

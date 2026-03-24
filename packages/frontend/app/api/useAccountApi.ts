@@ -23,7 +23,7 @@ export const useAccountApi = {
       body
     })
   },
-  adminRegisterUser: async (body: { name: string, email: string, password: string }) => {
+  adminRegisterUser: async (body: Ref<{ name: string, email: string, password: string }>) => {
     return await useRequestApi(UserRequestUrl.AccountAdminRegisterUser, {
       method: 'POST',
       body,
@@ -33,8 +33,8 @@ export const useAccountApi = {
       watch: false
     })
   },
-  deleteUser: async (id: string) => {
-    return await useRequestApi(`${UserRequestUrl.AccountDeleteUser}/${id}`, {
+  deleteUser: async (id: Ref<string>) => {
+    return await useRequestApi(`${UserRequestUrl.AccountDeleteUser}/${id.value}`, {
       method: 'DELETE',
       server: false,
       lazy: true,
