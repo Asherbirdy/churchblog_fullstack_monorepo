@@ -31,6 +31,7 @@ const { data, execute } = await useChatTopicApi.getAll()
 const createKeywordsParsed = computed(() =>
   state.value.feature.create.keywords.split(',').map(k => k.trim()).filter(Boolean)
 )
+
 const {
   execute: executeCreate,
   error: createError,
@@ -45,7 +46,11 @@ const {
 const editKeywordsParsed = computed(() =>
   state.value.feature.edit.keywords.split(',').map(k => k.trim()).filter(Boolean)
 )
-const { execute: executeEdit, pending: editPending } = await useChatTopicApi.update(
+
+const {
+  execute: executeEdit,
+  pending: editPending
+} = await useChatTopicApi.update(
   toRef(() => state.value.feature.edit.id),
   toRef(() => ({
     name: state.value.feature.edit.name.trim(),
@@ -68,15 +73,12 @@ const createModal = {
   confirm: async () => {
     const { feature } = state.value
     if (!feature.create.name.trim()) return
-
     feature.create.error = ''
     await executeCreate()
-
     if (createError.value?.data?.error === 'CHAT_TOPIC_NAME_ALREADY_EXISTS') {
       feature.create.error = '主題名稱已存在'
       return
     }
-
     clearNuxtData(UserRequestUrl.ChatTopic)
     await execute()
     feature.create.modal = false
@@ -94,7 +96,6 @@ const editModal = {
   confirm: async () => {
     const { feature } = state.value
     if (!feature.edit.name.trim()) return
-
     await executeEdit()
     clearNuxtData(UserRequestUrl.ChatTopic)
     await execute()
