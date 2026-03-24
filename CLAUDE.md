@@ -10,6 +10,7 @@ A pnpm workspace monorepo nodejs project
 
 - **packages/libs**: Shared library (`@monorepo/libs`) — Vue composables (`useLiff`), utils (`setToken`, `getToken`, `removeToken`, `clearToken`), components
 - **packages/backend**: Express + Prisma + TypeScript backend API server
+- **packages/chatbot**: Embeddable chatbot widget (React 19 + Vite + TypeScript) — builds to static assets, deployed into frontend's `public/chatbot`
 - **packages/[vendor-project]**: Individual LINE OA frontend apps (Vue 3 + Vite + TypeScript)
 
 ## Common Commands
@@ -119,6 +120,59 @@ Errors are caught by `express-async-errors` and handled by `errorHandlerMiddlewa
 
 ### Environment Variables (backend)
 Uses `.env.dev` / `.env.prod` — requires: `PORT`, `ENVIRONMENT` (DEV/PROD), `DATABASE_URL`, `JWT_SECRET`
+
+## Chatbot Architecture (packages/chatbot)
+
+### Tech Stack
+- React 19 + TypeScript 5.9
+- Vite 8
+- Zustand (state management)
+- Axios (HTTP client)
+- SCSS for styling
+
+### Chatbot Structure
+```
+packages/chatbot/src/
+├── main.tsx            # Entry point — creates root container, exports init() to window.Chatbot
+├── App.tsx             # Root component — toggle open/close chatbot widget
+├── App.css             # All chatbot styles (scoped via .chatbot-* classnames)
+├── component/          # React components
+│   ├── Chatroom.tsx    # Chat UI (header, message list, input footer)
+│   └── index.ts        # Barrel export
+├── api/
+│   ├── index.ts        # Barrel export
+│   ├── useMessageApi.ts # sendMessage API call
+│   └── http/           # Axios instance & interceptors
+│       ├── index.ts    # Creates useApiRequest Axios instance
+│       ├── config.ts   # Base URL from VITE_API env var
+│       └── axios/      # Axios class, interceptors, retry, abort, error handling
+├── store/
+│   ├── index.ts        # Barrel export
+│   └── useMessageStore.ts # Zustand store — messages[], addMessage, clearMessages
+├── hook/               # Custom React hooks (placeholder)
+├── enum/               # Enums (placeholder)
+├── type/               # Type definitions (placeholder)
+└── assets/             # Static assets (images, SCSS)
+    └── scss/style.scss
+```
+
+### Chatbot Build & Deploy
+- `pnpm run -C packages/chatbot dev` — local dev server
+- `pnpm run -C packages/chatbot build` — production build
+- `pnpm run -C packages/chatbot build-to-frontend` — build and copy `dist/` to `packages/frontend/public/chatbot`
+
+### Chatbot Embedding
+The chatbot is designed as an embeddable widget. `main.tsx` exposes `window.Chatbot.init()` which creates a root container div and mounts the React app. Host pages call `Chatbot.init()` to bootstrap the widget.
+
+### Chatbot API Convention
+- API functions live in `api/` with barrel export in `api/index.ts`
+- Each API group is a `use[Group]Api` object (e.g. `useMessageApi`)
+- Uses a custom `Axios` wrapper class from `api/http/axios/Axios.ts` with interceptors, retry, and abort support
+- HTTP instance created in `api/http/index.ts` as `useApiRequest`
+
+### Chatbot Store Convention
+- All Zustand stores live in `store/` with barrel export in `store/index.ts`
+- Always import stores from the barrel: `import { useMessageStore } from '../store'`
 
 ## Frontend Architecture
 
