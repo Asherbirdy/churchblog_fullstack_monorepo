@@ -214,6 +214,52 @@
   border-bottom-left-radius: 4px;
 }
 
+/* ===== Cards ===== */
+.chatbot-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 85%;
+}
+
+.chatbot-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+  background: #fff;
+  border: 2px solid #ddd;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #222;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+
+.chatbot-card:hover {
+  border-color: #42b883;
+  box-shadow: 2px 2px 0 #a8e6cf;
+  transform: translate(-1px, -1px);
+}
+
+.chatbot-card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #222;
+}
+
+.chatbot-card-desc {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.chatbot-card-url {
+  font-size: 12px;
+  color: #42b883;
+  word-break: break-all;
+}
+
 /* ===== Footer ===== */
 .chatbot-footer {
   display: flex;

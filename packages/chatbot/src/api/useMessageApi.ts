@@ -27,7 +27,7 @@ export interface Card {
 
 
 export const useMessageApi = {
-  sendMessage: (payload: string): Promise<SendMessageResponse> => {
+  sendMessage: (payload: {message: string}): Promise<SendMessageResponse> => {
     return useApiRequest.post({
       url: `/chat/send-message`,
       data: payload
