@@ -14,8 +14,7 @@ const state = ref({
       modal: false,
       name: '',
       email: '',
-      password: '',
-      loading: false
+      password: ''
     },
     delete: {
       modal: false,
@@ -25,27 +24,31 @@ const state = ref({
       modal: false,
       targetId: '',
       targetName: '',
-      selected: [] as string[],
-      loading: false
+      selected: [] as string[]
     }
   }
 })
 
 const { data, execute } = await useAccountApi.getAllUser()
-const users = computed(() => data.value?.users ?? [])
 
-const editAccessBody = computed(() => ({
-  userId: state.value.feature.access.targetId,
-  access: state.value.feature.access.selected
-}))
-const { execute: executeEditAccess } = await useAccountApi.editAccess(toRef(() => editAccessBody.value))
+const { execute: executeRegister, pending: registerPending } = await useAccountApi.adminRegisterUser(
+  toRef(() => ({
+    name: state.value.feature.register.name.trim(),
+    email: state.value.feature.register.email.trim(),
+    password: state.value.feature.register.password
+  }))
+)
 
-const registerBody = computed(() => ({
-  name: state.value.feature.register.name.trim(),
-  email: state.value.feature.register.email.trim(),
-  password: state.value.feature.register.password
-}))
-const { execute: executeRegister } = await useAccountApi.adminRegisterUser(registerBody.value)
+const { execute: executeEditAccess, pending: editAccessPending } = await useAccountApi.editAccess(
+  toRef(() => ({
+    userId: state.value.feature.access.targetId,
+    access: state.value.feature.access.selected
+  }))
+)
+
+const { execute: executeDelete } = await useAccountApi.deleteUser(
+  toRef(() => state.value.feature.delete.targetId)
+)
 
 const openRegisterModal = () => {
   const { register } = state.value.feature
@@ -57,11 +60,9 @@ const openRegisterModal = () => {
 
 const confirmRegister = async () => {
   const { register } = state.value.feature
-  register.loading = true
   await executeRegister()
   clearNuxtData(UserRequestUrl.AccountGetAllUser)
   await execute()
-  register.loading = false
   register.modal = false
 }
 
@@ -79,7 +80,6 @@ const openDeleteModal = (id: string) => {
 
 const confirmDelete = async () => {
   const { delete: del } = state.value.feature
-  const { execute: executeDelete } = await useAccountApi.deleteUser(del.targetId)
   await executeDelete()
   await execute()
   del.modal = false
@@ -106,11 +106,9 @@ const toggleAccess = (value: string) => {
 
 const confirmEditAccess = async () => {
   const { access } = state.value.feature
-  access.loading = true
   await executeEditAccess()
   clearNuxtData(UserRequestUrl.AccountGetAllUser)
   await execute()
-  access.loading = false
   access.modal = false
 }
 </script>
@@ -130,7 +128,7 @@ const confirmEditAccess = async () => {
     <!-- Add Account Button -->
     <div class="mb-6">
       <UButton
-        icon="i-lucide-user-plus"
+        ico="i-lucide-user-plus"
         @click="openRegisterModal"
       >
         新增帳號
@@ -157,9 +155,9 @@ const confirmEditAccess = async () => {
             <th class="text-left px-6 py-3 text-xs font-medium text-sand-400 uppercase tracking-wide">
               狀態
             </th>
-            <th class="text-left px-6 py-3 text-xs font-medium text-sand-400 uppercase tracking-wide">
+            <!-- <th class="text-left px-6 py-3 text-xs font-medium text-sand-400 uppercase tracking-wide">
               建立日期
-            </th>
+            </th> -->
             <th class="text-left px-6 py-3 text-xs font-medium text-sand-400 uppercase tracking-wide">
               操作
             </th>
@@ -167,7 +165,7 @@ const confirmEditAccess = async () => {
         </thead>
         <tbody>
           <tr
-            v-for="user in users"
+            v-for="user in data?.users"
             :key="user.id"
             class="border-b border-sand-100 last:border-b-0 hover:bg-sand-50 transition-colors"
           >
@@ -210,9 +208,9 @@ const confirmEditAccess = async () => {
                 {{ user.isBlocked ? '已封鎖' : '正常' }}
               </span>
             </td>
-            <td class="px-6 py-4 text-sand-500">
+            <!-- <td class="px-6 py-4 text-sand-500">
               {{ user.createdAt }}
-            </td>
+            </td> -->
             <td class="px-6 py-4">
               <div class="flex gap-2">
                 <UButton
@@ -242,7 +240,7 @@ const confirmEditAccess = async () => {
     <!-- User Cards (Mobile) -->
     <div class="lg:hidden space-y-3">
       <div
-        v-for="user in users"
+        v-for="user in data?.users"
         :key="user.id"
         class="bg-white rounded-2xl border border-sand-200 shadow-sm p-4"
       >
@@ -355,7 +353,7 @@ const confirmEditAccess = async () => {
             </UButton>
             <UButton
               color="primary"
-              :loading="state.feature.register.loading"
+              :loading="registerPending"
               @click="confirmRegister"
             >
               建立
@@ -440,7 +438,7 @@ const confirmEditAccess = async () => {
             </UButton>
             <UButton
               color="primary"
-              :loading="state.feature.access.loading"
+              :loading="editAccessPending"
               @click="confirmEditAccess"
             >
               儲存
