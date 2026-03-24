@@ -15,6 +15,24 @@ export const UpdateChatTopicController = async (req: Request, res: Response) => 
   const existing = await prisma.chatTopic.findUnique({ where: { id } })
   if (!existing) throw new NotFoundError('CHAT_TOPIC_NOT_FOUND')
 
+  const inputKeywords: string[] | undefined = keywords
+
+  if (inputKeywords && inputKeywords.length > 0) {
+    const others = await prisma.chatTopic.findMany({
+      where: {
+        id: { not: id },
+        keywords: { hasSome: inputKeywords },
+      },
+      select: { keywords: true },
+    })
+
+    if (others.length > 0) {
+      const otherKeywords = others.flatMap((t) => t.keywords)
+      const duplicates = inputKeywords.filter((k) => otherKeywords.includes(k))
+      throw new BadRequestError(`KEYWORD_DUPLICATED: ${ duplicates.join(', ') }`)
+    }
+  }
+
   const chatTopic = await prisma.chatTopic.update({
     where: { id },
     data: {
