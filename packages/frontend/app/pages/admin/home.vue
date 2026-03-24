@@ -13,10 +13,6 @@ const state = ref({
     }
   }
 })
-
-const handleCancel = () => {
-  state.value.feature.isEditing = false
-}
 </script>
 
 <template>
@@ -145,7 +141,7 @@ const handleCancel = () => {
             color="neutral"
             variant="outline"
             class="rounded-xl"
-            @click="handleCancel"
+            @click="state.feature.isEditing = false"
           />
           <UButton
             label="儲存"
