@@ -2,6 +2,10 @@
 import { useMenuStore } from '@/stores'
 import { LogoutButton } from '~/components'
 
+useSeoMeta({
+  title: '小羊天地 - 後台管理'
+})
+
 const state = ref({
   feature: {
     sidebarCollapsed: false,

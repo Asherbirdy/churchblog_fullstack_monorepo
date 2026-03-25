@@ -29,11 +29,22 @@ export interface GetChatTopicResponse {
   chatTopic: ChatTopic
 }
 
+export interface UpdateChatTopicPayload {
+  id: string
+  name?: string
+  keywords?: string[]
+}
+
 export interface CreateChatTopicError {
   data: {
     success: boolean
     error: 'CHAT_TOPIC_NAME_ALREADY_EXISTS'
   }
+}
+
+interface CreateChatCardPayload {
+  name: string
+  keywords: string[]
 }
 
 export const useChatTopicApi = {
@@ -57,7 +68,7 @@ export const useChatTopicApi = {
         key: `${UserRequestUrl.ChatTopic}-${id}`
       })
   },
-  create: async (payload: { name: string, keywords: string[] } | Ref<{ name: string, keywords: string[] }>) => {
+  create: async (payload: Ref<CreateChatCardPayload>) => {
     return await useRequestApi<GetChatTopicResponse, CreateChatTopicError>(
       UserRequestUrl.ChatTopic, {
         method: 'POST',
@@ -68,10 +79,9 @@ export const useChatTopicApi = {
         lazy: true
       })
   },
-  update: async (id: string | Ref<string>, payload: { name?: string, keywords?: string[] } | Ref<{ name?: string, keywords?: string[] }>) => {
-    const url = computed(() => `${ UserRequestUrl.ChatTopic }/${ unref(id) }`)
+  update: async (payload: Ref<UpdateChatTopicPayload>) => {
     return await useRequestApi<GetChatTopicResponse, never>(
-      url, {
+      computed(() => `${UserRequestUrl.ChatTopic}/${payload.value.id}`), {
         method: 'PATCH',
         body: payload,
         immediate: false,
@@ -80,15 +90,14 @@ export const useChatTopicApi = {
         lazy: true
       })
   },
-  delete: async (id: string | Ref<string>) => {
-    const url = computed(() => `${ UserRequestUrl.ChatTopic }/${ unref(id) }`)
+  delete: async (id: Ref<string>) => {
     return await useRequestApi(
-      url, {
+      computed(() => `${UserRequestUrl.ChatTopic}/${id.value}`), {
         method: 'DELETE',
         immediate: false,
         server: false,
         watch: false,
-        lazy: true
+        lazy: false
       })
   }
 }
