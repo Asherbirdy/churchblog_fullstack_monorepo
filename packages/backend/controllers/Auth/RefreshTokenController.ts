@@ -49,6 +49,11 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
     throw new UnauthenticatedError('AUTHENTICATION_INVALID')
   }
 
+  const currentIp = req.ip || req.socket.remoteAddress || ''
+  if (existingToken.ip !== currentIp) {
+    throw new UnauthenticatedError('IP_MISMATCH')
+  }
+
   const token = attachCookieToResponse({
     res,
     user: payload.user,
@@ -60,3 +65,4 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
     jwtAccessToken: token,
   })
 }
+
