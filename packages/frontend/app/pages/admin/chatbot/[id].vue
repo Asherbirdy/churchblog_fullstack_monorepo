@@ -42,8 +42,8 @@ const { execute: executeCreate, pending: createPending } = await useChatCardApi.
 )
 
 const { execute: executeEdit, pending: editPending } = await useChatCardApi.update(
-  toRef(() => state.value.feature.edit.id),
   toRef(() => ({
+    id: state.value.feature.edit.id,
     name: state.value.feature.edit.name.trim(),
     url: state.value.feature.edit.url.trim(),
     description: state.value.feature.edit.description.trim()
@@ -57,8 +57,10 @@ const { execute: executeDelete } = await useChatCardApi.delete(
 const toggleId = ref('')
 const toggleBody = ref<{ online?: boolean }>({})
 const { execute: executeToggle } = await useChatCardApi.update(
-  toRef(() => toggleId.value),
-  toRef(() => toggleBody.value)
+  toRef(() => ({
+    id: toggleId.value,
+    ...toggleBody.value
+  }))
 )
 
 const refreshTopic = async () => {

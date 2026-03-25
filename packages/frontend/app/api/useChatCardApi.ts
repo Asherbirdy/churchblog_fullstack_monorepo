@@ -18,6 +18,7 @@ export interface CreateChatCardPayload {
 }
 
 export interface UpdateChatCardPayload {
+  id: string
   name?: string
   url?: string
   description?: string
@@ -52,9 +53,9 @@ export const useChatCardApi = {
         lazy: true
       })
   },
-  update: async (id: Ref<string>, payload: UpdateChatCardPayload | Ref<UpdateChatCardPayload>) => {
+  update: async (payload: Ref<UpdateChatCardPayload>) => {
     return await useRequestApi<GetChatCardResponse, never>(
-      computed(() => `${UserRequestUrl.ChatCard}/${id.value}`), {
+      computed(() => `${UserRequestUrl.ChatCard}/${payload.value.id}`), {
         method: 'PATCH',
         body: payload,
         immediate: false,
