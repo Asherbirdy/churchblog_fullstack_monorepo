@@ -29,6 +29,12 @@ export interface GetChatTopicResponse {
   chatTopic: ChatTopic
 }
 
+export interface UpdateChatTopicPayload {
+  id: string
+  name?: string
+  keywords?: string[]
+}
+
 export interface CreateChatTopicError {
   data: {
     success: boolean
@@ -68,15 +74,15 @@ export const useChatTopicApi = {
         lazy: true
       })
   },
-  update: async (id: Ref<string>, payload: { name?: string, keywords?: string[] } | Ref<{ name?: string, keywords?: string[] }>) => {
+  update: async (payload: Ref<UpdateChatTopicPayload>) => {
     return await useRequestApi<GetChatTopicResponse, never>(
-      computed(() => `${UserRequestUrl.ChatTopic}/${id.value}`), {
+      computed(() => `${UserRequestUrl.ChatTopic}/${payload.value.id}`), {
         method: 'PATCH',
         body: payload,
         immediate: false,
         server: false,
         watch: false,
-        lazy: false
+        lazy: true
       })
   },
   delete: async (id: Ref<string>) => {

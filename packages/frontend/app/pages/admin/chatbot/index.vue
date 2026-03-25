@@ -51,8 +51,8 @@ const {
   execute: executeEdit,
   pending: editPending
 } = await useChatTopicApi.update(
-  toRef(() => state.value.feature.edit.id),
   toRef(() => ({
+    id: state.value.feature.edit.id,
     name: state.value.feature.edit.name.trim(),
     keywords: editKeywordsParsed.value
   }))
