@@ -42,6 +42,11 @@ export interface CreateChatTopicError {
   }
 }
 
+interface CreateChatCardPayload {
+  name: string
+  keywords: string[]
+}
+
 export const useChatTopicApi = {
   getAll: async () => {
     const nuxtApp = useNuxtApp()
@@ -63,7 +68,7 @@ export const useChatTopicApi = {
         key: `${UserRequestUrl.ChatTopic}-${id}`
       })
   },
-  create: async (payload: { name: string, keywords: string[] } | Ref<{ name: string, keywords: string[] }>) => {
+  create: async (payload: Ref<CreateChatCardPayload>) => {
     return await useRequestApi<GetChatTopicResponse, CreateChatTopicError>(
       UserRequestUrl.ChatTopic, {
         method: 'POST',
