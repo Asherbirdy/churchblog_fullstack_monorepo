@@ -24,4 +24,6 @@ router.post(
   AuthController.changePasswordWithOTP
 )
 
+router.post('/forgetPasswordEmailOTP', AuthController.forgetPasswordEmailOTP)
+
 export default router
