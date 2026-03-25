@@ -204,6 +204,43 @@ packages/[project-name]/src/
 ### Frontend API Convention
 - API functions live in `app/api/` with a barrel export in `app/api/index.ts`
 - Each API group is a `use[Group]Api` object (e.g. `useAuthApi`, `usePageApi`)
+- **API type definitions**: Always define explicit `interface` types for request payload and response data. NEVER use inline object types in API function signatures:
+```typescript
+// Good — named interfaces
+export interface ForgetPasswordEmailOTPPayload {
+  email: string
+  otp: string
+  newPassword: string
+}
+
+export interface ForgetPasswordEmailOTPResponse {
+  msg: string
+}
+
+forgetPasswordChangePassword: async (body: ForgetPasswordEmailOTPPayload) => {
+  return await useRequestApi<ForgetPasswordEmailOTPResponse, null>(
+    PublicRequestUrl.AuthForgetPasswordChangePassword, {
+      method: 'POST',
+      body,
+      server: false,
+      lazy: true,
+      immediate: false,
+      watch: false
+    })
+}
+
+// Bad — inline types
+forgetPasswordChangePassword: async (body: { email: string, otp: string, newPassword: string }) => {
+  return await useRequestApi<{ msg: string }, null>(PublicRequestUrl.AuthForgetPasswordChangePassword, {
+    method: 'POST',
+    body,
+    server: false,
+    lazy: true,
+    immediate: false,
+    watch: false
+  })
+}
+```
 - API URL paths are defined in `app/enum/RequestUrlEnum.ts` using two enums:
   - `PublicRequestUrl` — endpoints that don't require authentication
   - `UserRequestUrl` — endpoints that require authentication

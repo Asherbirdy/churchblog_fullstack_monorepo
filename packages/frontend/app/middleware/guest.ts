@@ -5,7 +5,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
   const refreshToken = useCookie(CookieEnums.RefreshToken).value
 
   if (!refreshToken) {
-    if (to.path === PublicRoutes.LOGIN) return
+    if (to.path === PublicRoutes.LOGIN || to.path === PublicRoutes.FORGET_PASSWORD) return
     return navigateTo(PublicRoutes.LOGIN)
   }
 
