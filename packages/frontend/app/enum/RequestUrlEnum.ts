@@ -3,7 +3,9 @@ export enum PublicRequestUrl {
   AccountAdminInit = '/account/adminInit',
   AuthLogin = '/auth/login',
   AuthLoginSendOtp = '/auth/loginSendOtp',
-  PageRoute = '/page/route'
+  PageRoute = '/page/route',
+  AuthForgetPasswordEmailOTP = '/auth/forgetPasswordEmailOTP',
+  AuthForgetPasswordChangePassword = '/auth/changePasswordWithOTP'
 }
 
 export enum UserRequestUrl {

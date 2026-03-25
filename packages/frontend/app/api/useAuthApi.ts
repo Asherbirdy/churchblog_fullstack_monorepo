@@ -13,6 +13,16 @@ interface LoginResponse {
   }
 }
 
+export interface ForgetPasswordEmailOTPPayload {
+  email: string
+  otp: string
+  newPassword: string
+}
+
+export interface ForgetPasswordEmailOTPResponse {
+  msg: string
+}
+
 export const useAuthApi = {
   loginSendOtp: async (body: { email: string, password: string }) => {
     return await useRequestApi<{ msg: string }, null>(PublicRequestUrl.AuthLoginSendOtp, {
@@ -68,5 +78,27 @@ export const useAuthApi = {
       immediate: false,
       watch: false
     })
+  },
+  forgetPasswordEmailOTP: async (body: { email: string }) => {
+    return await useRequestApi<{ msg: string }, null>(
+      PublicRequestUrl.AuthForgetPasswordEmailOTP, {
+        method: 'POST',
+        body,
+        server: false,
+        lazy: true,
+        immediate: false,
+        watch: false
+      })
+  },
+  forgetPasswordChangePassword: async (body: ForgetPasswordEmailOTPPayload) => {
+    return await useRequestApi<ForgetPasswordEmailOTPResponse, null>(
+      PublicRequestUrl.AuthForgetPasswordChangePassword, {
+        method: 'POST',
+        body,
+        server: false,
+        lazy: true,
+        immediate: false,
+        watch: false
+      })
   }
 }

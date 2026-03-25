@@ -18,11 +18,7 @@ router.post(
   AuthController.sendVerificationEmail
 )
 
-router.post(
-  '/changePasswordWithOTP',
-  authenticateUser,
-  AuthController.changePasswordWithOTP
-)
+router.post('/changePasswordWithOTP', AuthController.changePasswordWithOTP)
 
 router.post('/forgetPasswordEmailOTP', AuthController.forgetPasswordEmailOTP)
 
