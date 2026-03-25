@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import 'express-async-errors'
 import express, { Application } from 'express'
 import config from './config'
@@ -82,8 +83,9 @@ class Server {
 
   listen () {
     this.app.listen(config.port, () => {
-      // eslint-disable-next-line no-console
-      console.table(config)
+      if(config.environment === 'DEV') {
+        console.table(config)
+      }
       console.log(`Server up and running at port: ${ config.port }`)
     })
   }
