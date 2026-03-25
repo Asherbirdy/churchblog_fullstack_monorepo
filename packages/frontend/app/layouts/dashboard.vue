@@ -61,31 +61,33 @@ watch(() => route.path, () => {
 
       <!-- Menu -->
       <nav class="flex-1 py-4 px-3 space-y-1">
-        <NuxtLink
-          v-for="item in menuItems"
-          :key="item.to"
-          :to="item.to"
-          :class="[
-            'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
-            route.path.startsWith(item.to)
-              ? 'bg-sage-50 text-sage-700'
-              : 'text-sand-500 hover:bg-sand-100 hover:text-sand-800'
-          ]"
-        >
-          <UIcon
-            :name="item.icon"
+        <ClientOnly>
+          <NuxtLink
+            v-for="item in menuItems"
+            :key="item.to"
+            :to="item.to"
             :class="[
-              'text-lg shrink-0',
-              route.path.startsWith(item.to) ? 'text-sage-600' : 'text-sand-400 group-hover:text-sand-600'
+              'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group',
+              route.path.startsWith(item.to)
+                ? 'bg-sage-50 text-sage-700'
+                : 'text-sand-500 hover:bg-sand-100 hover:text-sand-800'
             ]"
-          />
-          <span
-            v-show="!state.feature.sidebarCollapsed || state.feature.mobileOpen"
-            class="text-sm font-medium truncate"
           >
-            {{ item.label }}
-          </span>
-        </NuxtLink>
+            <UIcon
+              :name="item.icon"
+              :class="[
+                'text-lg shrink-0',
+                route.path.startsWith(item.to) ? 'text-sage-600' : 'text-sand-400 group-hover:text-sand-600'
+              ]"
+            />
+            <span
+              v-show="!state.feature.sidebarCollapsed || state.feature.mobileOpen"
+              class="text-sm font-medium truncate"
+            >
+              {{ item.label }}
+            </span>
+          </NuxtLink>
+        </ClientOnly>
       </nav>
 
       <!-- Logout -->
