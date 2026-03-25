@@ -7,7 +7,15 @@ const fs = require('fs')
 
 const projects = [
   { name: 'frontend', commands: ['dev', 'build', 'typecheck'] },
-  { name: 'backend', commands: ['dev', 'build', 'deploy', 'prisma-generate', 'pm2-deploy', 'pm2-stop', 'pm2-delete'] },
+  { name: 'backend', commands: [
+    'dev',
+    'build',
+    'deploy', // 正式環境用這個
+    'prisma-generate',
+    'pm2-deploy',
+    'pm2-stop',
+    'pm2-delete'
+  ] },
   { name: 'chatbot', commands: ['dev', 'build','build-to-frontend'] }
 ]
 
