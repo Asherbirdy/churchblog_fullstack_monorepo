@@ -3,7 +3,12 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 import http from 'http'
+import { execSync } from 'child_process'
 import cron from 'node-cron'
+import path from 'path'
+
+// dist/server.js → dist/ → cron/ → packages/ → monorepo root
+const ROOT_DIR = path.resolve(__dirname, '../../..')
 
 const PORT = process.env.PORT || 3000
 
@@ -59,8 +64,14 @@ const server = http.createServer((req, res) => {
 })
 
 // 每天晚上九點 (21:00)
-cron.schedule('25 17 * * *', () => {
-  console.log('hi night')
+cron.schedule('55 17 * * *', () => {
+  try {
+    console.log('開始執行 frontend build...')
+    execSync('pnpm run -C packages/frontend build', { cwd: ROOT_DIR, stdio: 'inherit' })
+    console.log('frontend build 完成')
+  } catch (error) {
+    console.error('frontend build 失敗：', error)
+  }
 }, { timezone: 'Asia/Taipei' })
 
 server.listen(PORT, () => {
