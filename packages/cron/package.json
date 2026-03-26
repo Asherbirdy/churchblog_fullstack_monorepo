@@ -1,17 +1,26 @@
 {
-  "name": "plop-templates-server",
+  "name": "cron-server",
   "version": "1.0.0",
-  "description": "簡單的 Node.js 靜態檔案伺服器",
-  "main": "server.js",
+  "description": "排程任務伺服器",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "tsc-watch --onSuccess \"node dist/server.js\"",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "keywords": [
     "nodejs",
-    "server",
-    "static"
+    "cron"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "node-cron": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/node-cron": "^3.0.11",
+    "tsc-watch": "^6.2.0",
+    "typescript": "^6.0.2"
+  }
 }

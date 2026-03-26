@@ -1,6 +1,5 @@
-const http = require('http')
-const fs = require('fs')
-const path = require('path')
+import http from 'http'
+import cron from 'node-cron'
 
 const PORT = 3000
 
@@ -13,7 +12,7 @@ const server = http.createServer((req, res) => {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello World</title>
+  <title>Cron Server</title>
   <style>
     body {
       margin: 0;
@@ -43,8 +42,8 @@ const server = http.createServer((req, res) => {
 </head>
 <body>
   <div class="container">
-    <h1>Hello World</h1>
-    <p>Node.js 靜態檔案伺服器</p>
+    <h1>Cron Server</h1>
+    <p>排程任務伺服器運行中</p>
   </div>
 </body>
 </html>
@@ -54,6 +53,11 @@ const server = http.createServer((req, res) => {
     res.end('404 Not Found')
   }
 })
+
+// 每天晚上九點 (21:00)
+cron.schedule('25 17 * * *', () => {
+  console.log('hi night')
+}, { timezone: 'Asia/Taipei' })
 
 server.listen(PORT, () => {
   console.log(`伺服器運行於 http://localhost:${ PORT }`)
