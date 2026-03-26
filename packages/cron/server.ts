@@ -1,7 +1,10 @@
+import dotenv from 'dotenv'
+
+dotenv.config()
 import http from 'http'
 import cron from 'node-cron'
 
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 
 const server = http.createServer((req, res) => {
   if (req.url === '/' || req.url === '/index.html') {
