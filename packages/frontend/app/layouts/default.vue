@@ -63,6 +63,8 @@ useSeoMeta({
     </footer>
 
     <!-- Chatbot -->
-    <Chatbot />
+    <ClientOnly>
+      <Chatbot />
+    </ClientOnly>
   </div>
 </template>
