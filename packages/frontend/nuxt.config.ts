@@ -1,3 +1,6 @@
+import fs from 'fs'
+import path from 'path'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: ['@nuxt/eslint', '@nuxt/ui', '@pinia/nuxt'],
@@ -40,9 +43,27 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-01-15',
 
+  nitro: {
+    hooks: {
+      close() {
+        const src = path.resolve(__dirname, '.gitignore')
+        const dest = path.resolve(__dirname, '.output/.gitignore')
+        if (fs.existsSync(src)) {
+          fs.copyFileSync(src, dest)
+          console.log('[postbuild] .gitignore copied to .output/')
+        }
+      }
+    }
+  },
+
   hooks: {
     async 'prerender:routes'(ctx) {
       const apiUrl = process.env.NUXT_PUBLIC_API_URL
+      console.log(`
+        /----------------------------------------------\\
+        [prerender] apiUrl: ${apiUrl}
+        \\----------------------------------------------/
+      `)
       if (!apiUrl) {
         console.warn('[prerender] NUXT_PUBLIC_API_URL is not set, skipping dynamic routes')
         return

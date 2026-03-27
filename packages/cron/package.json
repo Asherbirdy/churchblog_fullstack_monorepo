@@ -1,0 +1,27 @@
+{
+  "name": "cron-server",
+  "version": "1.0.0",
+  "description": "排程任務伺服器",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsc-watch --onSuccess \"node dist/server.js\"",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "cron"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "node-cron": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "@types/node-cron": "^3.0.11",
+    "tsc-watch": "^6.2.0",
+    "typescript": "^6.0.2"
+  }
+}
