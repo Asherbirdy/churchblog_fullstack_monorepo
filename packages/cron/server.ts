@@ -8,7 +8,7 @@ import cron from 'node-cron'
 import path from 'path'
 
 // dist/server.js → dist/ → cron/ → packages/ → monorepo root
-const deployTime = '6 10 * * *'
+const deployTime = '13 10 * * *'
 const ROOT_DIR = path.resolve(__dirname, '../../..')
 const BACKEND_API = process.env.BACKEND_API || 'http://localhost:1210'
 
@@ -72,6 +72,12 @@ cron.schedule(deployTime, async () => {
 
     console.log(`複製 build 檔案至 ${ DIST_TARGET } ...`)
     execSync(`cp -r ${ FRONTEND_OUTPUT }/. ${ DIST_TARGET }/`, { stdio: 'inherit' })
+
+    console.log('開始 git push...')
+    const now = new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
+    execSync('git add .', { cwd: DIST_TARGET, stdio: 'inherit' })
+    execSync(`git commit -m "${ now }"`, { cwd: DIST_TARGET, stdio: 'inherit' })
+    execSync('git push', { cwd: DIST_TARGET, stdio: 'inherit' })
     console.log('部署完成')
   } catch (error) {
     console.error('frontend build 或部署失敗：', error)
