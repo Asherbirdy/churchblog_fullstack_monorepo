@@ -85,6 +85,12 @@ cron.schedule(deployTime, async () => {
 }, { timezone: 'Asia/Taipei' })
 
 server.listen(PORT, () => {
-  console.log(`Cron job at ${ deployTime }`)
+  console.table({
+    PORT,
+    BACKEND_API,
+    DIST_TARGET: process.env.DIST_TARGET || '(未設定)',
+    FRONTEND_OUTPUT: process.env.FRONTEND_OUTPUT || '(未設定)',
+    deployTime,
+  })
   console.log(`伺服器運行於 http://localhost:${ PORT }`)
 })
