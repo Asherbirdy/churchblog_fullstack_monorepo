@@ -3,6 +3,11 @@ export enum PublicApiRoute {
   AuthLogin = '/auth/login',
   AuthLogout = '/auth/logout',
   AuthCheckLogin = '/auth/checkValidToken',
+
+  // ** Page API 路由
+  PageOnline = '/page/online',
+  PageRoute = '/page/route',
+  PageBeforeBuildAndDeploy = '/page/before-build-and-deploy',
 }
 
 export enum PrivateApiRoute {
@@ -11,7 +16,13 @@ export enum PrivateApiRoute {
   AuthRegister = '/auth/userRegister',
 
   // ** User API 路由
-  UserShowMe = '/users/showMe',
+  UserShowMe = '/user/showMe',
+
+  // ** ChatTopic API 路由
+  ChatTopic = '/chat-topic',
+
+  // ** ChatCard API 路由
+  ChatCard = '/chat-card',
 
   // ** File API 路由
   File = '/file',
@@ -26,4 +37,15 @@ export enum PrivateApiRoute {
   WebsiteDelete = '/website/delete',
   WebsiteEditSheet = '/website/edit-sheet',
   WebsiteEditDetail = '/website/edit-detail',
+
+  // ** Page API 路由
+  Page = '/page', // create, getAll
+  PageInfo = '/page/info', // getOne
+  PageUpdate = '/page/update',
+  PageEditedHtml = '/page/edited-html',
+  PageSetToOnlineScheduled = '/page/set-to-online-scheduled',
+  PageCancelScheduled = '/page/cancel-scheduled',
+  PageSetToOfflineScheduled = '/page/set-to-offline-scheduled',
+  PageGoToPreviousHtml = '/page/go-to-previous-html',
+  PageReset = '/page/reset',
 }
