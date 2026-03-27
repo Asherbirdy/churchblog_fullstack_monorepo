@@ -4,6 +4,9 @@ export enum PublicApiRoute {
   AuthLogout = '/auth/logout',
   AuthCheckLogin = '/auth/checkValidToken',
 
+  // ** Account API 路由
+  AccountAdminInit = '/account/adminInit',
+
   // ** Page API 路由
   PageOnline = '/page/online',
   PageRoute = '/page/route',
@@ -14,6 +17,12 @@ export enum PrivateApiRoute {
   // ** Auth API 路由
   AuthSendOTP = '/auth/sendOTP',
   AuthRegister = '/auth/userRegister',
+
+  // ** Account API 路由
+  AccountAdminRegister = '/account/adminRegisterUser',
+  AccountDeleteUser = '/account/deleteUser',
+  AccountGetAllUser = '/account/getAllUser',
+  AccountEditAccess = '/account/editAccess',
 
   // ** User API 路由
   UserShowMe = '/user/showMe',
