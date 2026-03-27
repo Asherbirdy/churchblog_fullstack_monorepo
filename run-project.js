@@ -7,6 +7,7 @@ const fs = require('fs')
 
 const projects = [
   { name: 'frontend', commands: ['dev', 'build', 'typecheck'] },
+  { name: 'frontend-admin', commands: ['dev', 'build', 'typecheck'] },
   { name: 'backend', commands: [
     'dev',
     'build',
