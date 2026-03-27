@@ -17,7 +17,6 @@ const projects = [
     'pm2-stop',
     'pm2-delete'
   ] },
-  { name: 'chatbot', commands: ['dev', 'build','build-to-frontend'] },
   { name: 'cron', commands: ['dev', 'build'] }
 ]
 

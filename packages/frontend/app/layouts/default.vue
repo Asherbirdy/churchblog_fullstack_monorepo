@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Chatbot } from '~/components'
+
 useHead({
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
@@ -7,14 +9,7 @@ useHead({
     { rel: 'icon', href: '/favicon.svg' },
     { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
     { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap' },
-    { rel: 'stylesheet', href: '/chatbot/chatbot.css' }
-  ],
-  script: [
-    {
-      src: '/chatbot/index.min.js',
-      onload: () => window.Chatbot?.init()
-    }
+    { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap' }
   ],
   htmlAttrs: {
     lang: 'zh-TW'
@@ -66,5 +61,10 @@ useSeoMeta({
         </p>
       </div>
     </footer>
+
+    <!-- Chatbot -->
+    <ClientOnly>
+      <Chatbot />
+    </ClientOnly>
   </div>
 </template>
