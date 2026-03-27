@@ -59,6 +59,11 @@ export default defineNuxtConfig({
   hooks: {
     async 'prerender:routes'(ctx) {
       const apiUrl = process.env.NUXT_PUBLIC_API_URL
+      console.log(`
+        /----------------------------------------------\\
+        [prerender] apiUrl: ${apiUrl}
+        \\----------------------------------------------/
+      `)
       if (!apiUrl) {
         console.warn('[prerender] NUXT_PUBLIC_API_URL is not set, skipping dynamic routes')
         return
