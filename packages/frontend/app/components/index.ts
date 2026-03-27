@@ -1,6 +1,6 @@
 import AddWebsiteButton from './website/AddWebsiteButton.vue'
 import AppLogo from './AppLogo.vue'
-import Chatbot from './Chatbot.vue'
+import Chatbot from './ChatBot.vue'
 import EditorMenubar from './EditorMenubar.vue'
 import LogoutButton from './LogoutButton.vue'
 import TemplateMenu from './TemplateMenu.vue'
