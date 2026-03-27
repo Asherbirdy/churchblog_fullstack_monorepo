@@ -64,13 +64,23 @@ const server = http.createServer((req, res) => {
 })
 
 // 每天晚上九點 (21:00)
-cron.schedule('55 17 * * *', () => {
+cron.schedule('24 9 * * *', () => {
+  const DIST_TARGET = '/Users/riversoft/Desktop/SP/church_blog_fe_dist'
+  const FRONTEND_OUTPUT = path.join(ROOT_DIR, 'packages/frontend/.output')
+
   try {
     console.log('開始執行 frontend build...')
     execSync('pnpm run -C packages/frontend build', { cwd: ROOT_DIR, stdio: 'inherit' })
     console.log('frontend build 完成')
+
+    console.log(`清除 ${ DIST_TARGET } ...`)
+    execSync(`rm -rf ${ DIST_TARGET }/*`, { stdio: 'inherit' })
+
+    console.log(`複製 build 檔案至 ${ DIST_TARGET } ...`)
+    execSync(`cp -r ${ FRONTEND_OUTPUT }/. ${ DIST_TARGET }/`, { stdio: 'inherit' })
+    console.log('部署完成')
   } catch (error) {
-    console.error('frontend build 失敗：', error)
+    console.error('frontend build 或部署失敗：', error)
   }
 }, { timezone: 'Asia/Taipei' })
 
