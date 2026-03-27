@@ -8,6 +8,7 @@ import cron from 'node-cron'
 import path from 'path'
 
 // dist/server.js → dist/ → cron/ → packages/ → monorepo root
+const deployTime = '38 9 * * *' 
 const ROOT_DIR = path.resolve(__dirname, '../../..')
 
 const PORT = process.env.PORT || 3000
@@ -64,9 +65,13 @@ const server = http.createServer((req, res) => {
 })
 
 // 每天晚上九點 (21:00)
-cron.schedule('24 9 * * *', () => {
-  const DIST_TARGET = '/Users/riversoft/Desktop/SP/church_blog_fe_dist'
-  const FRONTEND_OUTPUT = path.join(ROOT_DIR, 'packages/frontend/.output')
+cron.schedule(deployTime, () => {
+  if(!process.env.DIST_TARGET || !process.env.FRONTEND_OUTPUT) {
+    console.error('DIST_TARGET 或 FRONTEND_OUTPUT 未設定')
+    return
+  }
+  const DIST_TARGET = process.env.DIST_TARGET
+  const FRONTEND_OUTPUT = path.join(ROOT_DIR, process.env.FRONTEND_OUTPUT)
 
   try {
     console.log('開始執行 frontend build...')
@@ -85,5 +90,6 @@ cron.schedule('24 9 * * *', () => {
 }, { timezone: 'Asia/Taipei' })
 
 server.listen(PORT, () => {
+  console.log(`Cron job at ${ deployTime }`)
   console.log(`伺服器運行於 http://localhost:${ PORT }`)
 })
