@@ -1,0 +1,1258 @@
+{
+  "info": {
+    "_postman_id": "1b627ad9-7980-4123-ae12-81ce627a81e8",
+    "name": "Church Blog",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "26884449"
+  },
+  "item": [
+    {
+      "name": "Account",
+      "item": [
+        {
+          "name": "Register First Admin",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"Asher Lien\",\n    \"password\":\"password\",\n    \"email\":\"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/account/adminInit",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "account",
+                "adminInit"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Register User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"Asherbirdy\",\n    \"password\":\"password\",\n    \"email\":\"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/account/adminRegisterUser",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "account",
+                "adminRegisterUser"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All User",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"Asherbirdy\",\n    \"password\":\"password\",\n    \"email\":\"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/account/getAllUser",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "account",
+                "getAllUser"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DeleteUser",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"Asherbirdy\",\n    \"password\":\"password\",\n    \"email\":\"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/account/deleteUser/b9f10a81-30a0-4eea-8591-401b9540afba",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "account",
+                "deleteUser",
+                "b9f10a81-30a0-4eea-8591-401b9540afba"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit User Access",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"access\":[],\n    \"userId\":\"b9f10a81-30a0-4eea-8591-401b9540afba\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/account/editAccess",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "account",
+                "editAccess"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login Send OTP",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 解析回應的 JSON 數據",
+                  "var data = pm.response.json();",
+                  "",
+                  "// 檢查回應中是否包含 accessTokenJWT",
+                  "if (data.token && data.token.accessTokenJWT) {",
+                  "    // 將 accessTokenJWT 保存到環境變數中",
+                  "    pm.environment.set(\"accessTokenJWT\", data.token.accessTokenJWT);",
+                  "    console.log(\"accessTokenJWT saved to environment:\", data.token.accessTokenJWT);",
+                  "} else {",
+                  "    console.log(\"No accessTokenJWT found in response\");",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"\",\n    \"password\":\"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/auth/loginSendOtp",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "auth",
+                "loginSendOtp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 解析回應的 JSON 數據",
+                  "var data = pm.response.json();",
+                  "",
+                  "// 檢查回應中是否包含 accessTokenJWT",
+                  "if (data.token && data.token.accessTokenJWT) {",
+                  "    // 將 accessTokenJWT 保存到環境變數中",
+                  "    pm.environment.set(\"accessTokenJWT\", data.token.accessTokenJWT);",
+                  "    console.log(\"accessTokenJWT saved to environment:\", data.token.accessTokenJWT);",
+                  "} else {",
+                  "    console.log(\"No accessTokenJWT found in response\");",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\":\"\",\n    \"password\":\"password\",\n    \"otp\":\"632ee6\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/auth/login",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// 解析回應的 JSON 數據",
+                  "var data = pm.response.json();",
+                  "",
+                  "// 檢查回應中是否包含 accessTokenJWT",
+                  "if (data.token && data.token.accessTokenJWT) {",
+                  "    // 將 accessTokenJWT 保存到環境變數中",
+                  "    pm.environment.set(\"accessTokenJWT\", data.token.accessTokenJWT);",
+                  "    console.log(\"accessTokenJWT saved to environment:\", data.token.accessTokenJWT);",
+                  "} else {",
+                  "    console.log(\"No accessTokenJWT found in response\");",
+                  "}",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"asher\",\n    \"password\":\"password\",\n    \"email\":\"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/auth/userRegister",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "auth",
+                "userRegister"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User Logout",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/auth/logout",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "RefreshToken",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/auth/refreshToken",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "auth",
+                "refreshToken"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Dev",
+      "item": [
+        {
+          "name": "check-ip",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/dev/check-ip",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "dev",
+                "check-ip"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Show Current User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/user/showMe",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "user",
+                "showMe"
+              ],
+              "query": [
+                {
+                  "key": "6752a05ce1491d9da0373931",
+                  "value": null,
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Page",
+      "item": [
+        {
+          "name": "Create Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"0317_v5\",\n    \"routeName\": \"test-0317-v5\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/page",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/page",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Page by Id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/page/info/56cf6f3e-486c-4480-b471-ccc0afd5b9a8",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page",
+                "info",
+                "56cf6f3e-486c-4480-b471-ccc0afd5b9a8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Page by RouteName",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/page/route/test-test",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page",
+                "route",
+                "test-test"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Online Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/page/online",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page",
+                "online"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit Page Html",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n    \"editedHtml\":\"<div>hiy asa</div>\"\n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/page//edited-html/fd752d4c-0402-433e-a28a-446d2261f02c",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page",
+                "",
+                "edited-html",
+                "fd752d4c-0402-433e-a28a-446d2261f02c"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Go To Previous Page Html",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n    \"name\":\"testestrsssssss\", \n    \"status\":\"online\", \n    \"contentHtml\":\"asdasda\",\n    \"isEdit\": true\n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/page/go-to-previous-html/56cf6f3e-486c-4480-b471-ccc0afd5b9a8",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page",
+                "go-to-previous-html",
+                "56cf6f3e-486c-4480-b471-ccc0afd5b9a8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Set Page Status to ScheduledOnline",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/page/set-to-online-scheduled/fd752d4c-0402-433e-a28a-446d2261f02c",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page",
+                "set-to-online-scheduled",
+                "fd752d4c-0402-433e-a28a-446d2261f02c"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Set Page Status to ScheduledOffline",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/page/set-to-offline-scheduled/56cf6f3e-486c-4480-b471-ccc0afd5b9a8",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page",
+                "set-to-offline-scheduled",
+                "56cf6f3e-486c-4480-b471-ccc0afd5b9a8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Cancel Scheduled Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n    \"name\":\"testestrsssssss\", \n    \"status\":\"online\", \n    \"contentHtml\":\"asdasda\",\n    \"isEdit\": true\n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/page/cancel-scheduled/56cf6f3e-486c-4480-b471-ccc0afd5b9a8",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page",
+                "cancel-scheduled",
+                "56cf6f3e-486c-4480-b471-ccc0afd5b9a8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "before-build-and-deploy",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/page/before-build-and-deploy",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page",
+                "before-build-and-deploy"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n    \"name\":\"testestr\", \n    \"status\":\"online\", \n    \"contentHtml\":\"asdasda\",\n    \"isEdit\":true\n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/page/reset",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page",
+                "reset"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Page",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \n    \"name\":\"testestrsssssss\", \n    \"status\":\"online\", \n    \"contentHtml\":\"asdasda\",\n    \"isEdit\": true\n} ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/page/update/d9beeeb1-31d7-47e8-99e1-c2c52b38ca66",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "page",
+                "update",
+                "d9beeeb1-31d7-47e8-99e1-c2c52b38ca66"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "Send Message",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"message\":\"我生命讀經\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/chat/send-message",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "chat",
+                "send-message"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Chat Topic",
+      "item": [
+        {
+          "name": "Get All Chat Topic",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/chat-topic/",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "chat-topic",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Chat Topic",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"聖經\",\n    \"keywords\":[\"bible\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/chat-topic/",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "chat-topic",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit Chat Topic",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"聖經2\",\n    \"keywords\":[\"bibsssle\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/chat-topic/0c0345d9-f3a2-478d-8f2a-8c1cae7ecce0",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "chat-topic",
+                "0c0345d9-f3a2-478d-8f2a-8c1cae7ecce0"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Chat Topic",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"聖經2\",\n    \"keywords\":[\"bible\"]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/chat-topic/e600cf35-a5cc-471b-ad0f-03555e5f1f12",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "chat-topic",
+                "e600cf35-a5cc-471b-ad0f-03555e5f1f12"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Chat Card",
+      "item": [
+        {
+          "name": "Get All Chat Card",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/chat-card/",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "chat-card",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Chat Card by Id",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/chat-card/0f890bf2-e011-4a36-9ca0-dc5b22d507d9",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "chat-card",
+                "0f890bf2-e011-4a36-9ca0-dc5b22d507d9"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Chat Card",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"asdasd\",\n    \"url\":\"asdasd\",\n    \"description\":\"asdasd\",\n    \"chatTopicId\":\"2287c2a2-dddb-4c59-84ef-c5ab556f7dca\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/chat-card/",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "chat-card",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Edit Chat Card",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\":\"asdasd\",\n    \"url\":\"asdasd\",\n    \"description\":\"asdasd\",\n    \"chatTopicId\":\"2287c2a2-dddb-4c59-84ef-c5ab556f7dca\",\n    \"online\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/chat-card/",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "chat-card",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Chat Card",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessTokenJWT}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/chat-card/0f890bf2-e011-4a36-9ca0-dc5b22d507d9",
+              "host": [
+                "{{URL}}"
+              ],
+              "path": [
+                "chat-card",
+                "0f890bf2-e011-4a36-9ca0-dc5b22d507d9"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
