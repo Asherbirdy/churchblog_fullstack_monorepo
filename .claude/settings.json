@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /Users/riversoft/Desktop/SP/church/monorepo/packages/frontend/public -type f -name *chatbot*)"
+    ]
+  }
+}
