@@ -48,7 +48,8 @@ export default defineNuxtConfig({
       close() {
         const src = path.resolve(__dirname, '.gitignore')
         const dest = path.resolve(__dirname, '.output/.gitignore')
-        if (fs.existsSync(src)) {
+        const destDir = path.resolve(__dirname, '.output')
+        if (fs.existsSync(src) && fs.existsSync(destDir)) {
           fs.copyFileSync(src, dest)
           console.log('[postbuild] .gitignore copied to .output/')
         }
