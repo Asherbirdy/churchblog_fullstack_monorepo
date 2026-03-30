@@ -81,6 +81,11 @@ export const LoginController = async (req: Request, res: Response) => {
   })
 
   if (existingToken) {
+    const ip = req.ip || ''
+    await prisma.token.update({
+      where: { id: existingToken.id },
+      data: { ip },
+    })
     refreshToken = existingToken.refreshToken
     const token = attachCookieToResponse({ res, user: tokenUser, refreshToken })
     res.status(StatusCode.OK).json({ user: tokenUser, token })

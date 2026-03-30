@@ -51,6 +51,12 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
 
   const currentIp = req.ip || req.socket.remoteAddress || ''
   if (existingToken.ip !== currentIp) {
+    console.error({
+      IP_MISMATCH: {
+        existingTokenIp: existingToken.ip,
+        currentIp,
+      },
+    })
     throw new UnauthenticatedError('IP_MISMATCH')
   }
 
