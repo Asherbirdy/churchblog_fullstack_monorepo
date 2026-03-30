@@ -9,11 +9,12 @@ import { useAuthStore } from '@/stores'
 import { toaster } from '@/components/ui/toaster'
 import { cookie } from '@/utils/cookie'
 import { CookieEnum, Routes } from '@/enums'
+import { config } from '@/config'
 
 export default function LoginPage () {
   const [step, setStep] = useState<'credentials' | 'otp'>('credentials')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState(config.test.email || '')
+  const [password, setPassword] = useState(config.test.password || '')
   const [otp, setOtp] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
@@ -57,12 +58,12 @@ export default function LoginPage () {
     },
   })
 
-  const handleSendOtp = (e?: React.FormEvent) => {
+  const handleSendOtp = (e?: React.SyntheticEvent) => {
     e?.preventDefault()
     sendOtpMutation.mutate({ email, password })
   }
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = (e: React.SyntheticEvent) => {
     e.preventDefault()
     loginMutation.mutate({
       email, password, otp,
