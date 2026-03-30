@@ -8,7 +8,7 @@ import { useAuthApi } from '@/api'
 import { useAuthStore } from '@/stores'
 import { toaster } from '@/components/ui/toaster'
 import { cookie } from '@/utils/cookie'
-import { CookieEnum, Routes } from '@/enums'
+import { CookieEnum, Routes_Admin } from '@/enums'
 import { config } from '@/config'
 
 export default function LoginPage () {
@@ -47,7 +47,7 @@ export default function LoginPage () {
       cookie.set(CookieEnum.AccessToken, token.accessTokenJWT)
       cookie.set(CookieEnum.RefreshToken, token.refreshTokenJWT)
       useAuthStore.getState().setIsAuthenticated(true)
-      navigate(Routes.DashboardHome)
+      navigate(Routes_Admin.Home)
     },
     onError: () => {
       toaster.create({
