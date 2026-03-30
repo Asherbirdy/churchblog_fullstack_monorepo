@@ -9,7 +9,7 @@ export function App() {
   // App 初始化時檢查登入狀態
   useEffect(() => {
     checkLogin()
-  }, [])
+  }, [checkLogin])
 
   return (
     <Suspense

@@ -19,12 +19,6 @@ export default function LoginPage () {
   const [showPassword, setShowPassword] = useState(false)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if (cookie.get(CookieEnum.RefreshToken)) {
-      navigate(Routes_Admin.Home)
-    }
-  }, [navigate])
-
   const sendOtpMutation = useMutation({
     mutationFn: useAuthApi.loginSendOtp,
     onSuccess: () => {

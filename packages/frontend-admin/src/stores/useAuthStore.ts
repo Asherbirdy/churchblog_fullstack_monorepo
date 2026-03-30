@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { useAuthApi } from '@/api/useAuthApi'
+// import { useAuthApi } from '@/api/useAuthApi'
 
 interface AuthStore {
   isLogin: boolean
@@ -17,14 +17,14 @@ export const useAuthStore = create<AuthStore>((set) => ({
 
   // 檢查登入狀態
   checkLogin: async () => {
+    console.log('checkLogin')
+    //   const response = await useAuthApi.checkLogin()
 
-    const response = await useAuthApi.checkLogin()
-
-    if (response.data?.status === 'success') {
-      set({ isLogin: true, isInitialized: true })
-      return
-    }
-    set({ isLogin: false, isInitialized: true })
+  //   if (response.data?.status === 'success') {
+  //     set({ isLogin: true, isInitialized: true })
+  //     return
+  //   }
+  //   set({ isLogin: false, isInitialized: true })
   },
 }))
 
