@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { RouterProvider, createHashRouter } from 'react-router-dom'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import routes from '~react-pages'
 import { ChakraProvider, defaultSystem } from '@chakra-ui/react'
 import { ColorModeProvider } from './components/ui/color-mode'
@@ -20,7 +20,7 @@ const queryClient = new QueryClient({
   },
 })
 
-const router = createHashRouter([
+const router = createBrowserRouter([
   {
     element: <App />,
     children: routes,
