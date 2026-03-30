@@ -1,6 +1,7 @@
 export interface LoginPayload {
   email: string
   password: string
+  otp: string
 }
 
 export interface LoginResponse {
@@ -12,7 +13,7 @@ export interface LoginUser {
   name: string
   userId: string
   role: string
-  emailVerified: boolean
+  access: string[]
 }
 
 export interface LoginToken {

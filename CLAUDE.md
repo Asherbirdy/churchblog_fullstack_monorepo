@@ -10,6 +10,7 @@ A pnpm workspace monorepo nodejs project
 
 - **packages/libs**: Shared library (`@monorepo/libs`) — Vue composables (`useLiff`), utils (`setToken`, `getToken`, `removeToken`, `clearToken`), components
 - **packages/backend**: Express + Prisma + TypeScript backend API server
+- **packages/frontend-admin**: Admin panel (React 19 + Chakra UI v3 + Vite + TypeScript) — church management dashboard
 - **packages/chatbot**: Embeddable chatbot widget (React 19 + Vite + TypeScript) — builds to static assets, deployed into frontend's `public/chatbot`
 - **packages/[vendor-project]**: Individual LINE OA frontend apps (Vue 3 + Vite + TypeScript)
 
@@ -398,6 +399,126 @@ import { AddWebsiteButton } from '~/components'
 - Icons: Lucide icon set (`i-lucide-*`)
 - Buttons: `bg-sand-950` for neutral, `bg-sage-600` for primary action
 
+## Frontend Admin Architecture (packages/frontend-admin)
+
+### Tech Stack
+- React 19 + TypeScript 5.4
+- Vite 5 + file-based routing (`vite-plugin-pages`)
+- **Chakra UI v3** (`@chakra-ui/react`) — **MUST use Chakra UI components for ALL UI**. NEVER use raw HTML elements (`<button>`, `<input>`, `<div>` for layout) when a Chakra equivalent exists
+- Zustand (state management)
+- Axios (HTTP client) with custom wrapper
+- React Query v5 (`@tanstack/react-query`)
+- Preact Signals (`@preact/signals-react`) — auto-imported
+- `react-icons` for icons (use `react-icons/lu` Lucide set for consistency)
+- `next-themes` for color mode (forced to "light")
+- `js-cookie` for token storage
+- Hash-based router (`createHashRouter`)
+
+### Frontend Admin Structure
+```
+packages/frontend-admin/src/
+├── main.tsx            # Entry point — providers stack (Chakra, ColorMode, QueryClient, Router)
+├── App.tsx             # Root component — Suspense wrapper, auth check on mount
+├── pages/              # File-based routing (auto-discovered .tsx files)
+├── components/
+│   ├── ui/             # Chakra UI wrappers (color-mode, toaster, dialog, avatar, tooltip)
+│   └── index.ts        # Barrel export
+├── api/
+│   ├── index.ts        # Barrel export
+│   ├── use[Group]Api.ts # API hook per resource group
+│   └── http/           # Axios instance & interceptors
+│       ├── index.ts    # Creates useApiRequest instance
+│       ├── config.ts   # Base URL from VITE_API_URL
+│       └── axios/      # Axios class, interceptors, retry, abort, error handling
+├── stores/
+│   ├── app/            # Zustand stores (useAuthStore, useCounterStore)
+│   ├── state/          # Preact Signals state (LoginState)
+│   └── index.ts        # Barrel export
+├── enums/
+│   ├── ApiRouteEnum.ts # PublicApiRoute / PrivateApiRoute enums
+│   ├── RoutesEnum.ts   # Route path enums
+│   ├── CookieEnum.ts   # Cookie name enums
+│   └── index.ts        # Barrel export
+├── router/
+│   ├── guards.ts       # Route guard functions (auth, guest, admin, dashboard)
+│   ├── ProtectedRoute.tsx # Route wrapper with guard checks
+│   └── index.ts
+├── hook/               # Custom hooks (useColorMode)
+├── types/              # Type definitions (api/auth/LoginType, RegisterType, etc.)
+├── utils/              # Utilities (cookie, formValidate)
+├── config.ts           # Environment config (VITE_API_URL, VITE_BASE, test credentials)
+└── assets/
+    └── global.css      # Global styles, Google Fonts, animations
+```
+
+### Chakra UI Component Convention
+**IMPORTANT**: Always use `@chakra-ui/react` components instead of raw HTML:
+```tsx
+// Good — Chakra UI components
+import { Box, Flex, Text, Heading, Input, Button, VStack, HStack, Icon } from '@chakra-ui/react'
+import { LuChurch } from 'react-icons/lu'
+
+<Flex align="center" gap="2">
+  <Icon as={LuChurch} />
+  <Text fontSize="sm">Label</Text>
+</Flex>
+
+// Bad — raw HTML
+<div style={{ display: 'flex' }}>
+  <span>Label</span>
+</div>
+```
+
+### Frontend Admin API Convention
+- API functions live in `api/` with barrel export in `api/index.ts`
+- Each API group is a `use[Group]Api` object (e.g. `useAuthApi`, `usePageApi`, `useChatTopicApi`)
+- Uses custom `Axios` wrapper from `api/http/axios/Axios.ts` with interceptors, retry, and abort
+- HTTP instance created in `api/http/index.ts` as `useApiRequest`
+- API URL paths defined in `enums/ApiRouteEnum.ts` using `PublicApiRoute` / `PrivateApiRoute` enums
+- **Type definitions**: Always define explicit `interface` types in `types/` for payloads and responses. NEVER use inline object types
+- Always import API from barrel: `import { useAuthApi } from '@/api'`
+
+### Frontend Admin Store Convention
+- Zustand stores live in `stores/app/` with barrel export in `stores/index.ts`
+- Preact Signals state lives in `stores/state/`
+- Always import from barrel: `import { useAuthStore } from '@/stores'`
+
+### Frontend Admin Component Convention
+- All components barrel-exported from `components/index.ts`
+- Always import from barrel: `import { Toaster } from '@/components'`
+- Use Chakra UI's `defaultSystem` theme — do NOT create custom Chakra themes
+
+### Frontend Admin Design Style
+- **Brand**: 小羊天地 (admin panel)
+- **Color palette**: Same sand/sage/warm tones as frontend (see "Frontend Design Style" section)
+- **Typography**: `Playfair Display` (serif) for headings, `DM Sans` (sans-serif) for body — loaded via Google Fonts `@import` in `global.css`
+- **Icons**: `react-icons/lu` (Lucide icon set) — use `Icon` component with `as` prop: `<Icon as={LuChurch} />`
+
+### Frontend Admin Color Reference (hex values for Chakra props)
+Since Chakra UI does not use Tailwind, use hex color values directly in style props:
+- Sand: `#faf8f5` (50), `#e8e0d4` (200), `#bfab92` (400), `#a8916f` (500), `#7a664a` (700), `#2d241c` (950)
+- Sage: `#425f40` (600), `#364c34` (700)
+- Background: `#faf8f5` (sand-50)
+- Primary text: `#2d241c` (sand-950)
+- Primary button: `bg="#2d241c"` with `_hover={{ bg: '#544638' }}`
+- Muted text: `#a8916f` (sand-500)
+- Labels: `#7a664a` (sand-700)
+- Borders: `#e8e0d4` (sand-200)
+- Input focus: `borderColor="#a8916f"` with `boxShadow="0 0 0 3px rgba(168,145,111,0.15)"`
+- Accent/link: `#425f40` (sage-600)
+
+### Frontend Admin Environment Variables
+- `.env.development` / `.env.production`
+- Must prefix with `VITE_`
+- `VITE_API_URL` (API base URL), `VITE_BASE` (base path), `VITE_PORT` (dev server port, default 3000)
+- `VITE_TEST_EMAIL`, `VITE_TEST_PASSWORD` (dev test credentials)
+
+### Auto-imports (configured in vite.config.ts)
+The following are auto-imported and do NOT need explicit import statements:
+- **React**: `useState`, `useEffect`, `useCallback`, `useMemo`, `useRef`, etc.
+- **React Query**: `useQuery`, `useMutation`, `useQueryClient`, etc.
+- **React Router**: `useNavigate`, `useParams`, `useLocation`, etc.
+
 ## ESLint Style Rules
 
 Key formatting rules enforced by ESLint:
@@ -409,4 +530,22 @@ Key formatting rules enforced by ESLint:
 - **Arrow parens always**: `(x) => x`
 - **Vue block order**: `<script>` then `<template>`
 - **Vue attributes**: one per line when multiline
+- **Import grouping**: When importing multiple named exports, keep them on a single line inside the braces. Only wrap to the next line when the line would exceed the max line length. Do NOT put each import on its own line:
+```typescript
+// Good — single line
+import { Box } from '@chakra-ui/react'
+
+// Good — wraps only when line is too long
+import {
+  Box, Flex, Text, Heading, Input, Button, VStack, HStack, Icon,
+} from '@chakra-ui/react'
+
+// Bad — one per line
+import {
+  Box,
+  Flex,
+  Text,
+  Heading,
+} from '@chakra-ui/react'
+```
 - No `v-html`, no console (warn)
