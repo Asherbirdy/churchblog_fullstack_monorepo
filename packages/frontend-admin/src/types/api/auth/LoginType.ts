@@ -13,7 +13,7 @@ export interface LoginUser {
   name: string
   userId: string
   role: string
-  emailVerified: boolean
+  access: string[]
 }
 
 export interface LoginToken {
