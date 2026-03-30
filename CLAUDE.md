@@ -530,4 +530,22 @@ Key formatting rules enforced by ESLint:
 - **Arrow parens always**: `(x) => x`
 - **Vue block order**: `<script>` then `<template>`
 - **Vue attributes**: one per line when multiline
+- **Import grouping**: When importing multiple named exports, keep them on a single line inside the braces. Only wrap to the next line when the line would exceed the max line length. Do NOT put each import on its own line:
+```typescript
+// Good — single line
+import { Box } from '@chakra-ui/react'
+
+// Good — wraps only when line is too long
+import {
+  Box, Flex, Text, Heading, Input, Button, VStack, HStack, Icon,
+} from '@chakra-ui/react'
+
+// Bad — one per line
+import {
+  Box,
+  Flex,
+  Text,
+  Heading,
+} from '@chakra-ui/react'
+```
 - No `v-html`, no console (warn)

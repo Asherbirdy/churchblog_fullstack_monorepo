@@ -1,23 +1,14 @@
-import { useState } from 'react'
 import {
-  Box,
-  Flex,
-  Text,
-  Heading,
-  Input,
-  Button,
-  VStack,
-  HStack,
-  Icon,
+  Box, Flex, Text, Heading, Input, Button, VStack, HStack, Icon,
 } from '@chakra-ui/react'
 import {
-  LuChurch,
-  LuMail,
-  LuLock,
-  LuEye,
-  LuEyeOff,
-  LuShieldCheck,
+  LuChurch, LuMail, LuLock, LuEye, LuEyeOff, LuShieldCheck,
 } from 'react-icons/lu'
+import { useAuthApi } from '@/api'
+import { useAuthStore } from '@/stores'
+import { toaster } from '@/components/ui/toaster'
+import { cookie } from '@/utils/cookie'
+import { CookieEnum, Routes } from '@/enums'
 
 export default function LoginPage () {
   const [step, setStep] = useState<'credentials' | 'otp'>('credentials')
@@ -25,23 +16,57 @@ export default function LoginPage () {
   const [password, setPassword] = useState('')
   const [otp, setOtp] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
-  const handleSendOtp = (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
+  const sendOtpMutation = useMutation({
+    mutationFn: useAuthApi.loginSendOtp,
+    onSuccess: () => {
       setStep('otp')
-    }, 1000)
+      toaster.create({
+        title: '驗證碼已寄出',
+        description: `驗證碼已寄送至 ${
+          email
+        }`,
+        type: 'success',
+      })
+    },
+    onError: () => {
+      toaster.create({
+        title: '寄送失敗',
+        description: '請確認帳號密碼是否正確',
+        type: 'error',
+      })
+    },
+  })
+
+  const loginMutation = useMutation({
+    mutationFn: useAuthApi.login,
+    onSuccess: (res) => {
+      const { token } = res.data
+      cookie.set(CookieEnum.AccessToken, token.accessTokenJWT)
+      cookie.set(CookieEnum.RefreshToken, token.refreshTokenJWT)
+      useAuthStore.getState().setIsAuthenticated(true)
+      navigate(Routes.DashboardHome)
+    },
+    onError: () => {
+      toaster.create({
+        title: '登入失敗',
+        description: '驗證碼錯誤或已過期',
+        type: 'error',
+      })
+    },
+  })
+
+  const handleSendOtp = (e?: React.FormEvent) => {
+    e?.preventDefault()
+    sendOtpMutation.mutate({ email, password })
   }
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-    }, 1000)
+    loginMutation.mutate({
+      email, password, otp,
+    })
   }
 
   const handleBackToCredentials = () => {
@@ -340,7 +365,7 @@ export default function LoginPage () {
                     fontSize="0.9375rem"
                     fontWeight="600"
                     mt="2"
-                    loading={loading}
+                    loading={sendOtpMutation.isPending}
                     _hover={{ bg: '#544638' }}
                   >
                     取得驗證碼
@@ -429,7 +454,7 @@ export default function LoginPage () {
                     fontSize="0.9375rem"
                     fontWeight="600"
                     mt="2"
-                    loading={loading}
+                    loading={loginMutation.isPending}
                     _hover={{ bg: '#544638' }}
                   >
                     登入
