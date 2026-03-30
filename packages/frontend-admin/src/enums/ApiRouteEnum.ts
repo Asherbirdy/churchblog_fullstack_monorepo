@@ -2,6 +2,7 @@
 export enum PublicApiRoute {
   AuthLogin = '/auth/login',
   AuthLogout = '/auth/logout',
+  AuthLoginSendOtp = '/auth/loginSendOtp',
   AuthCheckLogin = '/auth/checkValidToken',
 
   // ** Account API 路由
