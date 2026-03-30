@@ -4,7 +4,8 @@
       "Bash(find /Users/riversoft/Desktop/SP/church/monorepo/packages/frontend/public -type f -name *chatbot*)",
       "Bash(grep -E \"\\\\.\\(ts|tsx\\)$\")",
       "Bash(grep -E \"\\\\.\\(ts|js\\)$\")",
-      "Bash(grep -E \"\\\\.\\(tsx|ts\\)$\")"
+      "Bash(grep -E \"\\\\.\\(tsx|ts\\)$\")",
+      "Bash(ls /Users/riversoft/Desktop/SP/church/monorepo/packages/frontend-admin/node_modules/unplugin-auto-import/dist/vite*)"
     ]
   }
 }
