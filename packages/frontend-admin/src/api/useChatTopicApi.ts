@@ -52,7 +52,7 @@ export const useChatTopicApi = {
   create: (payload: CreateChatTopicPayload): AxiosPromise<GetChatTopicResponse> => {
     return useApiRequest.post({ url: PrivateApiRoute.ChatTopic, data: payload })
   },
-  getAll: (params?: any): AxiosPromise<GetAllChatTopicsResponse> => {
+  getAll: (params?: { page?: number; limit?: number }): AxiosPromise<GetAllChatTopicsResponse> => {
     return useApiRequest.get({ url: PrivateApiRoute.ChatTopic, params })
   },
   getOne: (id: string | number): AxiosPromise<GetChatTopicResponse> => {
