@@ -1,25 +1,13 @@
 import {
-  Box, Heading, Text, VStack, HStack, Icon, Flex, Spinner, Center,
+  Box, Heading, Text, VStack, HStack, Icon, Flex,
 } from '@chakra-ui/react'
 import {
   LuUser, LuMail, LuShield,
 } from 'react-icons/lu'
-import { useUserApi } from '@/api'
+import { useAuthStore } from '@/stores'
 
 export default function AdminPage () {
-  const { data, isLoading } = useQuery({
-    queryKey: ['user', 'me'],
-    queryFn: () => useUserApi.showCurrentUser(),
-    select: (res) => res.data.user,
-  })
-
-  if (isLoading) {
-    return (
-      <Center h="50vh">
-        <Spinner size="xl" color="#a8916f" />
-      </Center>
-    )
-  }
+  const user = useAuthStore((state) => state.user)
 
   return (
     <Box>
@@ -33,7 +21,7 @@ export default function AdminPage () {
         儀表板
       </Heading>
 
-      {data && (
+      {user && (
         <Box
           bg="white"
           border="1px solid"
@@ -64,7 +52,7 @@ export default function AdminPage () {
               </Flex>
               <Box>
                 <Text fontSize="xs" color="#a8916f">名稱</Text>
-                <Text fontSize="sm" color="#2d241c" fontWeight="500">{data.name}</Text>
+                <Text fontSize="sm" color="#2d241c" fontWeight="500">{user.name}</Text>
               </Box>
             </HStack>
             <HStack gap="3">
@@ -80,7 +68,7 @@ export default function AdminPage () {
               </Flex>
               <Box>
                 <Text fontSize="xs" color="#a8916f">電子信箱</Text>
-                <Text fontSize="sm" color="#2d241c" fontWeight="500">{data.email}</Text>
+                <Text fontSize="sm" color="#2d241c" fontWeight="500">{user.email}</Text>
               </Box>
             </HStack>
             <HStack gap="3">
@@ -96,7 +84,7 @@ export default function AdminPage () {
               </Flex>
               <Box>
                 <Text fontSize="xs" color="#a8916f">角色</Text>
-                <Text fontSize="sm" color="#2d241c" fontWeight="500">{data.role}</Text>
+                <Text fontSize="sm" color="#2d241c" fontWeight="500">{user.role}</Text>
               </Box>
             </HStack>
           </VStack>

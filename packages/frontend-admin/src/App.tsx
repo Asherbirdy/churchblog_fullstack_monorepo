@@ -1,15 +1,31 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { Suspense, useEffect } from 'react'
 import { Spinner, Center } from '@chakra-ui/react'
 import { useAuthStore } from '@/stores'
 
-export function App() {
+export function App () {
   const checkLogin = useAuthStore((state) => state.checkLogin)
+  const isInitialized = useAuthStore((state) => state.isInitialized)
+  const isLogin = useAuthStore((state) => state.isLogin)
+  const navigate = useNavigate()
 
   // App 初始化時檢查登入狀態
   useEffect(() => {
     checkLogin()
   }, [checkLogin])
+
+  // 未登入時導向登入頁
+  useEffect(() => {
+    if (isInitialized && !isLogin) {
+      navigate('/')
+      return
+    }
+
+    if (isInitialized && isLogin) {
+      navigate('/admin')
+      return
+    }
+  }, [isInitialized, isLogin, navigate])
 
   return (
     <Suspense
