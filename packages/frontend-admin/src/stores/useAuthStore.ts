@@ -1,6 +1,9 @@
+import type { NavigateFunction } from 'react-router-dom'
 import { create } from 'zustand'
 import { cookie } from '@/utils/cookie'
-import { CookieEnum } from '@/enums'
+import {
+  CookieEnum, Routes, Routes_Admin,
+} from '@/enums'
 import { useUserApi } from '@/api'
 import type { UserShowMe } from '@/api/useUserApi'
 
@@ -9,7 +12,7 @@ interface AuthStore {
   isInitialized: boolean
   user: UserShowMe | null
   setIsAuthenticated: (value: boolean) => void
-  checkLogin: () => Promise<void>
+  checkLogin: (navigate: NavigateFunction) => Promise<void>
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -21,25 +24,33 @@ export const useAuthStore = create<AuthStore>((set) => ({
   setIsAuthenticated: (value: boolean) => set({ isLogin: value }),
 
   // 檢查登入狀態
-  checkLogin: async () => {
+  checkLogin: async (navigate) => {
     const refreshToken = cookie.get(CookieEnum.RefreshToken)
 
     if (!refreshToken) {
       set({
         isLogin: false, isInitialized: true, user: null,
       })
+      navigate('/')
       return
     }
 
     try {
       const response = await useUserApi.showCurrentUser()
       set({
-        isLogin: true, isInitialized: true, user: response.data.user,
+        isLogin: true,
+        isInitialized: true,
+        user: response.data.user,
       })
-    } catch {
+      navigate(Routes_Admin.Home)
+    }
+    catch {
       set({
-        isLogin: false, isInitialized: true, user: null,
+        isLogin: false,
+        isInitialized: true,
+        user: null,
       })
+      navigate(Routes.PublicHome)
     }
   },
 }))

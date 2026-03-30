@@ -5,27 +5,12 @@ import { useAuthStore } from '@/stores'
 
 export function App () {
   const checkLogin = useAuthStore((state) => state.checkLogin)
-  const isInitialized = useAuthStore((state) => state.isInitialized)
-  const isLogin = useAuthStore((state) => state.isLogin)
   const navigate = useNavigate()
 
   // App 初始化時檢查登入狀態
   useEffect(() => {
-    checkLogin()
-  }, [checkLogin])
-
-  // 未登入時導向登入頁
-  useEffect(() => {
-    if (isInitialized && !isLogin) {
-      navigate('/')
-      return
-    }
-
-    if (isInitialized && isLogin) {
-      navigate('/admin')
-      return
-    }
-  }, [isInitialized, isLogin, navigate])
+    checkLogin(navigate)
+  }, [checkLogin, navigate])
 
   return (
     <Suspense
