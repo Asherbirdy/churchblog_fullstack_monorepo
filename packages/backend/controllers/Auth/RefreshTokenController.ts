@@ -51,6 +51,7 @@ export const RefreshTokenController = async (req: Request, res: Response) => {
 
   const currentIp = req.ip || req.socket.remoteAddress || ''
   if (existingToken.ip !== currentIp) {
+    // eslint-disable-next-line no-console
     console.error({
       IP_MISMATCH: {
         existingTokenIp: existingToken.ip,
